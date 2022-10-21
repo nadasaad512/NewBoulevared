@@ -70,6 +70,7 @@ class UserApiController with Helpers
   }
 
 
+
   Future register_As_Advertiser(BuildContext context,{
     required  String type,
     required  String name,
@@ -212,6 +213,9 @@ class UserApiController with Helpers
     }
     return false;
   }
+
+
+
   Future<List<Cities>> getCity() async {
     var url = Uri.parse(ApiSettings.City);
     var response = await http.get(url);
@@ -768,6 +772,26 @@ class UserApiController with Helpers
     }
     return false;
   }
+  Future<bool> DeletAttach( {required int id_dele}) async {
+
+
+
+
+    var url = Uri.parse(ApiSettings.delet_Attach(dele: id_dele));
+    var response = await http.get(url,headers: {
+    HttpHeaders.authorizationHeader: UserPreferences().token,
+    });
+
+    if (jsonDecode(response.body)['status'] == true) {
+      return true;
+    }
+    else if (jsonDecode(response.body)['status'] == false) {
+
+    } else {
+
+    }
+    return false;
+  }
 
   Future<Ads> AdDetalies({required int idAD}) async {
     var url = Uri.parse(ApiSettings.AdsDetalies(idAds: idAD));
@@ -777,11 +801,8 @@ class UserApiController with Helpers
 
     if (jsonDecode(response.body)['status'] == true) {
       var json = jsonDecode(response.body);
-      print("5");
       var jsonArray = json['ad'];
-      print("6");
       Ads ad = Ads.fromJson(jsonArray);
-      print("7");
       return ad;
     } else if (jsonDecode(response.body)['status'] == false) {
       print("Something went wrong, please try again!");
@@ -856,6 +877,31 @@ class UserApiController with Helpers
 
     return ad;
   }
+  Future<Settings> Condition() async {
+    var url = Uri.parse(ApiSettings.setting);
+    var response = await http.get(url, headers: {
+      HttpHeaders.authorizationHeader: UserPreferences().token,
+    });
 
+
+
+    if (jsonDecode(response.body)['status'] == true) {
+      var json = jsonDecode(response.body);
+      var jsonArray = json['settings'];
+
+      Settings ad = Settings.fromJson(jsonArray);
+
+      return ad;
+    } else if (jsonDecode(response.body)['status'] == false) {
+
+    } else {
+
+    }
+
+    Settings ad = Settings();
+
+
+    return ad;
+  }
 
 }

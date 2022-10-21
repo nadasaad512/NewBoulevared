@@ -58,12 +58,14 @@ class Settings {
   String? title;
   String? address;
   String? description;
+  String? advertisingPolicies;
 
   Settings();
 
   Settings.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     url = json['url'];
+    advertisingPolicies = json['advertisingPolicies'];
     logo = json['logo'];
     infoEmail = json['info_email'];
     mobile = json['mobile'];
@@ -120,6 +122,7 @@ class Settings {
     data['url'] = this.url;
     data['logo'] = this.logo;
     data['info_email'] = this.infoEmail;
+    data['advertisingPolicies'] = this.advertisingPolicies;
     data['mobile'] = this.mobile;
     data['phone'] = this.phone;
     data['facebook'] = this.facebook;

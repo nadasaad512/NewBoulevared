@@ -242,19 +242,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: (){
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) =>
-                              //           StoryPage1(
-                              //             data:_special_ads[index].id!,
-                              //
-                              //           )
-                              //   ),
-                              //
-                              //
-                              //
-                              // );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        StoryPage(
+                                          AdId:_special_ads[index].id!,
+
+                                        )
+                                ),
+
+
+
+                              );
 
                             },
                             child: Container(

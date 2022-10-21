@@ -252,6 +252,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.20-nullsafety.5"
+  hashcodes:
+    dependency: transitive
+    description:
+      name: hashcodes
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   html:
     dependency: transitive
     description:
@@ -315,6 +322,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.6.2"
+  image_size_getter:
+    dependency: "direct main"
+    description:
+      name: image_size_getter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.2"
   intl:
     dependency: transitive
     description:

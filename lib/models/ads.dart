@@ -63,6 +63,7 @@ class AdvertiserADs {
   String? facebook;
   String? storeUrl;
   String? status;
+  String? paymentURL;
   String? name;
   String? details;
   String? mobile;
@@ -79,6 +80,7 @@ class AdvertiserADs {
   AdvertiserADs.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     adTypeId = json['ad_type_id'];
+    paymentURL = json['paymentURL'];
     userId = json['user_id'];
     categoryId = json['category_id'];
     cityId = json['city_id'];
@@ -91,6 +93,7 @@ class AdvertiserADs {
     mobile = json['mobile'];
     status = json['status'];
     website = json['website'];
+
     email = json['email'];
     name = json['name'];
     details = json['details'];
@@ -132,6 +135,7 @@ class AdvertiserADs {
     data['twitter'] = this.twitter;
     data['whatsapp'] = this.whatsapp;
     data['email'] = this.email;
+    data['paymentURL'] = this.paymentURL;
 
     data['image'] = this.image;
     data['status'] = this.status;
@@ -191,61 +195,7 @@ class AdType {
     return data;
   }
 }
-// class AdImages {
-//   int? id;
-//   int? adId;
-//   String? type;
-//   String? file;
-//   String? createdAt;
-//
-//   AdImages();
-//
-//   AdImages.fromJson(Map<String, dynamic> json) {
-//     id = json['id'];
-//     adId = json['ad_id'];
-//     type = json['type'];
-//     file = json['file'];
-//     createdAt = json['created_at'];
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['id'] = this.id;
-//     data['ad_id'] = this.adId;
-//     data['type'] = this.type;
-//     data['file'] = this.file;
-//     data['created_at'] = this.createdAt;
-//     return data;
-//   }
-// }
-//
-// class AdVideos {
-//   int? id;
-//   int? adId;
-//   String? type;
-//   String? file;
-//   String? createdAt;
-//
-//   AdVideos();
-//
-//   AdVideos.fromJson(Map<String, dynamic> json) {
-//     id = json['id'];
-//     adId = json['ad_id'];
-//     type = json['type'];
-//     file = json['file'];
-//     createdAt = json['created_at'];
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['id'] = this.id;
-//     data['ad_id'] = this.adId;
-//     data['type'] = this.type;
-//     data['file'] = this.file;
-//     data['created_at'] = this.createdAt;
-//     return data;
-//   }
-// }
+
 
 class ListStory{
   List<story1>? ad;

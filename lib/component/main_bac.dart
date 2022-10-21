@@ -160,6 +160,8 @@ class _Back_GroundState extends State<Back_Ground> {
                           SizedBox(height: 30.h,),
                           DraTex(context,titel: "تقييم التطبيق"),
                           SizedBox(height: 30.h,),
+                          DraTex(context,titel: "سياسات الاعلان",router: '/ConditionScreen'),
+                          SizedBox(height: 30.h,),
                           DraTex(context,titel: "تغيير كلمة المرور",router:'/ChangePassword'),
                           SizedBox(height: 30.h,),
                           snapshot.data!.type=="advertiser"?
@@ -402,7 +404,7 @@ class _Back_GroundState extends State<Back_Ground> {
                       future: UserApiController().getProfile(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator(color: Colors.purple,));
+                          return Center();
                         } else if (snapshot.hasData) {
                           return     IconButton(onPressed: ()
                           {

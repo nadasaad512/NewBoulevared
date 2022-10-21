@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../MainScreen.dart';
 import '../../api/User_Controller.dart';
 import '../../component/TextField.dart';
 import '../../component/main_bac.dart';
@@ -59,7 +58,7 @@ class _AwardScreenState extends State<AwardScreen> {
                   future: UserApiController().getProfile(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator(color: Colors.purple,));
+                      return Center();
                     }
                     else if (snapshot.hasData) {
 
@@ -206,7 +205,7 @@ class _AwardScreenState extends State<AwardScreen> {
                                   height: 188.h,
                                   width: 323.w,
                                   decoration: BoxDecoration(
-                                      color: Colors.green,
+                                      color: Colors.purple,
                                       borderRadius: BorderRadius.circular(5),
                                       image: DecorationImage(
                                         fit: BoxFit.cover,
@@ -253,7 +252,7 @@ class _AwardScreenState extends State<AwardScreen> {
                                        future: UserApiController().getProfile(),
                                        builder: (context, snapshot) {
                                          if (snapshot.connectionState == ConnectionState.waiting) {
-                                           return Center(child: CircularProgressIndicator(color: Colors.purple,));
+                                           return Center();
                                          }
                                          else if (snapshot.hasData) {
 

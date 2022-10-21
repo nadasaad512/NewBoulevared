@@ -50,6 +50,7 @@ dependencies:
   geocoding: ^2.0.4
   location: ^4.4.0
   story_viewer: ^0.2.0
+  image_size_getter: ^2.1.2
 
 
   # The following adds the Cupertino Icons font to your application.

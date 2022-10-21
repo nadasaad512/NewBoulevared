@@ -50,6 +50,7 @@ class Ads {
   String? facebook;
   String? whatsapp;
   String? instagram;
+  String? paymentURL;
   String? twitter;
   String? name;
   String? details;
@@ -77,6 +78,7 @@ class Ads {
     whatsapp = json['whatsapp'];
     latitude = json['latitude'];
     longitude = json['longitude'];
+    paymentURL = json['paymentURL'];
 
     status = json['status'];
     name = json['name'];
@@ -115,6 +117,7 @@ class Ads {
     data['status'] = this.status;
     data['latitude'] = this.latitude;
     data['longitude'] = this.longitude;
+    data['paymentURL'] = this.paymentURL;
 
     data['store_url']=this.store_url;
      data['facebook']=this.facebook;

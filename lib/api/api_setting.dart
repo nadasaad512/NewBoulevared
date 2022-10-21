@@ -1,5 +1,5 @@
 class ApiSettings {
-  static const _BASE_URL = 'http://boulevard20.com';
+  static const _BASE_URL = 'https://boulevard20.com';
   static const _API_URL = _BASE_URL + '/api/';
   static const City = _API_URL + 'getCities';
   static const CommercialActivities = _API_URL + 'getCommercialActivities';
@@ -47,6 +47,7 @@ class ApiSettings {
   static const updateNewAd = _API_URL + 'updateNewAd';
   static String AllAdsWithfiltter({required cityid}) => _API_URL + 'getAllAds?city_id=$cityid';
   static String delet_Ads({required dele}) => _API_URL + 'deleteAd?ad_id=$dele';
+  static String delet_Attach({required dele}) => _API_URL + 'deleteAdAttach?attach_id=$dele';
 
   static String ADS_Advertiser({required admid}) => _API_URL + 'viewAdvertiserDetails?advertiser_id=$admid';
   //

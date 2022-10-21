@@ -24,7 +24,6 @@ class _AdsScreenState extends State<AdsScreen> {
 
   int ? id;
   bool filt=false;
-
   List<Cities> cit = [];
   List<Ads> _detalies = [];
   var _selected;
@@ -108,7 +107,6 @@ class _AdsScreenState extends State<AdsScreen> {
               ],
             ),
 
-
             SizedBox(height: 10.h,),
             FutureBuilder<List<Ads>>(
               future: filt==false?
@@ -117,7 +115,8 @@ class _AdsScreenState extends State<AdsScreen> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator(color: Colors.purple,));
-                } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                }
+                else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                   _detalies = snapshot.data ?? [];
                   return  GridView.builder(
                     scrollDirection: Axis.vertical,
@@ -267,7 +266,8 @@ class _AdsScreenState extends State<AdsScreen> {
 
 
                   );
-                }else if(snapshot.data!.isEmpty){
+                }
+                else if(snapshot.data!.isEmpty){
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,

@@ -30,6 +30,7 @@ import 'MainScreen.dart';
 import 'Shared_Preferences/User_Preferences.dart';
 import 'Splash.dart';
 import 'component/TextField.dart';
+import 'conditinScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,6 +75,7 @@ class MyApp extends StatelessWidget {
             '/NewAdsScreen': (context) => NewAdsScreen(edit: false,indexAd: 2),
             '/MainScreen': (context) => MainScreen(),
             '/HomeScreen': (context) => HomeScreen(),
+            '/ConditionScreen': (context) => ConditionScreen(),
             '/AdsScreen': (context) => AdsScreen(),
             '/logain_screen': (context) => LOGAIN_SCREEN(),
             '/register_screen': (context) => RegisterScreen(),
