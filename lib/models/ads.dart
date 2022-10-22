@@ -217,6 +217,8 @@ class story1 {
   String? file;
   String? createdAt;
   String? duration;
+  int? height;
+  int? width;
 
   story1();
 
@@ -227,6 +229,8 @@ class story1 {
     file = json['file'];
     createdAt = json['created_at'];
     duration = json['duration'];
+    height = json['height'];
+    width = json['width'];
   }
 
   Map<String, dynamic> toJson() {
@@ -237,6 +241,8 @@ class story1 {
     data['file'] = this.file;
     data['created_at'] = this.createdAt;
     data['duration'] = this.duration;
+    data['height'] = this.height;
+    data['width'] = this.width;
     return data;
   }
 }

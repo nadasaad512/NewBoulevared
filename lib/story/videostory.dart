@@ -83,9 +83,13 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
           color: Colors.black,
           child:  Stack(
             children: [
-              AspectRatio(
-                aspectRatio: widget.controller.value.aspectRatio,
-                child: VideoPlayer(widget.controller),
+              Container(
+                height:widget.StroryData.height==null?double.infinity: widget.StroryData.height!.toDouble(),
+                width: widget.StroryData.width==null?double.infinity: widget.StroryData.width!.toDouble(),
+                child: AspectRatio(
+                  aspectRatio: widget.controller.value.aspectRatio,
+                  child: VideoPlayer(widget.controller),
+                ),
               ),
               Positioned(
                   top: 45.0,
@@ -113,7 +117,6 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
 
 
               ),
-
 
               Positioned(
                 top: 60.0,
@@ -350,9 +353,16 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
 
     newPosition<=Duration(hours:0,minutes: 0,seconds:5 )?start=true:start=false;
     newPosition>= widget.controller.value.duration?end=true:end=false;
+    print(" widget.animController.status");
+    print( widget.animController.value);
+   // widget.animController.value=widget.animController.value+0.05;
+    print( widget.animController.value);
+    print( widget.animController.status);
+    print( widget.animController.view);
 
 
     await  widget.controller.seekTo(newPosition);
+
 
 
   }
@@ -368,7 +378,9 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
             : null;
 
       }else{
+
         forward5Seconds();
+        widget.animController.value=widget.animController.value+0.05;
 
       }
     } else if (dx > 2 * screenWidth / 3) {
@@ -381,6 +393,7 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
       }else{
 
         rewind5Seconds();
+        widget.animController.value=widget.animController.value-0.05;
 
 
       }

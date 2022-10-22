@@ -9,6 +9,7 @@ import '../models/ads.dart';
 import '../models/detalies.dart';
 import '../screens/Details/ad_story_screen.dart';
 import '../screens/Profile/ProfileWidgt/User_Show_Admain.dart';
+import '../screens/Profile/profileScreen.dart';
 
 
 class ImageStoryScreen extends StatefulWidget{
@@ -103,10 +104,7 @@ class _ImageStoryScreenState extends State<ImageStoryScreen> {
                                 UserShowAdmain(id:widget.ad.advertiser!.id!,)
                         )
 
-
-
-
-                    );
+                 );
                   },
                   child: Row(
                     children: [

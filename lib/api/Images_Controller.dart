@@ -14,18 +14,14 @@ class ImagesApiController with Helpers {
       {
           required List <XFile> images,
           required List <String> videos,
+          required List <int> height,
+          required List <int> width,
           required List <double> duration_video,
         required String coverimg,
         required String ad_type_id,
         required String category_id,
         required String city_id,
         required String details_ar,
-        required String card_holder_name,
-        required String payment_method_id,
-        required String card_number,
-        required String validation_number,
-        required String expired_date,
-
         required String store_url,
         required double lat,
         required double lon,
@@ -54,19 +50,19 @@ class ImagesApiController with Helpers {
       multiPartRequest.fields.addAll({'duration[$i]':duration_video[i].toString()});
 
     }
+
+    for(int i=0;i<height.length;i++){
+      multiPartRequest.fields.addAll({'videos_height[$i]':height[i].toString()});
+    }
+    for(int i=0;i<width.length;i++){
+      multiPartRequest.fields.addAll({'videos_width[$i]':width[i].toString()});
+    }
     multiPartRequest.fields['ad_type_id']=ad_type_id;
     multiPartRequest.fields['category_id']=category_id;
     multiPartRequest.fields['city_id']=city_id;
     multiPartRequest.fields['details_en']=details_ar;
-    multiPartRequest.fields['payment_method_id']=payment_method_id;
-    multiPartRequest.fields['card_holder_name']=card_holder_name;
-    multiPartRequest.fields['card_number']=card_number;
-    multiPartRequest.fields['validation_number']=validation_number;
-    multiPartRequest.fields['expired_date']=expired_date;
-
     multiPartRequest.fields['latitude']=lat.toString();
     multiPartRequest.fields['longitude']=lon.toString();
-
     multiPartRequest.fields['store_url']=store_url;
     multiPartRequest.fields['facebook']=facebook;
     multiPartRequest.fields['whatsapp']=whatsapp;
@@ -103,17 +99,15 @@ class ImagesApiController with Helpers {
 
   Future<void> EditAds(BuildContext context,
       {
-        required List <XFile> images,
-        required List <String> videos,
-        required String coverimg,
-        required String ad_type_id,
+        required  List <XFile> images,
+        required  List <String> videos,
+        required String? coverimg,
         required String category_id,
         required String city_id,
         required String details_ar,
         required double lat,
         required double lon,
-        required List <double> duration_video,
-
+        required  List <double> duration_video,
         required String store_url,
         required String ad_id,
         required String facebook,
@@ -129,18 +123,37 @@ class ImagesApiController with Helpers {
   async {
     var url = Uri.parse(ApiSettings.updateNewAd);
     var multiPartRequest = http.MultipartRequest('POST', url,);
-    multiPartRequest.files.add(await http.MultipartFile.fromPath('image', coverimg));
-    List<dynamic> result =await Future.wait(images.asMap().entries.map((e) async {
-      multiPartRequest.files.add(await http.MultipartFile.fromPath('extra_images[${e.key.toString()}]', e.value. path));
-    }));
-    List<dynamic> vidros =await Future.wait(videos.asMap().entries.map((e) async {
-      multiPartRequest.files.add(await http.MultipartFile.fromPath('videos[${e.key.toString()}]', e.value));
-    }));
-    for(int i=0;i<duration_video.length;i++){
-      multiPartRequest.fields.addAll({'duration[$i]':duration_video[i].toString()});
 
+    coverimg!=null?
+    multiPartRequest.files.add(await http.MultipartFile.fromPath('image', coverimg)):null;
+
+
+
+    if(images.isNotEmpty||images!=[]){
+      List<dynamic> result =await Future.wait(images.asMap().entries.map((e) async {
+        multiPartRequest.files.add(await http.MultipartFile.fromPath('extra_images[${e.key.toString()}]', e.value. path));
+      }));
     }
-    multiPartRequest.fields['ad_type_id']=ad_type_id;
+
+
+
+
+    if(videos.isNotEmpty||videos!=[]){
+      List<dynamic> vidros =await Future.wait(videos.asMap().entries.map((e) async {
+        multiPartRequest.files.add(await http.MultipartFile.fromPath('videos[${e.key.toString()}]', e.value));
+      }));
+    }
+
+
+    if(duration_video.isNotEmpty|| duration_video!=[]){
+      for(int i=0;i<duration_video.length;i++){
+        multiPartRequest.fields.addAll({'duration[$i]':duration_video[i].toString()});
+
+      }
+    }
+
+
+
     multiPartRequest.fields['category_id']=category_id;
     multiPartRequest.fields['latitude']=lat.toString();
     multiPartRequest.fields['longitude']=lon.toString();

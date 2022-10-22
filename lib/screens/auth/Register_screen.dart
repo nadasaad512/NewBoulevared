@@ -29,7 +29,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> AregisterFormKey = GlobalKey<FormState>();
 
-
   TextEditingController ANameTextController = TextEditingController();
   TextEditingController AemailTextController = TextEditingController();
   TextEditingController ApasswordTextController = TextEditingController();

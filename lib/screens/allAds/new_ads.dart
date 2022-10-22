@@ -15,7 +15,6 @@ import '../../models/ads.dart';
 import '../../models/categories.dart';
 import '../../models/city.dart';
 import '../../models/detalies.dart';
-import '../../models/setting.dart';
 import '../../utils/helpers.dart';
 import '../maps/mapscreen.dart';
 
@@ -36,11 +35,11 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
   PickedFile? _pickedFile;
   PickedFile? _OnepickedFile;
   List<XFile> images = [];
-  List < PaymentMethods> pay =[];
-  int? PayId;
   List<VideoPlayerController> videoList = [];
   List<String> videoList1 = [];
   List<double> duration_video = [];
+  List<int> height = [];
+  List<int> width = [];
   VideoPlayerController? _videoPlayerController;
   File? _video;
   final picker = ImagePicker();
@@ -51,8 +50,10 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
   String location="الموقع";
   double lat=0;
   double lon=0;
-  String EditImage ="";
+  String? EditImage;
   bool EditProgress=false;
+
+
 
 
 
@@ -65,10 +66,9 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
   TextEditingController info = TextEditingController();
   TextEditingController Location = TextEditingController();
 
-  TextEditingController name = TextEditingController();
-  TextEditingController number = TextEditingController();
-  TextEditingController secritnumber = TextEditingController();
-  TextEditingController end = TextEditingController();
+
+
+
 
   var _selected;
   String? id;
@@ -98,10 +98,6 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
     link = TextEditingController();
     info = TextEditingController();
     Location = TextEditingController();
-    name = TextEditingController();
-    number = TextEditingController();
-    secritnumber = TextEditingController();
-    end = TextEditingController();
     widget.edit?
     UserApiController().AdDetalies(idAD: widget.indexAd!).then((value){
     controller = VideoPlayerController.network("");
@@ -117,7 +113,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
        location=ad.latitude.toString()+ad.longitude.toString();
        _selected1=ad.category!.name.toString();
        _selected=ad.city!.name.toString();
-       EditImage=ad.image.toString();
+
 
      });
     }):null;
@@ -134,10 +130,6 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
     insta.dispose();
     link.dispose();
     info.dispose();
-    name.dispose();
-    number.dispose();
-    secritnumber.dispose();
-    end.dispose();
     _pageController.dispose();
     super.dispose();
   }
@@ -2227,7 +2219,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
     // a.width;
 
     print("Duration is ${a!.duration}");
-   // duration_video
+
 
 
     _videoPlayerController = VideoPlayerController.file(_video!)
@@ -2235,6 +2227,8 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
         videoList.add(_videoPlayerController!);
         videoList1.add(_video!.path);
         duration_video.add(a.duration!);
+        height.add(a.height!);
+        width.add(a.width!);
         setState(() {});
         _videoPlayerController!.pause();
 
@@ -2264,15 +2258,12 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
        category_id: idActive.toString(),
        city_id: id.toString(),
        details_ar: info.text,
-       card_holder_name: name.text,
-       payment_method_id: PayId!.toString(),
-       card_number: number.text,
-       validation_number: secritnumber.text,
-       expired_date: end.text,
+     width: width,
+     height: height,
      uploadEvent: (status,massege,ad){
        if(status){
          Newad=ad;
-         print(ad.paymentURL);
+
         // _pageController.jumpToPage(3);
 
 
@@ -2305,7 +2296,6 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
         images: images,
         videos: videoList1,
         coverimg: EditImage,
-        ad_type_id: type.toString(),
         category_id: idActive.toString(),
         city_id: id.toString(),
         details_ar: info.text,
