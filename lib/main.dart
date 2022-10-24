@@ -3,10 +3,10 @@ import 'package:new_boulevard/screens/Details/ad_story_screen.dart';
 import 'package:new_boulevard/screens/Home_Screen.dart';
 import 'package:new_boulevard/screens/PARTBar/detalies.dart';
 import 'package:new_boulevard/screens/PARTBar/partScreen.dart';
-import 'package:new_boulevard/screens/Profile/EditAdmain.dart';
-import 'package:new_boulevard/screens/Profile/Followers_Advertiser.dart';
-import 'package:new_boulevard/screens/Profile/allFollower.dart';
-import 'package:new_boulevard/screens/Profile/profileScreen.dart';
+import 'package:new_boulevard/screens/Profile/ProfileWidgt/EditAdmain.dart';
+import 'package:new_boulevard/screens/Profile/ProfileWidgt/Followers_Advertiser.dart';
+import 'package:new_boulevard/screens/Profile/ProfileWidgt/allFollower.dart';
+import 'package:new_boulevard/screens/Profile/ProfileWidgt/profileScreen.dart';
 import 'package:new_boulevard/screens/SpecialAds/SpeciaScreen.dart';
 import 'package:new_boulevard/screens/allAds/Ads.dart';
 

@@ -27,7 +27,12 @@ class ApiSettings {
   static const reSendCode = _API_URL + 'reSendCode';
   static const Profile = _API_URL + 'profile';
   static const Follow_One = _API_URL + 'followOne';
+
+
+////error
   static const MyFollower = _API_URL + 'getUserFollowings';
+  ///
+
   static const CountMyFollower = _API_URL + 'getUserFollowings1';
 
   static String MyFollower_Advertiser({required idAdmain}) => _API_URL + 'getAdvertiserFollowers?advertiser_id=$idAdmain';

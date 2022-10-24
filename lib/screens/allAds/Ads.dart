@@ -136,19 +136,19 @@ class _AdsScreenState extends State<AdsScreen> {
                       InkWell(
                         onTap: (){
 
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           StoryPage1(
-                          //        data:_detalies[index].id!,
-                          //
-                          //           )
-                          //   ),
-                          //
-                          //
-                          //
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    StoryPage(
+                                      AdId:_detalies[index].id!,
+
+                                    )
+                            ),
+
+
+
+                          );
 
                         },
                         child: Container(
@@ -203,20 +203,22 @@ class _AdsScreenState extends State<AdsScreen> {
                           :
                         InkWell(
                           onTap: (){
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) =>
-                            //           StoryPage1(
-                            //             data:_detalies[index].id!,
-                            //
-                            //           )
-                            //   ),
-                            //
-                            //
-                            //
-                            // );
-                            //
+
+
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      StoryPage(
+                                        AdId:_detalies[index].id!,
+
+                                      )
+                              ),
+
+
+
+                            );
 
 
                           },

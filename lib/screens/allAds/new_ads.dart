@@ -2027,6 +2027,8 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                       ),
                     ),
                     SizedBox(height: 28.h,),
+
+
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 20.w,vertical: 10.h),
                       child: Row(
@@ -2063,14 +2065,20 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                         &&id!=null
                                         &&idActive!=null
                                     ){
-                                    await  launch(Newad.paymentURL.toString()).then((value) {
-                                      if( Newad.status=="active"){
-                                        _pageController.jumpToPage(_currentPage+1);
-                                          num.add(_currentPage-1);
-                                      }
+                                      await uploadImage().then((value) async {
+                                        await  launch(Newad.paymentURL.toString()).then((value) {
+                                          if( Newad.status=="active"){
+                                            _pageController.jumpToPage(_currentPage+1);
+                                            num.add(_currentPage-1);
+                                          }else{
+                                            showSnackBar(context, message: "لم يتم ادخال بوابة الدفع",error: true);
+
+                                          }
 
 
-                                    });
+                                        });
+                                      });
+
 
 
 
@@ -2081,7 +2089,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
                                 },
 
-                                child: Text( 'اضافة',
+                                child:progg?CircularProgressIndicator(color: Colors.white,) :Text( 'اضافة',
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 18.sp
@@ -2101,12 +2109,16 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                     ),
 
 
+                    SizedBox(height: 28.h,),
+
+
 
 
                   ],
                 ),
               ),
             ),
+            Success()
 
 
 
@@ -2239,6 +2251,9 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
 
   Future uploadImage() async {
+    setState(() {
+      progg=true;
+    });
 
  await ImagesApiController().
       uploadImage(
@@ -2262,13 +2277,20 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
      height: height,
      uploadEvent: (status,massege,ad){
        if(status){
+         setState(() {
+           progg=false;
+         });
          Newad=ad;
-
+         print("id");
+         print(ad.id.toString());
         // _pageController.jumpToPage(3);
 
 
 
        }else{
+         setState(() {
+           progg=false;
+         });
 
 
        }
@@ -2299,6 +2321,8 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
         category_id: idActive.toString(),
         city_id: id.toString(),
         details_ar: info.text,
+        width: width,
+        height: height,
         uploadEvent: (status,massege){
           if(status){
             _pageController.jumpToPage(3);

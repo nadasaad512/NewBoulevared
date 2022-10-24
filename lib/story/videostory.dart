@@ -9,8 +9,8 @@ import 'package:video_player/video_player.dart';
 import '../models/ads.dart';
 import '../models/detalies.dart';
 import '../screens/Details/ad_story_screen.dart';
-import '../screens/Profile/ProfileWidgt/User_Show_Admain.dart';
-import '../screens/Profile/profileScreen.dart';
+
+import '../screens/Profile/ProfileWidgt/profileScreen.dart';
 
 class VideoStoryScreen extends StatefulWidget{
   VideoPlayerController controller;
@@ -59,7 +59,13 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
      second=int.parse(splitted[2]);
     widget.animController.reset();
     widget.animController.duration =  Duration(hours: houres,minutes:mint ,seconds:  second);
-    widget.animController.forward();
+    widget.animController.forward().whenComplete(() {
+      setState(() {
+        widget.currentPage < widget.Len_StroryData-1 ?
+        widget. pageController.jumpToPage( widget.currentPage + 1)
+            : Navigator.pop(context);
+      });
+    });
      widget.controller.play();
 
 
@@ -353,14 +359,6 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
 
     newPosition<=Duration(hours:0,minutes: 0,seconds:5 )?start=true:start=false;
     newPosition>= widget.controller.value.duration?end=true:end=false;
-    print(" widget.animController.status");
-    print( widget.animController.value);
-   // widget.animController.value=widget.animController.value+0.05;
-    print( widget.animController.value);
-    print( widget.animController.status);
-    print( widget.animController.view);
-
-
     await  widget.controller.seekTo(newPosition);
 
 
@@ -383,14 +381,17 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
         widget.animController.value=widget.animController.value+0.05;
 
       }
-    } else if (dx > 2 * screenWidth / 3) {
+    }
+
+    else if (dx > 2 * screenWidth / 3) {
 
       if(start){
         if (widget.currentPage > 0) {
           widget.pageController.jumpToPage(widget.currentPage - 1);
         }
 
-      }else{
+      }
+      else{
 
         rewind5Seconds();
         widget.animController.value=widget.animController.value-0.05;
@@ -398,10 +399,25 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
 
       }
 
+    }
 
 
+    else{
+      if ( widget.controller.value.isPlaying) {
 
+        widget.controller.pause();
+        widget.animController.stop();
+      } else {
 
+        widget. controller.play();
+        widget.  animController.forward().whenComplete(() {
+          setState(() {
+            widget.currentPage < widget.Len_StroryData-1 ?
+            widget. pageController.jumpToPage( widget.currentPage + 1)
+                : Navigator.pop(context);
+          });
+        });
+      }
     }
   }
   Widget Detatlies({required String name, required String image}){

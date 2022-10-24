@@ -29,26 +29,19 @@ class _StoryPageState extends State<StoryPage> with SingleTickerProviderStateMix
     super.initState();
     pageController = PageController();
     animController = AnimationController(vsync: this);
-
-    controller=VideoPlayerController.network("");
+    controller = VideoPlayerController.network("");
     controller.initialize();
     old = controller;
     UserApiController().AdDetalies(idAD: widget.AdId).then((value) {
-     setState(() {
-       ad=value;
-       StroryData = List.from(value.adImages!)..addAll(List.from(value.adVideos!));
-     });
-     setState(() {
-       StroryData;
-
-
-     });
-
+      setState(() {
+        ad = value;
+        StroryData = List.from(value.adImages!)
+          ..addAll(List.from(value.adVideos!));
+      });
+      setState(() {
+        StroryData;
+      });
     });
-
-
-
-
   }
 
   @override
@@ -59,19 +52,16 @@ class _StoryPageState extends State<StoryPage> with SingleTickerProviderStateMix
   }
 
 
-
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
+      backgroundColor: Colors.black,
       body: GestureDetector(
 
           onTapDown: (details) => _onTapDown(details),
+          onLongPress: () {
+
+          },
           child: PageView.builder(
             controller: pageController,
             physics: NeverScrollableScrollPhysics(),
@@ -85,80 +75,66 @@ class _StoryPageState extends State<StoryPage> with SingleTickerProviderStateMix
               if (StroryData[CurrentPage].type == "image") {
                 controller.dispose();
                 old.dispose();
-
-                animController.duration =Duration(seconds: 5);
-                animController.forward().whenComplete((){
+                animController.duration = Duration(seconds: 5);
+                animController.forward().whenComplete(() {
                   setState(() {
                     CurrentPage < StroryData.length - 1 ?
                     pageController.jumpToPage(CurrentPage + 1)
-                        :Navigator.pop(context);
-
+                        : Navigator.pop(context);
                   });
-
                 });
 
                 return ImageStoryScreen(
                   StroryData: StroryData[CurrentPage],
-                  animController:animController,
+                  animController: animController,
                   currentPage: CurrentPage,
                   data: StroryData,
                   ad: ad,
                 );
               }
               else {
-
-
-
-                return  VideoStoryScreen(controller: controller,
-                  old: old,StroryData: StroryData[CurrentPage],
-                  currentPage:CurrentPage ,
-                animController: animController,
-                pageController: pageController,
-                Len_StroryData: StroryData.length,
-                data: StroryData,
-                ad: ad,);}
+                return VideoStoryScreen(
+                  controller: controller,
+                  old: old,
+                  StroryData: StroryData[CurrentPage],
+                  currentPage: CurrentPage,
+                  animController: animController,
+                  pageController: pageController,
+                  Len_StroryData: StroryData.length,
+                  data: StroryData,
+                  ad: ad,);
+              }
             },
           )
-
 
 
       ),
 
 
-
-
-
-
     );
-  }
-  Future forward5Seconds() async => goToPosition((currentPosition) => currentPosition + Duration(seconds: 5));
-  Future rewind5Seconds() async => goToPosition((currentPosition) => currentPosition - Duration(seconds: 5));
-  Future goToPosition(Duration Function(Duration currentPosition) builder,) async {
-    final currentPosition = await  controller.position;
-    final newPosition = builder(currentPosition!);
-    await  controller.seekTo(newPosition);
   }
 
 
   void _onTapDown(TapDownDetails details) {
-    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
     final double dx = details.globalPosition.dx;
     if (dx < screenWidth / 3) {
-      if(StroryData[CurrentPage].type == "image"){
+      if (StroryData[CurrentPage].type == "image") {
         setState(() {
-          CurrentPage < StroryData.length-1 ?
+          CurrentPage < StroryData.length - 1 ?
           pageController.jumpToPage(CurrentPage + 1)
               : null;
         });
-      }else{
+      } else {
         null;
       }
+    }
 
-
-
-
-    } else if (dx > 2 * screenWidth / 3) {
-      if(StroryData[CurrentPage].type == "image"){
+    else if (dx > 2 * screenWidth / 3) {
+      if (StroryData[CurrentPage].type == "image") {
         setState(() {
           if (CurrentPage > 0) {
             if (CurrentPage == 1) {
@@ -168,15 +144,27 @@ class _StoryPageState extends State<StoryPage> with SingleTickerProviderStateMix
             }
           }
         });
-      }else{
-        null;
+      }
+    }
+
+    else {
+      if (StroryData[CurrentPage].type == "image") {
+        print("nada");
+         if (animController.isAnimating) {
+
+           animController.stop();
+         } else {
+
+           animController.forward().whenComplete(() {
+             setState(() {
+               CurrentPage < StroryData.length - 1 ?
+               pageController.jumpToPage(CurrentPage + 1)
+                   : Navigator.pop(context);
+             });
+           });
+         }
 
       }
-
-
-
-
-
     }
   }
 
@@ -186,8 +174,5 @@ class _StoryPageState extends State<StoryPage> with SingleTickerProviderStateMix
 
 
 }
-
-
-
 
 

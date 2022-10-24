@@ -57,119 +57,106 @@ class _HomeScreenState extends State<HomeScreen> {
           child: ListView(
             children: [
 
+              UserPreferences().user.type=="user"?
+              FutureBuilder<List<MyFollowings>>(
+                future: UserApiController().CountFollowers_User(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center();
+                  } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    _folow = snapshot.data!;
+                    return SizedBox(
+                        height: 110.h,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _folow.length,
+                          itemBuilder: (context, index) {
 
+                            return    InkWell(
+                              onTap: (){
+                                int i=index;
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ListStoryScreen(PageFollowing:_folow,initialindex: index,)
+                                    )
 
+                                );
+                              },
+                              child: Column(
 
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        left: 12.w
+                                    ),
+                                    decoration: BoxDecoration(
 
+                                      shape: BoxShape.circle,
 
-
-
-              FutureBuilder<User?>(
-                  future: UserApiController().getProfile(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-
-                      return  snapshot.data!.type != "advertiser"&&UserPreferences().isLoggedIn?
-                      FutureBuilder<List<MyFollowings>>(
-                        future: UserApiController().Followers_User(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Center();
-                          } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                            _folow = snapshot.data ?? [];
-
-                            return SizedBox(
-                                height: 110.h,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: _folow.length,
-                                  itemBuilder: (context, index) {
-
-                                    return    InkWell(
-                                      onTap: (){
-                                        int i=index;
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AdDetalies(SelectPage:_folow,pageindex: index,)
-                                            )
-
-                                        );
-                                      },
-                                      child: Column(
-
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.only(
-                                                left: 12.w
-                                            ),
-                                            decoration: BoxDecoration(
-
-                                              shape: BoxShape.circle,
-
-                                              gradient: LinearGradient(
-                                                begin: AlignmentDirectional.centerStart,
-                                                end: AlignmentDirectional.centerEnd,
-                                                colors: [
-                                                  Color(0xff7B217E),
-                                                  Color(0xff7B217E),
-                                                  Color(0xff18499A),
-                                                ],
-
-                                              ),
-
-                                            ),
-                                            child: Container(
-                                              margin: EdgeInsets.all(3),
-
-                                              child: CircleAvatar(
-                                                  radius:38.sp,
-
-                                                  backgroundImage:_folow[index].imageProfile!=null?
-
-                                                  NetworkImage(
-                                                      _folow[index].imageProfile!
-
-                                                  ) :null
-
-
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(height: 5.h,),
-                                          Container(
-                                            margin: EdgeInsets.only(
-                                                left: 12.w
-                                            ),
-                                            child: Text(_folow[index].name.toString(),style: TextStyle(
-                                                fontSize: 10.sp,
-                                                fontWeight: FontWeight.w600
-                                            ),),
-                                          )
+                                      gradient: LinearGradient(
+                                        begin: AlignmentDirectional.centerStart,
+                                        end: AlignmentDirectional.centerEnd,
+                                        colors: [
+                                          Color(0xff7B217E),
+                                          Color(0xff7B217E),
+                                          Color(0xff18499A),
                                         ],
+
                                       ),
-                                    ) ;
+
+                                    ),
+                                    child: Container(
+                                      margin: EdgeInsets.all(3),
+
+                                      child: CircleAvatar(
+                                          radius:38.sp,
+
+                                          backgroundImage:_folow[index].imageProfile!=null?
+
+                                          NetworkImage(
+                                              _folow[index].imageProfile!
+
+                                          ) :null
+
+
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 5.h,),
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        left: 12.w
+                                    ),
+                                    child: Text(_folow[index].name.toString(),style: TextStyle(
+                                        fontSize: 10.sp,
+                                        fontWeight: FontWeight.w600
+                                    ),),
+                                  )
+                                ],
+                              ),
+                            ) ;
 
 
 
-                                  },
-                                )
-                            );
-                          } else if(snapshot.data!.isEmpty){
-                            return  SizedBox.shrink();
-                          } else {
-                            return Center(
-                              child: Icon(Icons.wifi_off_rounded, size: 80,color: Colors.purple,),
-                            );
-                          }
-                        },
-                      )
-                          :  SizedBox.shrink();
-                    }
-                    return  SizedBox.shrink();
-                  }),
+                          },
+                        )
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
+              ):
+                  SizedBox.shrink(),
+
+
+
+
+
+
+
+
 
 
 
@@ -490,19 +477,19 @@ class _HomeScreenState extends State<HomeScreen> {
                              return InkWell(
                                onTap: (){
 
-                                 // Navigator.push(
-                                 //   context,
-                                 //   MaterialPageRoute(
-                                 //       builder: (context) =>
-                                 //           StoryPage1(
-                                 //             data:BestAds[index].id!,
-                                 //
-                                 //           )
-                                 //   ),
-                                 //
-                                 //
-                                 //
-                                 // );
+                                 Navigator.push(
+                                   context,
+                                   MaterialPageRoute(
+                                       builder: (context) =>
+                                           StoryPage(
+                                             AdId:BestAds[index].id!,
+
+                                           )
+                                   ),
+
+
+
+                                 );
 
                                },
                                child: Container(

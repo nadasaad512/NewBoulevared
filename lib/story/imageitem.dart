@@ -8,8 +8,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/ads.dart';
 import '../models/detalies.dart';
 import '../screens/Details/ad_story_screen.dart';
-import '../screens/Profile/ProfileWidgt/User_Show_Admain.dart';
-import '../screens/Profile/profileScreen.dart';
+
+import '../screens/Profile/ProfileWidgt/profileScreen.dart';
 
 
 class ImageStoryScreen extends StatefulWidget{

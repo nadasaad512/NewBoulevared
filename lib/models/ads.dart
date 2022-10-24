@@ -199,9 +199,17 @@ class AdType {
 
 class ListStory{
   List<story1>? ad;
-  List<Ads>? detal;
-  int? page ;
-ListStory({ this.ad, this.page,this.detal});
+
+ListStory({ this.ad});
+}
+
+
+
+class Data{
+  List<story1>? ad;
+  List<int>? countitem;
+
+  Data({ this.ad});
 }
 class INFO{
   List<Ads>? info;
@@ -219,6 +227,7 @@ class story1 {
   String? duration;
   int? height;
   int? width;
+
 
   story1();
 
@@ -245,6 +254,14 @@ class story1 {
     data['width'] = this.width;
     return data;
   }
+}
+
+
+class Doit{
+  Ads ad =Ads();
+ List <story1> item;
+  Doit({required this.item,required this.ad});
+
 }
 
 

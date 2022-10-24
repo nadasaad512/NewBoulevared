@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context,'/MainScreen');
+     Navigator.pushReplacementNamed(context,'/MainScreen');
 
     });
   }
@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
    return Scaffold(
      body: Center(
-       child: Image.asset("images/logo.png"),
+       child: Image.asset("images/logo.png",),
      )
    );
   }

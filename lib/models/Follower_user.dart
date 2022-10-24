@@ -39,7 +39,7 @@ class MyFollowings {
   int? followMeCount;
   List<Ads>? ads;
 
-  MyFollowings({this.id, this.name, this.imageProfile, this.followMeCount});
+  MyFollowings();
 
   MyFollowings.fromJson(Map<String, dynamic> json) {
     id = json['id'];

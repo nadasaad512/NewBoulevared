@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:new_boulevard/screens/Award/awards_.dart';
 import 'package:new_boulevard/screens/Home_Screen.dart';
 import 'package:new_boulevard/screens/PARTBar/partScreen.dart';
-import 'package:new_boulevard/screens/Profile/profileScreen.dart';
+import 'package:new_boulevard/screens/Profile/ProfileWidgt/profileScreen.dart';
 import 'package:new_boulevard/screens/allAds/Ads.dart';
 
 class MainScreen extends StatefulWidget{

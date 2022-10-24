@@ -76,7 +76,7 @@ class ImagesApiController with Helpers {
       if (response.statusCode < 400) {
         var dataObject = jsonDecode(event)['ad'];
         Ads ad = Ads.fromJson(dataObject);
-        showSnackBar(context, message: jsonDecode(event)['message'], error: false);
+
         //ad
         uploadEvent(true, jsonDecode(event)['message'],ad);
 
@@ -114,6 +114,8 @@ class ImagesApiController with Helpers {
         required String whatsapp,
         required String instagram,
         required String twitter,
+        required List <int> height,
+        required List <int> width,
         required void Function(bool status, String massege)uploadEvent
 
 
@@ -150,6 +152,22 @@ class ImagesApiController with Helpers {
         multiPartRequest.fields.addAll({'duration[$i]':duration_video[i].toString()});
 
       }
+    }
+
+
+    if(height.isNotEmpty|| height!=[]){
+      for(int i=0;i<height.length;i++){
+        multiPartRequest.fields.addAll({'videos_height[$i]':height[i].toString()});
+      }
+
+    }
+
+
+    if(width.isNotEmpty|| width!=[]){
+      for(int i=0;i<width.length;i++){
+        multiPartRequest.fields.addAll({'videos_width[$i]':width[i].toString()});
+      }
+
     }
 
 

@@ -151,23 +151,23 @@ class _Back_GroundState extends State<Back_Ground> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           DraTex(context,titel: "الرئيسية",router:  '/MainScreen'),
-                          SizedBox(height: 30.h,),
+                          SizedBox(height: 20.h,),
                           DraTex(context,titel: "عن التطبيق",router: '/InfoScreen'),
-                          SizedBox(height: 30.h,),
+                          SizedBox(height: 20.h,),
                           DraTex(context,titel: "تواصل معنا",wh: true,),
-                          SizedBox(height: 30.h,),
+                          SizedBox(height: 20.h,),
                           DraTex(context,titel: "مشاركة التطبيق",share: true),
-                          SizedBox(height: 30.h,),
-                          DraTex(context,titel: "تقييم التطبيق"),
-                          SizedBox(height: 30.h,),
+                          SizedBox(height: 20.h,),
+                          DraTex(context,titel: "تقييم التطبيق",reviw: true),
+                          SizedBox(height: 20.h,),
                           DraTex(context,titel: "سياسات الاعلان",router: '/ConditionScreen'),
-                          SizedBox(height: 30.h,),
+                          SizedBox(height: 20.h,),
                           DraTex(context,titel: "تغيير كلمة المرور",router:'/ChangePassword'),
-                          SizedBox(height: 30.h,),
+                          SizedBox(height: 20.h,),
                           snapshot.data!.type=="advertiser"?
                           DraTex(context,titel: "إضافة اعلان",router:'/NewAdsScreen')
                           : DraTex(context,titel: "التسجيل كمعلن",router:'/register_screen'),
-                          SizedBox(height: 30.h,),
+                          SizedBox(height: 20.h,),
                           DraTex(context,titel: "تسجيل الخروج",log: true),
                         ],
                       ),
@@ -233,17 +233,17 @@ class _Back_GroundState extends State<Back_Ground> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           DraTex(context,titel: "الرئيسية",router:  '/MainScreen'),
-                          SizedBox(height: 30.h,),
+                          SizedBox(height: 20.h,),
                           DraTex(context,titel: "عن التطبيق",router: '/InfoScreen'),
-                          SizedBox(height: 30.h,),
+                          SizedBox(height: 20.h,),
                           DraTex(context,titel: "تواصل معنا"),
-                          SizedBox(height: 30.h,),
+                          SizedBox(height: 20.h,),
                           DraTex(context,titel: "مشاركة التطبيق",share: true),
-                          SizedBox(height: 30.h,),
-                          DraTex(context,titel: "تقييم التطبيق"),
-                          SizedBox(height: 30.h,),
+                          SizedBox(height: 20.h,),
+                          DraTex(context,titel: "تقييم التطبيق",reviw: true),
+                          SizedBox(height: 20.h,),
                           DraTex(context,titel: "سجل في تطبيقنا ",router:'/register_screen'),
-                          SizedBox(height: 30.h,),
+                          SizedBox(height: 20.h,),
 
                         ],
                       ),
@@ -306,17 +306,17 @@ class _Back_GroundState extends State<Back_Ground> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         DraTex(context,titel: "الرئيسية",router:  '/MainScreen'),
-                        SizedBox(height: 30.h,),
+                        SizedBox(height: 20.h,),
                         DraTex(context,titel: "عن التطبيق",router: '/InfoScreen'),
-                        SizedBox(height: 30.h,),
+                        SizedBox(height: 20.h,),
                         DraTex(context,titel: "تواصل معنا"),
-                        SizedBox(height: 30.h,),
+                        SizedBox(height: 20.h,),
                         DraTex(context,titel: "مشاركة التطبيق",share: true),
-                        SizedBox(height: 30.h,),
-                        DraTex(context,titel: "تقييم التطبيق"),
-                        SizedBox(height: 30.h,),
+                        SizedBox(height: 20.h,),
+                        DraTex(context,titel: "تقييم التطبيق",reviw: true),
+                        SizedBox(height: 20.h,),
                         DraTex(context,titel: "سجل في تطبيقنا ",router:'/register_screen'),
-                        SizedBox(height: 30.h,),
+                        SizedBox(height: 20.h,),
 
                       ],
                     ),
@@ -601,12 +601,7 @@ class _Back_GroundState extends State<Back_Ground> {
 
   }
 
-  void shareTask() {
 
-   Share.share('check out my website https://example.com');
-
-
-  }
 
 
    Future Edit({ String? image}) async {
@@ -645,7 +640,8 @@ class _Back_GroundState extends State<Back_Ground> {
 
 
    }
-  Widget DraTex(BuildContext context,{required String titel,String? router,bool log=false,bool share=false,bool wh=false}){
+  Widget DraTex(BuildContext context,{
+    required String titel,String? router,bool log=false,bool share=false,bool wh=false,bool reviw=false}){
     return InkWell(
       hoverColor: Colors.purple.shade50,
       focusColor:Colors.purple.shade50 ,
@@ -653,13 +649,16 @@ class _Back_GroundState extends State<Back_Ground> {
       splashColor: Colors.purple.shade50,
       onTap: ()async{
         Settings settings=await UserApiController().Setting();
+        //url
 
 
 
 
 
-       share? shareTask():null;
+       share? Share.share('check out my website ${settings.url}'):null;
        wh? await launch("whatsapp://send?phone=${settings.whatsapp}&text=${"Hi"}"):null;
+       reviw? await launch(settings.url.toString()):null;
+
 
         log? await logout():null;
         router!=null? Navigator.pushNamed(context, router):null;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../api/User_Controller.dart';
-import '../../models/Folllowers_Advertiser.dart';
+import '../../../api/User_Controller.dart';
+import '../../../models/Folllowers_Advertiser.dart';
 //User followe
 class Followers_Advertiser extends StatefulWidget{
 late  int id;

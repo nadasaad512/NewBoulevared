@@ -6,12 +6,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../component/main_bac.dart';
+import '../../../OneStory.dart';
+import '../../../Shared_Preferences/User_Preferences.dart';
+import '../../../component/main_bac.dart';
 
-import '../../models/Follower_user.dart';
-import '../../models/ads.dart';
-import '../../models/user.dart';
-import '../allAds/new_ads.dart';
+import '../../../models/Follower_user.dart';
+import '../../../models/ads.dart';
+import '../../../models/user.dart';
+import '../../allAds/new_ads.dart';
 import 'allFollower.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -374,600 +376,636 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
 
                                                 return _ads[0].adType!.type ==
                                                     "special"
-                                                    ? Container(
-                                                  margin:
-                                                  EdgeInsets.only(
-                                                      top: 5.h,
-                                                      right: 5.w,
-                                                      left: 5.w),
-                                                  width: 170.w,
-                                                  height: 170.h,
-                                                  decoration: BoxDecoration(
-                                                      color: Color(
-                                                          0xff7B217E),
-                                                      borderRadius:
-                                                      BorderRadius
-                                                          .circular(
-                                                          5),
-                                                      image: DecorationImage(
-                                                          fit: BoxFit
-                                                              .cover,
-                                                          image: NetworkImage(
-                                                              _ads[0]
-                                                                  .image
-                                                                  .toString()))),
-                                                  child: Stack(
-                                                    children: [
-                                                      Container(
-                                                        margin: EdgeInsets
-                                                            .only(
-                                                            left: 10
-                                                                .w,
-                                                            top: 10
-                                                                .h),
-                                                        child: Align(
-                                                            alignment:
-                                                            Alignment
-                                                                .topLeft,
-                                                            child:
-                                                            CircleAvatar(
-                                                              backgroundColor:
-                                                              Color(
-                                                                  0xff7B217E),
-                                                              radius:
-                                                              14.sp,
-                                                              child: InkWell(
-                                                                  onTap: () {
-                                                                    showModalBottomSheet(
-                                                                      context: context,
-                                                                      shape: RoundedRectangleBorder(
-                                                                        // <-- SEE HERE
-                                                                          borderRadius: BorderRadius.only(
-                                                                            topRight: Radius.circular(15),
-                                                                            topLeft: Radius.circular(15),
-                                                                          )),
-                                                                      builder: (context) {
-                                                                        return Container(
-                                                                            margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                                                                            decoration: BoxDecoration(
-                                                                                borderRadius: BorderRadius.only(
-                                                                                  topRight: Radius.circular(15),
-                                                                                  topLeft: Radius.circular(15),
-                                                                                )),
-                                                                            height: 520.h,
-                                                                            width: double.infinity,
-                                                                            alignment: Alignment.center,
-                                                                            child: Column(
-                                                                              children: [
-                                                                                Row(
-                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                  children: [
-                                                                                    SizedBox(
-                                                                                      width: 30.w,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      "اعدادات الاعلان",
-                                                                                      style: TextStyle(color: Color(0xff7B217E), fontSize: 18.sp, fontWeight: FontWeight.w600),
-                                                                                    ),
-                                                                                    IconButton(
-                                                                                      onPressed: () {
-                                                                                        Navigator.pop(context);
-                                                                                      },
-                                                                                      icon: SvgPicture.asset("images/close.svg"),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                                SizedBox(
-                                                                                  height: 35.h,
-                                                                                ),
-                                                                                SvgPicture.asset("images/setting.svg"),
-                                                                                Spacer(),
-                                                                                InkWell(
-                                                                                  onTap: () {
-                                                                                    Navigator.pushReplacement(
-                                                                                      context,
-                                                                                      MaterialPageRoute(
-                                                                                          builder: (context) => NewAdsScreen(
-                                                                                            edit: true,
-                                                                                            indexAd: _ads[0].id!,
-                                                                                          )),
-                                                                                    );
-                                                                                  },
-                                                                                  child: Row(
+                                                    ?
+
+                                                InkWell(
+                                                  onTap: (){
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              StoryPage(
+                                                                AdId:_ads[0].id!,
+
+                                                              )
+                                                      ),
+
+
+
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    margin:
+                                                    EdgeInsets.only(
+                                                        top: 5.h,
+                                                        right: 5.w,
+                                                        left: 5.w),
+                                                    width: 170.w,
+                                                    height: 170.h,
+                                                    decoration: BoxDecoration(
+                                                        color: Color(
+                                                            0xff7B217E),
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(
+                                                            5),
+                                                        image: DecorationImage(
+                                                            fit: BoxFit
+                                                                .cover,
+                                                            image: NetworkImage(
+                                                                _ads[0]
+                                                                    .image
+                                                                    .toString()))),
+                                                    child: Stack(
+                                                      children: [
+                                                        Container(
+                                                          margin: EdgeInsets
+                                                              .only(
+                                                              left: 10
+                                                                  .w,
+                                                              top: 10
+                                                                  .h),
+                                                          child: Align(
+                                                              alignment:
+                                                              Alignment
+                                                                  .topLeft,
+                                                              child:
+                                                              CircleAvatar(
+                                                                backgroundColor:
+                                                                Color(
+                                                                    0xff7B217E),
+                                                                radius:
+                                                                14.sp,
+                                                                child: InkWell(
+                                                                    onTap: () {
+                                                                      showModalBottomSheet(
+                                                                        context: context,
+                                                                        shape: RoundedRectangleBorder(
+                                                                          // <-- SEE HERE
+                                                                            borderRadius: BorderRadius.only(
+                                                                              topRight: Radius.circular(15),
+                                                                              topLeft: Radius.circular(15),
+                                                                            )),
+                                                                        builder: (context) {
+                                                                          return Container(
+                                                                              margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                                                                              decoration: BoxDecoration(
+                                                                                  borderRadius: BorderRadius.only(
+                                                                                    topRight: Radius.circular(15),
+                                                                                    topLeft: Radius.circular(15),
+                                                                                  )),
+                                                                              height: 520.h,
+                                                                              width: double.infinity,
+                                                                              alignment: Alignment.center,
+                                                                              child: Column(
+                                                                                children: [
+                                                                                  Row(
+                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                     children: [
-                                                                                      IconButton(
-                                                                                          onPressed: () {
-                                                                                            // Navigator.pushReplacement(
-                                                                                            //   context,
-                                                                                            //   MaterialPageRoute(
-                                                                                            //       builder: (context) => NewAdsScreen(
-                                                                                            //             edit: true,
-                                                                                            //             indexAd: 237,
-                                                                                            //           )),
-                                                                                            // );
-                                                                                          },
-                                                                                          icon: Icon(
-                                                                                            Icons.edit,
-                                                                                            color: Color(0xff7B217E),
-                                                                                          )),
+                                                                                      SizedBox(
+                                                                                        width: 30.w,
+                                                                                      ),
                                                                                       Text(
-                                                                                        "تعديل الاعلان",
-                                                                                        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                                                                                        "اعدادات الاعلان",
+                                                                                        style: TextStyle(color: Color(0xff7B217E), fontSize: 18.sp, fontWeight: FontWeight.w600),
+                                                                                      ),
+                                                                                      IconButton(
+                                                                                        onPressed: () {
+                                                                                          Navigator.pop(context);
+                                                                                        },
+                                                                                        icon: SvgPicture.asset("images/close.svg"),
                                                                                       ),
                                                                                     ],
                                                                                   ),
-                                                                                ),
-                                                                                Divider(),
-                                                                                InkWell(
-                                                                                  onTap: () {
-                                                                                    showModalBottomSheet(
-                                                                                      context: context,
-                                                                                      shape: RoundedRectangleBorder(
-                                                                                        // <-- SEE HERE
-                                                                                          borderRadius: BorderRadius.only(
-                                                                                            topRight: Radius.circular(15),
-                                                                                            topLeft: Radius.circular(15),
-                                                                                          )),
-                                                                                      builder: (context) {
-                                                                                        return Container(
-                                                                                            margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                                                                                            decoration: BoxDecoration(
-                                                                                                borderRadius: BorderRadius.only(
-                                                                                                  topRight: Radius.circular(15),
-                                                                                                  topLeft: Radius.circular(15),
-                                                                                                )),
-                                                                                            height: 600.h,
-                                                                                            width: double.infinity,
-                                                                                            alignment: Alignment.center,
-                                                                                            child: Column(
-                                                                                              children: [
-                                                                                                Row(
-                                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                                  children: [
-                                                                                                    SizedBox(
-                                                                                                      width: 30.w,
-                                                                                                    ),
-                                                                                                    Text(
-                                                                                                      "حذف الاعلان",
-                                                                                                      style: TextStyle(color: Color(0xff7B217E), fontSize: 18.sp, fontWeight: FontWeight.w600),
-                                                                                                    ),
-                                                                                                    IconButton(
-                                                                                                      onPressed: () {
-                                                                                                        Navigator.pop(context);
-                                                                                                      },
-                                                                                                      icon: SvgPicture.asset("images/close.svg"),
-                                                                                                    ),
-                                                                                                  ],
-                                                                                                ),
-                                                                                                SizedBox(
-                                                                                                  height: 35.h,
-                                                                                                ),
-                                                                                                SvgPicture.asset("images/trash.svg"),
-                                                                                                SizedBox(
-                                                                                                  height: 20.h,
-                                                                                                ),
-                                                                                                Center(
-                                                                                                  child: Text(
-                                                                                                    "أنت على وشك حذف الاعلان بشكل نهائي هل تريد بالتأكيد حذف الاعلان ؟",
-                                                                                                    style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
-                                                                                                  ),
-                                                                                                ),
-                                                                                                Spacer(),
-                                                                                                Expanded(
-                                                                                                  child: Row(
+                                                                                  SizedBox(
+                                                                                    height: 35.h,
+                                                                                  ),
+                                                                                  SvgPicture.asset("images/setting.svg"),
+                                                                                  Spacer(),
+                                                                                  InkWell(
+                                                                                    onTap: () {
+                                                                                      Navigator.pushReplacement(
+                                                                                        context,
+                                                                                        MaterialPageRoute(
+                                                                                            builder: (context) => NewAdsScreen(
+                                                                                              edit: true,
+                                                                                              indexAd: _ads[0].id!,
+                                                                                            )),
+                                                                                      );
+                                                                                    },
+                                                                                    child: Row(
+                                                                                      children: [
+                                                                                        IconButton(
+                                                                                            onPressed: () {
+                                                                                              // Navigator.pushReplacement(
+                                                                                              //   context,
+                                                                                              //   MaterialPageRoute(
+                                                                                              //       builder: (context) => NewAdsScreen(
+                                                                                              //             edit: true,
+                                                                                              //             indexAd: 237,
+                                                                                              //           )),
+                                                                                              // );
+                                                                                            },
+                                                                                            icon: Icon(
+                                                                                              Icons.edit,
+                                                                                              color: Color(0xff7B217E),
+                                                                                            )),
+                                                                                        Text(
+                                                                                          "تعديل الاعلان",
+                                                                                          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  Divider(),
+                                                                                  InkWell(
+                                                                                    onTap: () {
+                                                                                      showModalBottomSheet(
+                                                                                        context: context,
+                                                                                        shape: RoundedRectangleBorder(
+                                                                                          // <-- SEE HERE
+                                                                                            borderRadius: BorderRadius.only(
+                                                                                              topRight: Radius.circular(15),
+                                                                                              topLeft: Radius.circular(15),
+                                                                                            )),
+                                                                                        builder: (context) {
+                                                                                          return Container(
+                                                                                              margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                                                                                              decoration: BoxDecoration(
+                                                                                                  borderRadius: BorderRadius.only(
+                                                                                                    topRight: Radius.circular(15),
+                                                                                                    topLeft: Radius.circular(15),
+                                                                                                  )),
+                                                                                              height: 600.h,
+                                                                                              width: double.infinity,
+                                                                                              alignment: Alignment.center,
+                                                                                              child: Column(
+                                                                                                children: [
+                                                                                                  Row(
+                                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                                     children: [
-                                                                                                      InkWell(
-                                                                                                        onTap: () async {
-                                                                                                          setState(() {
-                                                                                                            progss = true;
-                                                                                                          });
-
-                                                                                                          await DeletId(context, id: _ads[0].id!);
+                                                                                                      SizedBox(
+                                                                                                        width: 30.w,
+                                                                                                      ),
+                                                                                                      Text(
+                                                                                                        "حذف الاعلان",
+                                                                                                        style: TextStyle(color: Color(0xff7B217E), fontSize: 18.sp, fontWeight: FontWeight.w600),
+                                                                                                      ),
+                                                                                                      IconButton(
+                                                                                                        onPressed: () {
+                                                                                                          Navigator.pop(context);
                                                                                                         },
-                                                                                                        child: Container(
+                                                                                                        icon: SvgPicture.asset("images/close.svg"),
+                                                                                                      ),
+                                                                                                    ],
+                                                                                                  ),
+                                                                                                  SizedBox(
+                                                                                                    height: 35.h,
+                                                                                                  ),
+                                                                                                  SvgPicture.asset("images/trash.svg"),
+                                                                                                  SizedBox(
+                                                                                                    height: 20.h,
+                                                                                                  ),
+                                                                                                  Center(
+                                                                                                    child: Text(
+                                                                                                      "أنت على وشك حذف الاعلان بشكل نهائي هل تريد بالتأكيد حذف الاعلان ؟",
+                                                                                                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                  Spacer(),
+                                                                                                  Expanded(
+                                                                                                    child: Row(
+                                                                                                      children: [
+                                                                                                        InkWell(
+                                                                                                          onTap: () async {
+                                                                                                            setState(() {
+                                                                                                              progss = true;
+                                                                                                            });
+
+                                                                                                            await DeletId(context, id: _ads[0].id!);
+                                                                                                          },
+                                                                                                          child: Container(
+                                                                                                            height: 50.h,
+                                                                                                            width: 165.w,
+                                                                                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Color(0xff7B217E)),
+                                                                                                            child: Center(
+                                                                                                              child: progss1
+                                                                                                                  ? CircularProgressIndicator(
+                                                                                                                color: Colors.white,
+                                                                                                              )
+                                                                                                                  : Text(
+                                                                                                                "حذف الاعلان",
+                                                                                                                style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.w700),
+                                                                                                              ),
+                                                                                                            ),
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                        SizedBox(
+                                                                                                          width: 13.w,
+                                                                                                        ),
+                                                                                                        Container(
                                                                                                           height: 50.h,
                                                                                                           width: 165.w,
-                                                                                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Color(0xff7B217E)),
+                                                                                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Color(0xff969696)),
                                                                                                           child: Center(
-                                                                                                            child: progss1
-                                                                                                                ? CircularProgressIndicator(
-                                                                                                              color: Colors.white,
-                                                                                                            )
-                                                                                                                : Text(
-                                                                                                              "حذف الاعلان",
+                                                                                                            child: Text(
+                                                                                                              "تراجع",
                                                                                                               style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.w700),
                                                                                                             ),
                                                                                                           ),
                                                                                                         ),
-                                                                                                      ),
-                                                                                                      SizedBox(
-                                                                                                        width: 13.w,
-                                                                                                      ),
-                                                                                                      Container(
-                                                                                                        height: 50.h,
-                                                                                                        width: 165.w,
-                                                                                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Color(0xff969696)),
-                                                                                                        child: Center(
-                                                                                                          child: Text(
-                                                                                                            "تراجع",
-                                                                                                            style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.w700),
-                                                                                                          ),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                )
-                                                                                              ],
-                                                                                            ));
-                                                                                      },
-                                                                                    );
-                                                                                  },
-                                                                                  child: Row(
-                                                                                    children: [
-                                                                                      IconButton(
-                                                                                          onPressed: () {},
-                                                                                          icon: Icon(
-                                                                                            Icons.delete,
-                                                                                            color: Color(0xffE04F5F),
-                                                                                          )),
-                                                                                      Text(
-                                                                                        "حذف الاعلان",
-                                                                                        style: TextStyle(color: Color(0xffE04F5F), fontSize: 16.sp, fontWeight: FontWeight.w600),
-                                                                                      ),
-                                                                                    ],
+                                                                                                      ],
+                                                                                                    ),
+                                                                                                  )
+                                                                                                ],
+                                                                                              ));
+                                                                                        },
+                                                                                      );
+                                                                                    },
+                                                                                    child: Row(
+                                                                                      children: [
+                                                                                        IconButton(
+                                                                                            onPressed: () {},
+                                                                                            icon: Icon(
+                                                                                              Icons.delete,
+                                                                                              color: Color(0xffE04F5F),
+                                                                                            )),
+                                                                                        Text(
+                                                                                          "حذف الاعلان",
+                                                                                          style: TextStyle(color: Color(0xffE04F5F), fontSize: 16.sp, fontWeight: FontWeight.w600),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
                                                                                   ),
-                                                                                ),
-                                                                                SizedBox(
-                                                                                  height: 35.h,
-                                                                                ),
-                                                                              ],
-                                                                            ));
-                                                                      },
-                                                                    );
-                                                                  },
-                                                                  child: Icon(
-                                                                    Icons.more_vert,
-                                                                    color:
-                                                                    Colors.white,
-                                                                  )),
-                                                            )),
-                                                      ),
-                                                      Container(
-                                                        margin: EdgeInsets
-                                                            .only(
-                                                            bottom: 10
-                                                                .h,
-                                                            right: 5
-                                                                .w),
-                                                        alignment: Alignment
-                                                            .bottomRight,
-                                                        child: Row(
-                                                          children: [
-                                                            CircleAvatar(
-                                                              radius:
-                                                              14,
-                                                              backgroundImage: NetworkImage(user!
-                                                                  .imageProfile
-                                                                  .toString()),
-                                                            ),
-                                                            SizedBox(
-                                                              width:
-                                                              10.w,
-                                                            ),
-                                                            Text(
-                                                              user!.name
-                                                                  .toString(),
-                                                              style: TextStyle(
-                                                                  color: Color(
-                                                                      0xffFFFFFF),
-                                                                  fontWeight: FontWeight
-                                                                      .w900,
-                                                                  fontSize:
-                                                                  10.sp),
-                                                            ),
-                                                          ],
+                                                                                  SizedBox(
+                                                                                    height: 35.h,
+                                                                                  ),
+                                                                                ],
+                                                                              ));
+                                                                        },
+                                                                      );
+                                                                    },
+                                                                    child: Icon(
+                                                                      Icons.more_vert,
+                                                                      color:
+                                                                      Colors.white,
+                                                                    )),
+                                                              )),
                                                         ),
-                                                      )
-                                                    ],
+                                                        Container(
+                                                          margin: EdgeInsets
+                                                              .only(
+                                                              bottom: 10
+                                                                  .h,
+                                                              right: 5
+                                                                  .w),
+                                                          alignment: Alignment
+                                                              .bottomRight,
+                                                          child: Row(
+                                                            children: [
+                                                              CircleAvatar(
+                                                                radius:
+                                                                14,
+                                                                backgroundImage: NetworkImage(user!
+                                                                    .imageProfile
+                                                                    .toString()),
+                                                              ),
+                                                              SizedBox(
+                                                                width:
+                                                                10.w,
+                                                              ),
+                                                              Text(
+                                                                user!.name
+                                                                    .toString(),
+                                                                style: TextStyle(
+                                                                    color: Color(
+                                                                        0xffFFFFFF),
+                                                                    fontWeight: FontWeight
+                                                                        .w900,
+                                                                    fontSize:
+                                                                    10.sp),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
                                                 )
-                                                    : Container(
+                                                    : InkWell(
+                                                  onTap: (){
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              StoryPage(
+                                                                AdId:_ads[0].id!,
+
+                                                              )
+                                                      ),
+
+
+
+                                                    );
+                                                  },
+                                                      child: Container(
                                                   margin:
                                                   EdgeInsets.only(
-                                                      top: 5.h,
-                                                      right: 5.w,
-                                                      left: 5.w),
+                                                        top: 5.h,
+                                                        right: 5.w,
+                                                        left: 5.w),
                                                   width: 170.w,
                                                   height: 170.h,
                                                   decoration: BoxDecoration(
-                                                      color: Color(
-                                                          0xff7B217E),
-                                                      borderRadius:
-                                                      BorderRadius
-                                                          .circular(
-                                                          5),
-                                                      image: DecorationImage(
-                                                          fit: BoxFit
-                                                              .cover,
-                                                          image: NetworkImage(
-                                                              _ads[0]
-                                                                  .image
-                                                                  .toString()))),
+                                                        color: Color(
+                                                            0xff7B217E),
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(
+                                                            5),
+                                                        image: DecorationImage(
+                                                            fit: BoxFit
+                                                                .cover,
+                                                            image: NetworkImage(
+                                                                _ads[0]
+                                                                    .image
+                                                                    .toString()))),
                                                   child: Stack(
-                                                    children: [
-                                                      Container(
-                                                        margin: EdgeInsets
-                                                            .only(
-                                                            left: 10
-                                                                .w,
-                                                            top: 10
-                                                                .h),
-                                                        child: Align(
-                                                            alignment:
-                                                            Alignment
-                                                                .topLeft,
-                                                            child:
-                                                            CircleAvatar(
-                                                              backgroundColor:
-                                                              Color(
-                                                                  0xff7B217E),
-                                                              radius:
-                                                              14.sp,
-                                                              child: InkWell(
-                                                                  onTap: () {
-                                                                    showModalBottomSheet(
-                                                                      context: context,
-                                                                      shape: RoundedRectangleBorder(
-                                                                        // <-- SEE HERE
-                                                                          borderRadius: BorderRadius.only(
-                                                                            topRight: Radius.circular(15),
-                                                                            topLeft: Radius.circular(15),
-                                                                          )),
-                                                                      builder: (context) {
-                                                                        return Container(
-                                                                            margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                                                                            decoration: BoxDecoration(
-                                                                                borderRadius: BorderRadius.only(
-                                                                                  topRight: Radius.circular(15),
-                                                                                  topLeft: Radius.circular(15),
-                                                                                )),
-                                                                            height: 520.h,
-                                                                            width: double.infinity,
-                                                                            alignment: Alignment.center,
-                                                                            child: Column(
-                                                                              children: [
-                                                                                Row(
-                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                  children: [
-                                                                                    SizedBox(
-                                                                                      width: 30.w,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      "اعدادات الاعلان",
-                                                                                      style: TextStyle(color: Color(0xff7B217E), fontSize: 18.sp, fontWeight: FontWeight.w600),
-                                                                                    ),
-                                                                                    IconButton(
-                                                                                      onPressed: () {
-                                                                                        Navigator.pop(context);
-                                                                                      },
-                                                                                      icon: SvgPicture.asset("images/close.svg"),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                                SizedBox(
-                                                                                  height: 35.h,
-                                                                                ),
-                                                                                SvgPicture.asset("images/setting.svg"),
-                                                                                Spacer(),
-                                                                                InkWell(
-                                                                                  onTap: () {
-                                                                                    Navigator.pushReplacement(
-                                                                                      context,
-                                                                                      MaterialPageRoute(
-                                                                                          builder: (context) => NewAdsScreen(
-                                                                                            edit: true,
-                                                                                            indexAd: _ads[0].id!,
-                                                                                          )),
-                                                                                    );
-                                                                                  },
-                                                                                  child: Row(
+                                                      children: [
+                                                        Container(
+                                                          margin: EdgeInsets
+                                                              .only(
+                                                              left: 10
+                                                                  .w,
+                                                              top: 10
+                                                                  .h),
+                                                          child: Align(
+                                                              alignment:
+                                                              Alignment
+                                                                  .topLeft,
+                                                              child:
+                                                              CircleAvatar(
+                                                                backgroundColor:
+                                                                Color(
+                                                                    0xff7B217E),
+                                                                radius:
+                                                                14.sp,
+                                                                child: InkWell(
+                                                                    onTap: () {
+                                                                      showModalBottomSheet(
+                                                                        context: context,
+                                                                        shape: RoundedRectangleBorder(
+                                                                          // <-- SEE HERE
+                                                                            borderRadius: BorderRadius.only(
+                                                                              topRight: Radius.circular(15),
+                                                                              topLeft: Radius.circular(15),
+                                                                            )),
+                                                                        builder: (context) {
+                                                                          return Container(
+                                                                              margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                                                                              decoration: BoxDecoration(
+                                                                                  borderRadius: BorderRadius.only(
+                                                                                    topRight: Radius.circular(15),
+                                                                                    topLeft: Radius.circular(15),
+                                                                                  )),
+                                                                              height: 520.h,
+                                                                              width: double.infinity,
+                                                                              alignment: Alignment.center,
+                                                                              child: Column(
+                                                                                children: [
+                                                                                  Row(
+                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                     children: [
-                                                                                      IconButton(
-                                                                                          onPressed: () {
-                                                                                            // Navigator.pushReplacement(
-                                                                                            //   context,
-                                                                                            //   MaterialPageRoute(
-                                                                                            //       builder: (context) => NewAdsScreen(
-                                                                                            //             edit: true,
-                                                                                            //             indexAd: 237,
-                                                                                            //           )),
-                                                                                            // );
-                                                                                          },
-                                                                                          icon: Icon(
-                                                                                            Icons.edit,
-                                                                                            color: Color(0xff7B217E),
-                                                                                          )),
+                                                                                      SizedBox(
+                                                                                        width: 30.w,
+                                                                                      ),
                                                                                       Text(
-                                                                                        "تعديل الاعلان",
-                                                                                        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                                                                                        "اعدادات الاعلان",
+                                                                                        style: TextStyle(color: Color(0xff7B217E), fontSize: 18.sp, fontWeight: FontWeight.w600),
+                                                                                      ),
+                                                                                      IconButton(
+                                                                                        onPressed: () {
+                                                                                          Navigator.pop(context);
+                                                                                        },
+                                                                                        icon: SvgPicture.asset("images/close.svg"),
                                                                                       ),
                                                                                     ],
                                                                                   ),
-                                                                                ),
-                                                                                Divider(),
-                                                                                InkWell(
-                                                                                  onTap: () {
-                                                                                    showModalBottomSheet(
-                                                                                      context: context,
-                                                                                      shape: RoundedRectangleBorder(
-                                                                                        // <-- SEE HERE
-                                                                                          borderRadius: BorderRadius.only(
-                                                                                            topRight: Radius.circular(15),
-                                                                                            topLeft: Radius.circular(15),
-                                                                                          )),
-                                                                                      builder: (context) {
-                                                                                        return Container(
-                                                                                            margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                                                                                            decoration: BoxDecoration(
-                                                                                                borderRadius: BorderRadius.only(
-                                                                                                  topRight: Radius.circular(15),
-                                                                                                  topLeft: Radius.circular(15),
-                                                                                                )),
-                                                                                            height: 600.h,
-                                                                                            width: double.infinity,
-                                                                                            alignment: Alignment.center,
-                                                                                            child: Column(
-                                                                                              children: [
-                                                                                                Row(
-                                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                                  children: [
-                                                                                                    SizedBox(
-                                                                                                      width: 30.w,
-                                                                                                    ),
-                                                                                                    Text(
-                                                                                                      "حذف الاعلان",
-                                                                                                      style: TextStyle(color: Color(0xff7B217E), fontSize: 18.sp, fontWeight: FontWeight.w600),
-                                                                                                    ),
-                                                                                                    IconButton(
-                                                                                                      onPressed: () {
-                                                                                                        Navigator.pop(context);
-                                                                                                      },
-                                                                                                      icon: SvgPicture.asset("images/close.svg"),
-                                                                                                    ),
-                                                                                                  ],
-                                                                                                ),
-                                                                                                SizedBox(
-                                                                                                  height: 35.h,
-                                                                                                ),
-                                                                                                SvgPicture.asset("images/trash.svg"),
-                                                                                                SizedBox(
-                                                                                                  height: 20.h,
-                                                                                                ),
-                                                                                                Center(
-                                                                                                  child: Text(
-                                                                                                    "أنت على وشك حذف الاعلان بشكل نهائي هل تريد بالتأكيد حذف الاعلان ؟",
-                                                                                                    style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
-                                                                                                  ),
-                                                                                                ),
-                                                                                                Spacer(),
-                                                                                                Expanded(
-                                                                                                  child: Row(
+                                                                                  SizedBox(
+                                                                                    height: 35.h,
+                                                                                  ),
+                                                                                  SvgPicture.asset("images/setting.svg"),
+                                                                                  Spacer(),
+                                                                                  InkWell(
+                                                                                    onTap: () {
+                                                                                      Navigator.pushReplacement(
+                                                                                        context,
+                                                                                        MaterialPageRoute(
+                                                                                            builder: (context) => NewAdsScreen(
+                                                                                              edit: true,
+                                                                                              indexAd: _ads[0].id!,
+                                                                                            )),
+                                                                                      );
+                                                                                    },
+                                                                                    child: Row(
+                                                                                      children: [
+                                                                                        IconButton(
+                                                                                            onPressed: () {
+                                                                                              // Navigator.pushReplacement(
+                                                                                              //   context,
+                                                                                              //   MaterialPageRoute(
+                                                                                              //       builder: (context) => NewAdsScreen(
+                                                                                              //             edit: true,
+                                                                                              //             indexAd: 237,
+                                                                                              //           )),
+                                                                                              // );
+                                                                                            },
+                                                                                            icon: Icon(
+                                                                                              Icons.edit,
+                                                                                              color: Color(0xff7B217E),
+                                                                                            )),
+                                                                                        Text(
+                                                                                          "تعديل الاعلان",
+                                                                                          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  Divider(),
+                                                                                  InkWell(
+                                                                                    onTap: () {
+                                                                                      showModalBottomSheet(
+                                                                                        context: context,
+                                                                                        shape: RoundedRectangleBorder(
+                                                                                          // <-- SEE HERE
+                                                                                            borderRadius: BorderRadius.only(
+                                                                                              topRight: Radius.circular(15),
+                                                                                              topLeft: Radius.circular(15),
+                                                                                            )),
+                                                                                        builder: (context) {
+                                                                                          return Container(
+                                                                                              margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                                                                                              decoration: BoxDecoration(
+                                                                                                  borderRadius: BorderRadius.only(
+                                                                                                    topRight: Radius.circular(15),
+                                                                                                    topLeft: Radius.circular(15),
+                                                                                                  )),
+                                                                                              height: 600.h,
+                                                                                              width: double.infinity,
+                                                                                              alignment: Alignment.center,
+                                                                                              child: Column(
+                                                                                                children: [
+                                                                                                  Row(
+                                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                                     children: [
-                                                                                                      InkWell(
-                                                                                                        onTap: () async {
-                                                                                                          setState(() {
-                                                                                                            progss = true;
-                                                                                                          });
-
-                                                                                                          await DeletId(context, id: _ads[0].id!);
+                                                                                                      SizedBox(
+                                                                                                        width: 30.w,
+                                                                                                      ),
+                                                                                                      Text(
+                                                                                                        "حذف الاعلان",
+                                                                                                        style: TextStyle(color: Color(0xff7B217E), fontSize: 18.sp, fontWeight: FontWeight.w600),
+                                                                                                      ),
+                                                                                                      IconButton(
+                                                                                                        onPressed: () {
+                                                                                                          Navigator.pop(context);
                                                                                                         },
-                                                                                                        child: Container(
+                                                                                                        icon: SvgPicture.asset("images/close.svg"),
+                                                                                                      ),
+                                                                                                    ],
+                                                                                                  ),
+                                                                                                  SizedBox(
+                                                                                                    height: 35.h,
+                                                                                                  ),
+                                                                                                  SvgPicture.asset("images/trash.svg"),
+                                                                                                  SizedBox(
+                                                                                                    height: 20.h,
+                                                                                                  ),
+                                                                                                  Center(
+                                                                                                    child: Text(
+                                                                                                      "أنت على وشك حذف الاعلان بشكل نهائي هل تريد بالتأكيد حذف الاعلان ؟",
+                                                                                                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                  Spacer(),
+                                                                                                  Expanded(
+                                                                                                    child: Row(
+                                                                                                      children: [
+                                                                                                        InkWell(
+                                                                                                          onTap: () async {
+                                                                                                            setState(() {
+                                                                                                              progss = true;
+                                                                                                            });
+
+                                                                                                            await DeletId(context, id: _ads[0].id!);
+                                                                                                          },
+                                                                                                          child: Container(
+                                                                                                            height: 50.h,
+                                                                                                            width: 165.w,
+                                                                                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Color(0xff7B217E)),
+                                                                                                            child: Center(
+                                                                                                              child: progss1
+                                                                                                                  ? CircularProgressIndicator(
+                                                                                                                color: Colors.white,
+                                                                                                              )
+                                                                                                                  : Text(
+                                                                                                                "حذف الاعلان",
+                                                                                                                style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.w700),
+                                                                                                              ),
+                                                                                                            ),
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                        SizedBox(
+                                                                                                          width: 13.w,
+                                                                                                        ),
+                                                                                                        Container(
                                                                                                           height: 50.h,
                                                                                                           width: 165.w,
-                                                                                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Color(0xff7B217E)),
+                                                                                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Color(0xff969696)),
                                                                                                           child: Center(
-                                                                                                            child: progss1
-                                                                                                                ? CircularProgressIndicator(
-                                                                                                              color: Colors.white,
-                                                                                                            )
-                                                                                                                : Text(
-                                                                                                              "حذف الاعلان",
+                                                                                                            child: Text(
+                                                                                                              "تراجع",
                                                                                                               style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.w700),
                                                                                                             ),
                                                                                                           ),
                                                                                                         ),
-                                                                                                      ),
-                                                                                                      SizedBox(
-                                                                                                        width: 13.w,
-                                                                                                      ),
-                                                                                                      Container(
-                                                                                                        height: 50.h,
-                                                                                                        width: 165.w,
-                                                                                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Color(0xff969696)),
-                                                                                                        child: Center(
-                                                                                                          child: Text(
-                                                                                                            "تراجع",
-                                                                                                            style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.w700),
-                                                                                                          ),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                )
-                                                                                              ],
-                                                                                            ));
-                                                                                      },
-                                                                                    );
-                                                                                  },
-                                                                                  child: Row(
-                                                                                    children: [
-                                                                                      IconButton(
-                                                                                          onPressed: () {},
-                                                                                          icon: Icon(
-                                                                                            Icons.delete,
-                                                                                            color: Color(0xffE04F5F),
-                                                                                          )),
-                                                                                      Text(
-                                                                                        "حذف الاعلان",
-                                                                                        style: TextStyle(color: Color(0xffE04F5F), fontSize: 16.sp, fontWeight: FontWeight.w600),
-                                                                                      ),
-                                                                                    ],
+                                                                                                      ],
+                                                                                                    ),
+                                                                                                  )
+                                                                                                ],
+                                                                                              ));
+                                                                                        },
+                                                                                      );
+                                                                                    },
+                                                                                    child: Row(
+                                                                                      children: [
+                                                                                        IconButton(
+                                                                                            onPressed: () {},
+                                                                                            icon: Icon(
+                                                                                              Icons.delete,
+                                                                                              color: Color(0xffE04F5F),
+                                                                                            )),
+                                                                                        Text(
+                                                                                          "حذف الاعلان",
+                                                                                          style: TextStyle(color: Color(0xffE04F5F), fontSize: 16.sp, fontWeight: FontWeight.w600),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
                                                                                   ),
-                                                                                ),
-                                                                                SizedBox(
-                                                                                  height: 35.h,
-                                                                                ),
-                                                                              ],
-                                                                            ));
-                                                                      },
-                                                                    );
-                                                                  },
-                                                                  child: Icon(
-                                                                    Icons.more_vert,
-                                                                    color:
-                                                                    Colors.white,
-                                                                  )),
-                                                            )),
-                                                      ),
-                                                      Container(
-                                                        margin: EdgeInsets
-                                                            .only(
-                                                            bottom: 10
-                                                                .h,
-                                                            right: 5
-                                                                .w),
-                                                        alignment: Alignment
-                                                            .bottomRight,
-                                                        child: Row(
-                                                          children: [
-                                                            CircleAvatar(
-                                                              radius:
-                                                              14,
-                                                              backgroundImage: NetworkImage(user!
-                                                                  .imageProfile
-                                                                  .toString()),
-                                                            ),
-                                                            SizedBox(
-                                                              width:
-                                                              10.w,
-                                                            ),
-                                                            Text(
-                                                              user!.name
-                                                                  .toString(),
-                                                              style: TextStyle(
-                                                                  color: Color(
-                                                                      0xffFFFFFF),
-                                                                  fontWeight: FontWeight
-                                                                      .w900,
-                                                                  fontSize:
-                                                                  10.sp),
-                                                            ),
-                                                          ],
+                                                                                  SizedBox(
+                                                                                    height: 35.h,
+                                                                                  ),
+                                                                                ],
+                                                                              ));
+                                                                        },
+                                                                      );
+                                                                    },
+                                                                    child: Icon(
+                                                                      Icons.more_vert,
+                                                                      color:
+                                                                      Colors.white,
+                                                                    )),
+                                                              )),
                                                         ),
-                                                      )
-                                                    ],
+                                                        Container(
+                                                          margin: EdgeInsets
+                                                              .only(
+                                                              bottom: 10
+                                                                  .h,
+                                                              right: 5
+                                                                  .w),
+                                                          alignment: Alignment
+                                                              .bottomRight,
+                                                          child: Row(
+                                                            children: [
+                                                              CircleAvatar(
+                                                                radius:
+                                                                14,
+                                                                backgroundImage: NetworkImage(user!
+                                                                    .imageProfile
+                                                                    .toString()),
+                                                              ),
+                                                              SizedBox(
+                                                                width:
+                                                                10.w,
+                                                              ),
+                                                              Text(
+                                                                user!.name
+                                                                    .toString(),
+                                                                style: TextStyle(
+                                                                    color: Color(
+                                                                        0xffFFFFFF),
+                                                                    fontWeight: FontWeight
+                                                                        .w900,
+                                                                    fontSize:
+                                                                    10.sp),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ],
                                                   ),
-                                                );
+                                                ),
+                                                    );
                                               } else {
                                                 return SizedBox.shrink();
                                               }
@@ -1005,601 +1043,635 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                                       .adType!
                                                       .type ==
                                                       "special"
-                                                      ? Container(
+                                                      ? InkWell(
+                                                    onTap: (){
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                StoryPage(
+                                                                  AdId:_ads[index + 1].id!,
+
+                                                                )
+                                                        ),
+
+
+
+                                                      );
+                                                    },
+                                                        child: Container(
                                                     margin:
                                                     EdgeInsets.only(
-                                                        right: 5.w,
-                                                        left: 5.w),
+                                                          right: 5.w,
+                                                          left: 5.w),
                                                     width: 170.w,
                                                     height: 170.h,
                                                     decoration: BoxDecoration(
-                                                        color: Color(
-                                                            0xff7B217E),
-                                                        borderRadius:
-                                                        BorderRadius
-                                                            .circular(
-                                                            5),
-                                                        image: DecorationImage(
-                                                            fit: BoxFit
-                                                                .cover,
-                                                            image: NetworkImage(_ads[
-                                                            index +
-                                                                1]
-                                                                .image
-                                                                .toString()))),
+                                                          color: Color(
+                                                              0xff7B217E),
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .circular(
+                                                              5),
+                                                          image: DecorationImage(
+                                                              fit: BoxFit
+                                                                  .cover,
+                                                              image: NetworkImage(_ads[
+                                                              index +
+                                                                  1]
+                                                                  .image
+                                                                  .toString()))),
                                                     child: Stack(
-                                                      children: [
-                                                        Container(
-                                                          margin: EdgeInsets
-                                                              .only(
-                                                              left: 10
-                                                                  .w,
-                                                              top: 10
-                                                                  .h),
-                                                          child: Align(
-                                                              alignment:
-                                                              Alignment
-                                                                  .topLeft,
-                                                              child:
-                                                              CircleAvatar(
-                                                                backgroundColor:
-                                                                Color(
-                                                                    0xff7B217E),
-                                                                radius:
-                                                                14.sp,
-                                                                child: InkWell(
-                                                                    onTap: () {
-                                                                      showModalBottomSheet(
-                                                                        context: context,
-                                                                        shape: RoundedRectangleBorder(
-                                                                          // <-- SEE HERE
-                                                                            borderRadius: BorderRadius.only(
-                                                                              topRight: Radius.circular(15),
-                                                                              topLeft: Radius.circular(15),
-                                                                            )),
-                                                                        builder: (context) {
-                                                                          return Container(
-                                                                              margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                                                                              decoration: BoxDecoration(
-                                                                                  borderRadius: BorderRadius.only(
-                                                                                    topRight: Radius.circular(15),
-                                                                                    topLeft: Radius.circular(15),
-                                                                                  )),
-                                                                              height: 520.h,
-                                                                              width: double.infinity,
-                                                                              alignment: Alignment.center,
-                                                                              child: Column(
-                                                                                children: [
-                                                                                  Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                    children: [
-                                                                                      SizedBox(
-                                                                                        width: 30.w,
-                                                                                      ),
-                                                                                      Text(
-                                                                                        "اعدادات الاعلان",
-                                                                                        style: TextStyle(color: Color(0xff7B217E), fontSize: 18.sp, fontWeight: FontWeight.w600),
-                                                                                      ),
-                                                                                      IconButton(
-                                                                                        onPressed: () {
-                                                                                          Navigator.pop(context);
-                                                                                        },
-                                                                                        icon: SvgPicture.asset("images/close.svg"),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                  SizedBox(
-                                                                                    height: 35.h,
-                                                                                  ),
-                                                                                  SvgPicture.asset("images/setting.svg"),
-                                                                                  Spacer(),
-                                                                                  InkWell(
-                                                                                    onTap: () {
-                                                                                      Navigator.pushReplacement(
-                                                                                        context,
-                                                                                        MaterialPageRoute(
-                                                                                            builder: (context) => NewAdsScreen(
-                                                                                              edit: true,
-                                                                                              indexAd: _ads[index + 1].id!,
-                                                                                            )),
-                                                                                      );
-                                                                                    },
-                                                                                    child: Row(
+                                                        children: [
+                                                          Container(
+                                                            margin: EdgeInsets
+                                                                .only(
+                                                                left: 10
+                                                                    .w,
+                                                                top: 10
+                                                                    .h),
+                                                            child: Align(
+                                                                alignment:
+                                                                Alignment
+                                                                    .topLeft,
+                                                                child:
+                                                                CircleAvatar(
+                                                                  backgroundColor:
+                                                                  Color(
+                                                                      0xff7B217E),
+                                                                  radius:
+                                                                  14.sp,
+                                                                  child: InkWell(
+                                                                      onTap: () {
+                                                                        showModalBottomSheet(
+                                                                          context: context,
+                                                                          shape: RoundedRectangleBorder(
+                                                                            // <-- SEE HERE
+                                                                              borderRadius: BorderRadius.only(
+                                                                                topRight: Radius.circular(15),
+                                                                                topLeft: Radius.circular(15),
+                                                                              )),
+                                                                          builder: (context) {
+                                                                            return Container(
+                                                                                margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                                                                                decoration: BoxDecoration(
+                                                                                    borderRadius: BorderRadius.only(
+                                                                                      topRight: Radius.circular(15),
+                                                                                      topLeft: Radius.circular(15),
+                                                                                    )),
+                                                                                height: 520.h,
+                                                                                width: double.infinity,
+                                                                                alignment: Alignment.center,
+                                                                                child: Column(
+                                                                                  children: [
+                                                                                    Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                       children: [
-                                                                                        IconButton(
-                                                                                            onPressed: () {
-                                                                                              // Navigator.pushReplacement(
-                                                                                              //   context,
-                                                                                              //   MaterialPageRoute(
-                                                                                              //       builder: (context) => NewAdsScreen(
-                                                                                              //             edit: true,
-                                                                                              //             indexAd: 237,
-                                                                                              //           )),
-                                                                                              // );
-                                                                                            },
-                                                                                            icon: Icon(
-                                                                                              Icons.edit,
-                                                                                              color: Color(0xff7B217E),
-                                                                                            )),
+                                                                                        SizedBox(
+                                                                                          width: 30.w,
+                                                                                        ),
                                                                                         Text(
-                                                                                          "تعديل الاعلان",
-                                                                                          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                                                                                          "اعدادات الاعلان",
+                                                                                          style: TextStyle(color: Color(0xff7B217E), fontSize: 18.sp, fontWeight: FontWeight.w600),
+                                                                                        ),
+                                                                                        IconButton(
+                                                                                          onPressed: () {
+                                                                                            Navigator.pop(context);
+                                                                                          },
+                                                                                          icon: SvgPicture.asset("images/close.svg"),
                                                                                         ),
                                                                                       ],
                                                                                     ),
-                                                                                  ),
-                                                                                  Divider(),
-                                                                                  InkWell(
-                                                                                    onTap: () {
-                                                                                      showModalBottomSheet(
-                                                                                        context: context,
-                                                                                        shape: RoundedRectangleBorder(
-                                                                                          // <-- SEE HERE
-                                                                                            borderRadius: BorderRadius.only(
-                                                                                              topRight: Radius.circular(15),
-                                                                                              topLeft: Radius.circular(15),
-                                                                                            )),
-                                                                                        builder: (context) {
-                                                                                          return Container(
-                                                                                              margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                                                                                              decoration: BoxDecoration(
-                                                                                                  borderRadius: BorderRadius.only(
-                                                                                                    topRight: Radius.circular(15),
-                                                                                                    topLeft: Radius.circular(15),
-                                                                                                  )),
-                                                                                              height: 600.h,
-                                                                                              width: double.infinity,
-                                                                                              alignment: Alignment.center,
-                                                                                              child: Column(
-                                                                                                children: [
-                                                                                                  Row(
-                                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                                    children: [
-                                                                                                      SizedBox(
-                                                                                                        width: 30.w,
-                                                                                                      ),
-                                                                                                      Text(
-                                                                                                        "حذف الاعلان",
-                                                                                                        style: TextStyle(color: Color(0xff7B217E), fontSize: 18.sp, fontWeight: FontWeight.w600),
-                                                                                                      ),
-                                                                                                      IconButton(
-                                                                                                        onPressed: () {
-                                                                                                          Navigator.pop(context);
-                                                                                                        },
-                                                                                                        icon: SvgPicture.asset("images/close.svg"),
-                                                                                                      ),
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                  SizedBox(
-                                                                                                    height: 35.h,
-                                                                                                  ),
-                                                                                                  SvgPicture.asset("images/trash.svg"),
-                                                                                                  SizedBox(
-                                                                                                    height: 20.h,
-                                                                                                  ),
-                                                                                                  Center(
-                                                                                                    child: Text(
-                                                                                                      "أنت على وشك حذف الاعلان بشكل نهائي هل تريد بالتأكيد حذف الاعلان ؟",
-                                                                                                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                  Spacer(),
-                                                                                                  Expanded(
-                                                                                                    child: Row(
+                                                                                    SizedBox(
+                                                                                      height: 35.h,
+                                                                                    ),
+                                                                                    SvgPicture.asset("images/setting.svg"),
+                                                                                    Spacer(),
+                                                                                    InkWell(
+                                                                                      onTap: () {
+                                                                                        Navigator.pushReplacement(
+                                                                                          context,
+                                                                                          MaterialPageRoute(
+                                                                                              builder: (context) => NewAdsScreen(
+                                                                                                edit: true,
+                                                                                                indexAd: _ads[index + 1].id!,
+                                                                                              )),
+                                                                                        );
+                                                                                      },
+                                                                                      child: Row(
+                                                                                        children: [
+                                                                                          IconButton(
+                                                                                              onPressed: () {
+                                                                                                // Navigator.pushReplacement(
+                                                                                                //   context,
+                                                                                                //   MaterialPageRoute(
+                                                                                                //       builder: (context) => NewAdsScreen(
+                                                                                                //             edit: true,
+                                                                                                //             indexAd: 237,
+                                                                                                //           )),
+                                                                                                // );
+                                                                                              },
+                                                                                              icon: Icon(
+                                                                                                Icons.edit,
+                                                                                                color: Color(0xff7B217E),
+                                                                                              )),
+                                                                                          Text(
+                                                                                            "تعديل الاعلان",
+                                                                                            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    ),
+                                                                                    Divider(),
+                                                                                    InkWell(
+                                                                                      onTap: () {
+                                                                                        showModalBottomSheet(
+                                                                                          context: context,
+                                                                                          shape: RoundedRectangleBorder(
+                                                                                            // <-- SEE HERE
+                                                                                              borderRadius: BorderRadius.only(
+                                                                                                topRight: Radius.circular(15),
+                                                                                                topLeft: Radius.circular(15),
+                                                                                              )),
+                                                                                          builder: (context) {
+                                                                                            return Container(
+                                                                                                margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                                                                                                decoration: BoxDecoration(
+                                                                                                    borderRadius: BorderRadius.only(
+                                                                                                      topRight: Radius.circular(15),
+                                                                                                      topLeft: Radius.circular(15),
+                                                                                                    )),
+                                                                                                height: 600.h,
+                                                                                                width: double.infinity,
+                                                                                                alignment: Alignment.center,
+                                                                                                child: Column(
+                                                                                                  children: [
+                                                                                                    Row(
+                                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                                       children: [
-                                                                                                        InkWell(
-                                                                                                          onTap: () async {
-                                                                                                            setState(() {
-                                                                                                              progss = true;
-                                                                                                            });
-
-                                                                                                            await DeletId(context, id: _ads[index + 1].id!);
+                                                                                                        SizedBox(
+                                                                                                          width: 30.w,
+                                                                                                        ),
+                                                                                                        Text(
+                                                                                                          "حذف الاعلان",
+                                                                                                          style: TextStyle(color: Color(0xff7B217E), fontSize: 18.sp, fontWeight: FontWeight.w600),
+                                                                                                        ),
+                                                                                                        IconButton(
+                                                                                                          onPressed: () {
+                                                                                                            Navigator.pop(context);
                                                                                                           },
-                                                                                                          child: Container(
+                                                                                                          icon: SvgPicture.asset("images/close.svg"),
+                                                                                                        ),
+                                                                                                      ],
+                                                                                                    ),
+                                                                                                    SizedBox(
+                                                                                                      height: 35.h,
+                                                                                                    ),
+                                                                                                    SvgPicture.asset("images/trash.svg"),
+                                                                                                    SizedBox(
+                                                                                                      height: 20.h,
+                                                                                                    ),
+                                                                                                    Center(
+                                                                                                      child: Text(
+                                                                                                        "أنت على وشك حذف الاعلان بشكل نهائي هل تريد بالتأكيد حذف الاعلان ؟",
+                                                                                                        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                    Spacer(),
+                                                                                                    Expanded(
+                                                                                                      child: Row(
+                                                                                                        children: [
+                                                                                                          InkWell(
+                                                                                                            onTap: () async {
+                                                                                                              setState(() {
+                                                                                                                progss = true;
+                                                                                                              });
+
+                                                                                                              await DeletId(context, id: _ads[index + 1].id!);
+                                                                                                            },
+                                                                                                            child: Container(
+                                                                                                              height: 50.h,
+                                                                                                              width: 165.w,
+                                                                                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Color(0xff7B217E)),
+                                                                                                              child: Center(
+                                                                                                                child: progss1
+                                                                                                                    ? CircularProgressIndicator(
+                                                                                                                  color: Colors.white,
+                                                                                                                )
+                                                                                                                    : Text(
+                                                                                                                  "حذف الاعلان",
+                                                                                                                  style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.w700),
+                                                                                                                ),
+                                                                                                              ),
+                                                                                                            ),
+                                                                                                          ),
+                                                                                                          SizedBox(
+                                                                                                            width: 13.w,
+                                                                                                          ),
+                                                                                                          Container(
                                                                                                             height: 50.h,
                                                                                                             width: 165.w,
-                                                                                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Color(0xff7B217E)),
+                                                                                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Color(0xff969696)),
                                                                                                             child: Center(
-                                                                                                              child: progss1
-                                                                                                                  ? CircularProgressIndicator(
-                                                                                                                color: Colors.white,
-                                                                                                              )
-                                                                                                                  : Text(
-                                                                                                                "حذف الاعلان",
+                                                                                                              child: Text(
+                                                                                                                "تراجع",
                                                                                                                 style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.w700),
                                                                                                               ),
                                                                                                             ),
                                                                                                           ),
-                                                                                                        ),
-                                                                                                        SizedBox(
-                                                                                                          width: 13.w,
-                                                                                                        ),
-                                                                                                        Container(
-                                                                                                          height: 50.h,
-                                                                                                          width: 165.w,
-                                                                                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Color(0xff969696)),
-                                                                                                          child: Center(
-                                                                                                            child: Text(
-                                                                                                              "تراجع",
-                                                                                                              style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.w700),
-                                                                                                            ),
-                                                                                                          ),
-                                                                                                        ),
-                                                                                                      ],
-                                                                                                    ),
-                                                                                                  )
-                                                                                                ],
-                                                                                              ));
-                                                                                        },
-                                                                                      );
-                                                                                    },
-                                                                                    child: Row(
-                                                                                      children: [
-                                                                                        IconButton(
-                                                                                            onPressed: () {},
-                                                                                            icon: Icon(
-                                                                                              Icons.delete,
-                                                                                              color: Color(0xffE04F5F),
-                                                                                            )),
-                                                                                        Text(
-                                                                                          "حذف الاعلان",
-                                                                                          style: TextStyle(color: Color(0xffE04F5F), fontSize: 16.sp, fontWeight: FontWeight.w600),
-                                                                                        ),
-                                                                                      ],
+                                                                                                        ],
+                                                                                                      ),
+                                                                                                    )
+                                                                                                  ],
+                                                                                                ));
+                                                                                          },
+                                                                                        );
+                                                                                      },
+                                                                                      child: Row(
+                                                                                        children: [
+                                                                                          IconButton(
+                                                                                              onPressed: () {},
+                                                                                              icon: Icon(
+                                                                                                Icons.delete,
+                                                                                                color: Color(0xffE04F5F),
+                                                                                              )),
+                                                                                          Text(
+                                                                                            "حذف الاعلان",
+                                                                                            style: TextStyle(color: Color(0xffE04F5F), fontSize: 16.sp, fontWeight: FontWeight.w600),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
                                                                                     ),
-                                                                                  ),
-                                                                                  SizedBox(
-                                                                                    height: 35.h,
-                                                                                  ),
-                                                                                ],
-                                                                              ));
-                                                                        },
-                                                                      );
-                                                                    },
-                                                                    child: Icon(
-                                                                      Icons.more_vert,
-                                                                      color:
-                                                                      Colors.white,
-                                                                    )),
-                                                              )),
-                                                        ),
-                                                        Container(
-                                                          margin: EdgeInsets
-                                                              .only(
-                                                              bottom: 10
-                                                                  .h,
-                                                              right: 5
-                                                                  .w),
-                                                          alignment: Alignment
-                                                              .bottomRight,
-                                                          child: Row(
-                                                            children: [
-                                                              CircleAvatar(
-                                                                radius:
-                                                                14,
-                                                                backgroundImage: NetworkImage(user!
-                                                                    .imageProfile
-                                                                    .toString()),
-                                                              ),
-                                                              SizedBox(
-                                                                width:
-                                                                10.w,
-                                                              ),
-                                                              Text(
-                                                                user!.name
-                                                                    .toString(),
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffFFFFFF),
-                                                                    fontWeight: FontWeight
-                                                                        .w900,
-                                                                    fontSize:
-                                                                    10.sp),
-                                                              ),
-                                                            ],
+                                                                                    SizedBox(
+                                                                                      height: 35.h,
+                                                                                    ),
+                                                                                  ],
+                                                                                ));
+                                                                          },
+                                                                        );
+                                                                      },
+                                                                      child: Icon(
+                                                                        Icons.more_vert,
+                                                                        color:
+                                                                        Colors.white,
+                                                                      )),
+                                                                )),
                                                           ),
-                                                        )
-                                                      ],
+                                                          Container(
+                                                            margin: EdgeInsets
+                                                                .only(
+                                                                bottom: 10
+                                                                    .h,
+                                                                right: 5
+                                                                    .w),
+                                                            alignment: Alignment
+                                                                .bottomRight,
+                                                            child: Row(
+                                                              children: [
+                                                                CircleAvatar(
+                                                                  radius:
+                                                                  14,
+                                                                  backgroundImage: NetworkImage(user!
+                                                                      .imageProfile
+                                                                      .toString()),
+                                                                ),
+                                                                SizedBox(
+                                                                  width:
+                                                                  10.w,
+                                                                ),
+                                                                Text(
+                                                                  user!.name
+                                                                      .toString(),
+                                                                  style: TextStyle(
+                                                                      color: Color(
+                                                                          0xffFFFFFF),
+                                                                      fontWeight: FontWeight
+                                                                          .w900,
+                                                                      fontSize:
+                                                                      10.sp),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
                                                     ),
-                                                  )
-                                                      : Container(
+                                                  ),
+                                                      )
+                                                      : InkWell(
+                                                    onTap: (){
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                StoryPage(
+                                                                  AdId:_ads[index + 1].id!,
+
+                                                                )
+                                                        ),
+
+
+
+                                                      );
+                                                    },
+                                                        child: Container(
                                                     margin:
                                                     EdgeInsets.only(
-                                                        right: 5.w,
-                                                        left: 5.w),
+                                                          right: 5.w,
+                                                          left: 5.w),
                                                     width: 170.w,
                                                     height: 170.h,
                                                     decoration: BoxDecoration(
-                                                        color: Color(
-                                                            0xff7B217E),
-                                                        borderRadius:
-                                                        BorderRadius
-                                                            .circular(
-                                                            5),
-                                                        image: DecorationImage(
-                                                            fit: BoxFit
-                                                                .cover,
-                                                            image: NetworkImage(_ads[
-                                                            index +
-                                                                1]
-                                                                .image
-                                                                .toString()))),
+                                                          color: Color(
+                                                              0xff7B217E),
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .circular(
+                                                              5),
+                                                          image: DecorationImage(
+                                                              fit: BoxFit
+                                                                  .cover,
+                                                              image: NetworkImage(_ads[
+                                                              index +
+                                                                  1]
+                                                                  .image
+                                                                  .toString()))),
                                                     child: Stack(
-                                                      children: [
-                                                        Container(
-                                                          margin: EdgeInsets
-                                                              .only(
-                                                              left: 10
-                                                                  .w,
-                                                              top: 10
-                                                                  .h),
-                                                          child: Align(
-                                                              alignment:
-                                                              Alignment
-                                                                  .topLeft,
-                                                              child:
-                                                              CircleAvatar(
-                                                                backgroundColor:
-                                                                Color(
-                                                                    0xff7B217E),
-                                                                radius:
-                                                                14.sp,
-                                                                child: InkWell(
-                                                                    onTap: () {
-                                                                      showModalBottomSheet(
-                                                                        context: context,
-                                                                        shape: RoundedRectangleBorder(
-                                                                          // <-- SEE HERE
-                                                                            borderRadius: BorderRadius.only(
-                                                                              topRight: Radius.circular(15),
-                                                                              topLeft: Radius.circular(15),
-                                                                            )),
-                                                                        builder: (context) {
-                                                                          return Container(
-                                                                              margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                                                                              decoration: BoxDecoration(
-                                                                                  borderRadius: BorderRadius.only(
-                                                                                    topRight: Radius.circular(15),
-                                                                                    topLeft: Radius.circular(15),
-                                                                                  )),
-                                                                              height: 520.h,
-                                                                              width: double.infinity,
-                                                                              alignment: Alignment.center,
-                                                                              child: Column(
-                                                                                children: [
-                                                                                  Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                    children: [
-                                                                                      SizedBox(
-                                                                                        width: 30.w,
-                                                                                      ),
-                                                                                      Text(
-                                                                                        "اعدادات الاعلان",
-                                                                                        style: TextStyle(color: Color(0xff7B217E), fontSize: 18.sp, fontWeight: FontWeight.w600),
-                                                                                      ),
-                                                                                      IconButton(
-                                                                                        onPressed: () {
-                                                                                          Navigator.pop(context);
-                                                                                        },
-                                                                                        icon: SvgPicture.asset("images/close.svg"),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                  SizedBox(
-                                                                                    height: 35.h,
-                                                                                  ),
-                                                                                  SvgPicture.asset("images/setting.svg"),
-                                                                                  Spacer(),
-                                                                                  InkWell(
-                                                                                    onTap: () {
-                                                                                      print(_ads[index + 1].id);
-                                                                                      Navigator.pushReplacement(
-                                                                                        context,
-                                                                                        MaterialPageRoute(
-                                                                                            builder: (context) => NewAdsScreen(
-                                                                                              edit: true,
-                                                                                              indexAd: _ads[index + 1].id!,
-                                                                                            )),
-                                                                                      );
-                                                                                    },
-                                                                                    child: Row(
+                                                        children: [
+                                                          Container(
+                                                            margin: EdgeInsets
+                                                                .only(
+                                                                left: 10
+                                                                    .w,
+                                                                top: 10
+                                                                    .h),
+                                                            child: Align(
+                                                                alignment:
+                                                                Alignment
+                                                                    .topLeft,
+                                                                child:
+                                                                CircleAvatar(
+                                                                  backgroundColor:
+                                                                  Color(
+                                                                      0xff7B217E),
+                                                                  radius:
+                                                                  14.sp,
+                                                                  child: InkWell(
+                                                                      onTap: () {
+                                                                        showModalBottomSheet(
+                                                                          context: context,
+                                                                          shape: RoundedRectangleBorder(
+                                                                            // <-- SEE HERE
+                                                                              borderRadius: BorderRadius.only(
+                                                                                topRight: Radius.circular(15),
+                                                                                topLeft: Radius.circular(15),
+                                                                              )),
+                                                                          builder: (context) {
+                                                                            return Container(
+                                                                                margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                                                                                decoration: BoxDecoration(
+                                                                                    borderRadius: BorderRadius.only(
+                                                                                      topRight: Radius.circular(15),
+                                                                                      topLeft: Radius.circular(15),
+                                                                                    )),
+                                                                                height: 520.h,
+                                                                                width: double.infinity,
+                                                                                alignment: Alignment.center,
+                                                                                child: Column(
+                                                                                  children: [
+                                                                                    Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                       children: [
-                                                                                        IconButton(
-                                                                                            onPressed: () {
-                                                                                              // Navigator.pushReplacement(
-                                                                                              //   context,
-                                                                                              //   MaterialPageRoute(
-                                                                                              //       builder: (context) => NewAdsScreen(
-                                                                                              //             edit: true,
-                                                                                              //             indexAd: 237,
-                                                                                              //           )),
-                                                                                              // );
-                                                                                            },
-                                                                                            icon: Icon(
-                                                                                              Icons.edit,
-                                                                                              color: Color(0xff7B217E),
-                                                                                            )),
+                                                                                        SizedBox(
+                                                                                          width: 30.w,
+                                                                                        ),
                                                                                         Text(
-                                                                                          "تعديل الاعلان",
-                                                                                          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                                                                                          "اعدادات الاعلان",
+                                                                                          style: TextStyle(color: Color(0xff7B217E), fontSize: 18.sp, fontWeight: FontWeight.w600),
+                                                                                        ),
+                                                                                        IconButton(
+                                                                                          onPressed: () {
+                                                                                            Navigator.pop(context);
+                                                                                          },
+                                                                                          icon: SvgPicture.asset("images/close.svg"),
                                                                                         ),
                                                                                       ],
                                                                                     ),
-                                                                                  ),
-                                                                                  Divider(),
-                                                                                  InkWell(
-                                                                                    onTap: () {
-                                                                                      showModalBottomSheet(
-                                                                                        context: context,
-                                                                                        shape: RoundedRectangleBorder(
-                                                                                          // <-- SEE HERE
-                                                                                            borderRadius: BorderRadius.only(
-                                                                                              topRight: Radius.circular(15),
-                                                                                              topLeft: Radius.circular(15),
-                                                                                            )),
-                                                                                        builder: (context) {
-                                                                                          return Container(
-                                                                                              margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                                                                                              decoration: BoxDecoration(
-                                                                                                  borderRadius: BorderRadius.only(
-                                                                                                    topRight: Radius.circular(15),
-                                                                                                    topLeft: Radius.circular(15),
-                                                                                                  )),
-                                                                                              height: 600.h,
-                                                                                              width: double.infinity,
-                                                                                              alignment: Alignment.center,
-                                                                                              child: Column(
-                                                                                                children: [
-                                                                                                  Row(
-                                                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                                    children: [
-                                                                                                      SizedBox(
-                                                                                                        width: 30.w,
-                                                                                                      ),
-                                                                                                      Text(
-                                                                                                        "حذف الاعلان",
-                                                                                                        style: TextStyle(color: Color(0xff7B217E), fontSize: 18.sp, fontWeight: FontWeight.w600),
-                                                                                                      ),
-                                                                                                      IconButton(
-                                                                                                        onPressed: () {
-                                                                                                          Navigator.pop(context);
-                                                                                                        },
-                                                                                                        icon: SvgPicture.asset("images/close.svg"),
-                                                                                                      ),
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                  SizedBox(
-                                                                                                    height: 35.h,
-                                                                                                  ),
-                                                                                                  SvgPicture.asset("images/trash.svg"),
-                                                                                                  SizedBox(
-                                                                                                    height: 20.h,
-                                                                                                  ),
-                                                                                                  Center(
-                                                                                                    child: Text(
-                                                                                                      "أنت على وشك حذف الاعلان بشكل نهائي هل تريد بالتأكيد حذف الاعلان ؟",
-                                                                                                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                  Spacer(),
-                                                                                                  Expanded(
-                                                                                                    child: Row(
+                                                                                    SizedBox(
+                                                                                      height: 35.h,
+                                                                                    ),
+                                                                                    SvgPicture.asset("images/setting.svg"),
+                                                                                    Spacer(),
+                                                                                    InkWell(
+                                                                                      onTap: () {
+                                                                                        print(_ads[index + 1].id);
+                                                                                        Navigator.pushReplacement(
+                                                                                          context,
+                                                                                          MaterialPageRoute(
+                                                                                              builder: (context) => NewAdsScreen(
+                                                                                                edit: true,
+                                                                                                indexAd: _ads[index + 1].id!,
+                                                                                              )),
+                                                                                        );
+                                                                                      },
+                                                                                      child: Row(
+                                                                                        children: [
+                                                                                          IconButton(
+                                                                                              onPressed: () {
+                                                                                                // Navigator.pushReplacement(
+                                                                                                //   context,
+                                                                                                //   MaterialPageRoute(
+                                                                                                //       builder: (context) => NewAdsScreen(
+                                                                                                //             edit: true,
+                                                                                                //             indexAd: 237,
+                                                                                                //           )),
+                                                                                                // );
+                                                                                              },
+                                                                                              icon: Icon(
+                                                                                                Icons.edit,
+                                                                                                color: Color(0xff7B217E),
+                                                                                              )),
+                                                                                          Text(
+                                                                                            "تعديل الاعلان",
+                                                                                            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    ),
+                                                                                    Divider(),
+                                                                                    InkWell(
+                                                                                      onTap: () {
+                                                                                        showModalBottomSheet(
+                                                                                          context: context,
+                                                                                          shape: RoundedRectangleBorder(
+                                                                                            // <-- SEE HERE
+                                                                                              borderRadius: BorderRadius.only(
+                                                                                                topRight: Radius.circular(15),
+                                                                                                topLeft: Radius.circular(15),
+                                                                                              )),
+                                                                                          builder: (context) {
+                                                                                            return Container(
+                                                                                                margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                                                                                                decoration: BoxDecoration(
+                                                                                                    borderRadius: BorderRadius.only(
+                                                                                                      topRight: Radius.circular(15),
+                                                                                                      topLeft: Radius.circular(15),
+                                                                                                    )),
+                                                                                                height: 600.h,
+                                                                                                width: double.infinity,
+                                                                                                alignment: Alignment.center,
+                                                                                                child: Column(
+                                                                                                  children: [
+                                                                                                    Row(
+                                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                                                       children: [
-                                                                                                        InkWell(
-                                                                                                          onTap: () async {
-                                                                                                            setState(() {
-                                                                                                              progss = true;
-                                                                                                            });
-
-                                                                                                            await DeletId(context, id: _ads[index + 1].id!);
+                                                                                                        SizedBox(
+                                                                                                          width: 30.w,
+                                                                                                        ),
+                                                                                                        Text(
+                                                                                                          "حذف الاعلان",
+                                                                                                          style: TextStyle(color: Color(0xff7B217E), fontSize: 18.sp, fontWeight: FontWeight.w600),
+                                                                                                        ),
+                                                                                                        IconButton(
+                                                                                                          onPressed: () {
+                                                                                                            Navigator.pop(context);
                                                                                                           },
-                                                                                                          child: Container(
+                                                                                                          icon: SvgPicture.asset("images/close.svg"),
+                                                                                                        ),
+                                                                                                      ],
+                                                                                                    ),
+                                                                                                    SizedBox(
+                                                                                                      height: 35.h,
+                                                                                                    ),
+                                                                                                    SvgPicture.asset("images/trash.svg"),
+                                                                                                    SizedBox(
+                                                                                                      height: 20.h,
+                                                                                                    ),
+                                                                                                    Center(
+                                                                                                      child: Text(
+                                                                                                        "أنت على وشك حذف الاعلان بشكل نهائي هل تريد بالتأكيد حذف الاعلان ؟",
+                                                                                                        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                    Spacer(),
+                                                                                                    Expanded(
+                                                                                                      child: Row(
+                                                                                                        children: [
+                                                                                                          InkWell(
+                                                                                                            onTap: () async {
+                                                                                                              setState(() {
+                                                                                                                progss = true;
+                                                                                                              });
+
+                                                                                                              await DeletId(context, id: _ads[index + 1].id!);
+                                                                                                            },
+                                                                                                            child: Container(
+                                                                                                              height: 50.h,
+                                                                                                              width: 165.w,
+                                                                                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Color(0xff7B217E)),
+                                                                                                              child: Center(
+                                                                                                                child: progss1
+                                                                                                                    ? CircularProgressIndicator(
+                                                                                                                  color: Colors.white,
+                                                                                                                )
+                                                                                                                    : Text(
+                                                                                                                  "حذف الاعلان",
+                                                                                                                  style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.w700),
+                                                                                                                ),
+                                                                                                              ),
+                                                                                                            ),
+                                                                                                          ),
+                                                                                                          SizedBox(
+                                                                                                            width: 13.w,
+                                                                                                          ),
+                                                                                                          Container(
                                                                                                             height: 50.h,
                                                                                                             width: 165.w,
-                                                                                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Color(0xff7B217E)),
+                                                                                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Color(0xff969696)),
                                                                                                             child: Center(
-                                                                                                              child: progss1
-                                                                                                                  ? CircularProgressIndicator(
-                                                                                                                color: Colors.white,
-                                                                                                              )
-                                                                                                                  : Text(
-                                                                                                                "حذف الاعلان",
+                                                                                                              child: Text(
+                                                                                                                "تراجع",
                                                                                                                 style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.w700),
                                                                                                               ),
                                                                                                             ),
                                                                                                           ),
-                                                                                                        ),
-                                                                                                        SizedBox(
-                                                                                                          width: 13.w,
-                                                                                                        ),
-                                                                                                        Container(
-                                                                                                          height: 50.h,
-                                                                                                          width: 165.w,
-                                                                                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Color(0xff969696)),
-                                                                                                          child: Center(
-                                                                                                            child: Text(
-                                                                                                              "تراجع",
-                                                                                                              style: TextStyle(color: Colors.white, fontSize: 18.sp, fontWeight: FontWeight.w700),
-                                                                                                            ),
-                                                                                                          ),
-                                                                                                        ),
-                                                                                                      ],
-                                                                                                    ),
-                                                                                                  )
-                                                                                                ],
-                                                                                              ));
-                                                                                        },
-                                                                                      );
-                                                                                    },
-                                                                                    child: Row(
-                                                                                      children: [
-                                                                                        IconButton(
-                                                                                            onPressed: () {},
-                                                                                            icon: Icon(
-                                                                                              Icons.delete,
-                                                                                              color: Color(0xffE04F5F),
-                                                                                            )),
-                                                                                        Text(
-                                                                                          "حذف الاعلان",
-                                                                                          style: TextStyle(color: Color(0xffE04F5F), fontSize: 16.sp, fontWeight: FontWeight.w600),
-                                                                                        ),
-                                                                                      ],
+                                                                                                        ],
+                                                                                                      ),
+                                                                                                    )
+                                                                                                  ],
+                                                                                                ));
+                                                                                          },
+                                                                                        );
+                                                                                      },
+                                                                                      child: Row(
+                                                                                        children: [
+                                                                                          IconButton(
+                                                                                              onPressed: () {},
+                                                                                              icon: Icon(
+                                                                                                Icons.delete,
+                                                                                                color: Color(0xffE04F5F),
+                                                                                              )),
+                                                                                          Text(
+                                                                                            "حذف الاعلان",
+                                                                                            style: TextStyle(color: Color(0xffE04F5F), fontSize: 16.sp, fontWeight: FontWeight.w600),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
                                                                                     ),
-                                                                                  ),
-                                                                                  SizedBox(
-                                                                                    height: 35.h,
-                                                                                  ),
-                                                                                ],
-                                                                              ));
-                                                                        },
-                                                                      );
-                                                                    },
-                                                                    child: Icon(
-                                                                      Icons.more_vert,
-                                                                      color:
-                                                                      Colors.white,
-                                                                    )),
-                                                              )),
-                                                        ),
-                                                        Container(
-                                                          margin: EdgeInsets
-                                                              .only(
-                                                              bottom: 10
-                                                                  .h,
-                                                              right: 5
-                                                                  .w),
-                                                          alignment: Alignment
-                                                              .bottomRight,
-                                                          child: Row(
-                                                            children: [
-                                                              CircleAvatar(
-                                                                radius:
-                                                                14,
-                                                                backgroundImage: NetworkImage(user!
-                                                                    .imageProfile
-                                                                    .toString()),
-                                                              ),
-                                                              SizedBox(
-                                                                width:
-                                                                10.w,
-                                                              ),
-                                                              Text(
-                                                                user!.name
-                                                                    .toString(),
-                                                                style: TextStyle(
-                                                                    color: Color(
-                                                                        0xffFFFFFF),
-                                                                    fontWeight: FontWeight
-                                                                        .w900,
-                                                                    fontSize:
-                                                                    10.sp),
-                                                              ),
-                                                            ],
+                                                                                    SizedBox(
+                                                                                      height: 35.h,
+                                                                                    ),
+                                                                                  ],
+                                                                                ));
+                                                                          },
+                                                                        );
+                                                                      },
+                                                                      child: Icon(
+                                                                        Icons.more_vert,
+                                                                        color:
+                                                                        Colors.white,
+                                                                      )),
+                                                                )),
                                                           ),
-                                                        )
-                                                      ],
+                                                          Container(
+                                                            margin: EdgeInsets
+                                                                .only(
+                                                                bottom: 10
+                                                                    .h,
+                                                                right: 5
+                                                                    .w),
+                                                            alignment: Alignment
+                                                                .bottomRight,
+                                                            child: Row(
+                                                              children: [
+                                                                CircleAvatar(
+                                                                  radius:
+                                                                  14,
+                                                                  backgroundImage: NetworkImage(user!
+                                                                      .imageProfile
+                                                                      .toString()),
+                                                                ),
+                                                                SizedBox(
+                                                                  width:
+                                                                  10.w,
+                                                                ),
+                                                                Text(
+                                                                  user!.name
+                                                                      .toString(),
+                                                                  style: TextStyle(
+                                                                      color: Color(
+                                                                          0xffFFFFFF),
+                                                                      fontWeight: FontWeight
+                                                                          .w900,
+                                                                      fontSize:
+                                                                      10.sp),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
                                                     ),
-                                                  );
+                                                  ),
+                                                      );
                                                 });
                                           } else if (snapshot.data!.isEmpty) {
                                             return Column(
@@ -2067,215 +2139,149 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                                     SizedBox(
                                       width: 35.w,
                                     ),
-                                    FutureBuilder<User?>(
-                                        future:
-                                        UserApiController().getProfile(),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.hasData) {
-                                            return snapshot.data!.id !=
-                                                widget.id
-                                                ? FutureBuilder<
-                                                List<MyFollowings>>(
-                                              future: UserApiController()
-                                                  .Followers_User(),
-                                              builder:
-                                                  (context, snapshot) {
-                                                if (snapshot
-                                                    .connectionState ==
-                                                    ConnectionState
-                                                        .waiting) {
-                                                  return Center(
-                                                      child:
-                                                      CircularProgressIndicator(
-                                                        color: Colors.purple,
-                                                      ));
-                                                } else if (snapshot
-                                                    .hasData &&
-                                                    snapshot.data!
-                                                        .isNotEmpty) {
-                                                  List<int?> f = snapshot
-                                                      .data!
-                                                      .map((e) => e.id)
-                                                      .toList();
-                                                  return f.contains(
-                                                      widget.id)
-                                                      ? InkWell(
-                                                    onTap:
-                                                        () async {
-                                                      await UserApiController().Follow_One(
-                                                          followed_id:
-                                                          widget
-                                                              .id
-                                                              .toString(),
-                                                          action:
-                                                          "unfollow");
-                                                      setState(
-                                                              () {});
-                                                    },
-                                                    child:
-                                                    Container(
-                                                      height: 38.h,
-                                                      width: 90.w,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                          BorderRadius.circular(
-                                                              37),
-                                                          color: Color(
-                                                              0xff18499A)),
-                                                      child:
-                                                      Container(
-                                                        margin: EdgeInsets.symmetric(
-                                                            horizontal:
-                                                            5.w),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                          children: [
-                                                            Text(
-                                                              "إلغاء متابعة",
-                                                              style: TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontSize: 14.sp,
-                                                                  fontWeight: FontWeight.w600),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )
-                                                      : InkWell(
-                                                    onTap:
-                                                        () async {
-                                                      await UserApiController().Follow_One(
-                                                          followed_id:
-                                                          widget
-                                                              .id
-                                                              .toString(),
-                                                          action:
-                                                          "follow");
-                                                      setState(
-                                                              () {});
-                                                    },
-                                                    child:
-                                                    Container(
-                                                      height: 38.h,
-                                                      width: 90.w,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                          BorderRadius.circular(
-                                                              37),
-                                                          color: Color(
-                                                              0xff18499A)),
-                                                      child:
-                                                      Container(
-                                                        margin: EdgeInsets.symmetric(
-                                                            horizontal:
-                                                            5.w),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                          children: [
-                                                            Icon(
-                                                              Icons
-                                                                  .add_sharp,
-                                                              color:
-                                                              Colors.white,
-                                                              size:
-                                                              20,
-                                                            ),
-                                                            SizedBox(
-                                                              width:
-                                                              10.w,
-                                                            ),
-                                                            Text(
-                                                              "متابعة",
-                                                              style: TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontSize: 14.sp,
-                                                                  fontWeight: FontWeight.w600),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  );
-                                                } else {
-                                                  return InkWell(
-                                                    onTap: () async {
-                                                      await UserApiController()
-                                                          .Follow_One(
-                                                          followed_id:
-                                                          widget
-                                                              .id
-                                                              .toString(),
-                                                          action:
-                                                          "follow");
-                                                      setState(() {});
-                                                    },
-                                                    child: Container(
-                                                      height: 38.h,
-                                                      width: 90.w,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                          BorderRadius
-                                                              .circular(
-                                                              37),
-                                                          color: Color(
-                                                              0xff18499A)),
-                                                      child: Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                            horizontal:
-                                                            5.w),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                          children: [
-                                                            Icon(
-                                                              Icons
-                                                                  .add_sharp,
-                                                              color: Colors
-                                                                  .white,
-                                                              size: 20,
-                                                            ),
-                                                            SizedBox(
-                                                              width: 10.w,
-                                                            ),
-                                                            Text(
-                                                              "متابعة",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 14
-                                                                      .sp,
-                                                                  fontWeight:
-                                                                  FontWeight.w600),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  );
-                                                }
-                                              },
-                                            )
-                                                : Container();
-                                          }
-                                          return Center(
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  '',
-                                                  style:
-                                                  TextStyle(fontSize: 26),
+                                    UserPreferences().user.type=="user"?
+                                    FutureBuilder<List<MyFollowings>>(
+                                      future: UserApiController().Followers_User(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                          return Center();
+                                        } else if (snapshot.hasData) {
+                                          List<int?> f = snapshot.data!.map((e) => e.id).toList();
+                                          return f.contains(widget.id)
+                                              ? InkWell(
+                                            onTap: () async {
+                                              await UserApiController().Follow_One(
+                                                  followed_id: widget.id.toString(), action: "unfollow");
+                                              setState(() {});
+                                            },
+                                            child:
+                                            Container(
+                                              height: 38.h,
+                                              width: 90.w,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      37),
+                                                  color: Color(
+                                                      0xff18499A)),
+                                              child:
+                                              Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal:
+                                                    5.w),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .center,
+                                                  children: [
+                                                    Text(
+                                                      "إلغاء متابعة",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 14.sp,
+                                                          fontWeight: FontWeight.w600),
+                                                    )
+                                                  ],
                                                 ),
-                                              ],
+                                              ),
+                                            ),
+                                          )
+                                              : InkWell(
+                                            onTap:
+                                                () async {
+                                              await UserApiController().Follow_One(
+                                                  followed_id: widget.id.toString(), action: "follow");
+                                              setState(() {});
+                                            },
+                                            child:
+                                            Container(
+                                              height: 38.h,
+                                              width: 90.w,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      37),
+                                                  color: Color(
+                                                      0xff18499A)),
+                                              child:
+                                              Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal:
+                                                    5.w),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons
+                                                          .add_sharp,
+                                                      color:
+                                                      Colors.white,
+                                                      size:
+                                                      20,
+                                                    ),
+                                                    SizedBox(
+                                                      width:
+                                                      10.w,
+                                                    ),
+                                                    Text(
+                                                      "متابعة",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 14.sp,
+                                                          fontWeight: FontWeight.w600),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
                                             ),
                                           );
-                                        }),
+                                        } else {
+                                       return InkWell(
+                                         onTap: () async {
+                                           await UserApiController().Follow_One(
+                                               followed_id: widget.id.toString(), action: "unfollow");
+                                           setState(() {});
+                                         },
+                                         child:
+                                         Container(
+                                           height: 38.h,
+                                           width: 90.w,
+                                           decoration: BoxDecoration(
+                                               borderRadius:
+                                               BorderRadius.circular(
+                                                   37),
+                                               color: Color(
+                                                   0xff18499A)),
+                                           child:
+                                           Container(
+                                             margin: EdgeInsets.symmetric(
+                                                 horizontal:
+                                                 5.w),
+                                             child: Row(
+                                               mainAxisAlignment:
+                                               MainAxisAlignment
+                                                   .center,
+                                               children: [
+                                                 Text(
+                                                   "إلغاء متابعة",
+                                                   style: TextStyle(
+                                                       color: Colors.white,
+                                                       fontSize: 14.sp,
+                                                       fontWeight: FontWeight.w600),
+                                                 )
+                                               ],
+                                             ),
+                                           ),
+                                         ),
+                                       );
+                                        }
+                                      },
+                                    ):
+                                    Text( UserPreferences().user.type),
+
+
                                   ],
                                 )),
                           ],
@@ -2461,19 +2467,21 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                                                     "special"
                                                     ? InkWell(
                                                   onTap: () {
-                                                    // Navigator.push(
-                                                    //   context,
-                                                    //   MaterialPageRoute(
-                                                    //       builder: (context) =>
-                                                    //           StoryPage1(
-                                                    //             data:_ads[index].id!,
-                                                    //
-                                                    //           )
-                                                    //   ),
-                                                    //
-                                                    //
-                                                    //
-                                                    // );
+
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              StoryPage(
+                                                                AdId:_ads[index].id!,
+
+                                                              )
+                                                      ),
+
+
+
+                                                    );
+
 
                                                   },
                                                   child: Container(
@@ -2515,19 +2523,19 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                                                 )
                                                     : InkWell(
                                                   onTap: () {
-                                                    // Navigator.push(
-                                                    //   context,
-                                                    //   MaterialPageRoute(
-                                                    //       builder: (context) =>
-                                                    //           StoryPage1(
-                                                    //             data:_ads[index].id!,
-                                                    //
-                                                    //           )
-                                                    //   ),
-                                                    //
-                                                    //
-                                                    //
-                                                    // );
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              StoryPage(
+                                                                AdId:_ads[index].id!,
+
+                                                              )
+                                                      ),
+
+
+
+                                                    );
 
                                                   },
                                                   child: Container(
