@@ -138,6 +138,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
   @override
   Widget build(BuildContext context) {
     return   Back_Ground(
+
       Bar: true,
       back: true,
       eror: true,
@@ -1121,7 +1122,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                   future: UserApiController().Normal_Type(),
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState == ConnectionState.waiting) {
-                                      return Center(child: CircularProgressIndicator(color: Colors.purple,));
+                                      return Center();
                                     } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                                       Normal_Price = snapshot.data ?? [];
                                       return SizedBox(
@@ -1244,7 +1245,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                   future: UserApiController().Special_Type(),
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState == ConnectionState.waiting) {
-                                      return Center(child: CircularProgressIndicator(color: Colors.purple,));
+                                      return Center();
                                     } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                                       Special_Price = snapshot.data ?? [];
                                       return SizedBox(
@@ -1434,6 +1435,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 10.w),
                 child: ListView(
+
                   children: [
                     Text("أرفق الصور الخاصة بالاعلان",style: TextStyle(
                         color: Color(0xff7B217E),
@@ -1465,6 +1467,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                         :
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
+                      reverse: true,
                       child: Row(
                         children: [
                           Container(
@@ -1745,7 +1748,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                       future: UserApiController().getCategories(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator(color: Colors.purple,));
+                          return Center();
                         } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                           categories = snapshot.data ?? [];
                           return  Container(
@@ -1811,7 +1814,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                       future: UserApiController().getCity(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator(color: Colors.purple,));
+                          return Center();
                         } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                           cit = snapshot.data ?? [];
                           return  Container(
@@ -2065,19 +2068,25 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                         &&id!=null
                                         &&idActive!=null
                                     ){
-                                      await uploadImage().then((value) async {
-                                        await  launch(Newad.paymentURL.toString()).then((value) {
-                                          if( Newad.status=="active"){
-                                            _pageController.jumpToPage(_currentPage+1);
-                                            num.add(_currentPage-1);
-                                          }else{
-                                            showSnackBar(context, message: "لم يتم ادخال بوابة الدفع",error: true);
-
-                                          }
-
-
+                                      await uploadImage();
+                                        await launch(Newad.paymentURL.toString());
+                                        setState(() {
+                                             Newad.status;
                                         });
+                                      await Future.delayed(const Duration(seconds: 2), (){
+                                        if( Newad.status=="active"){
+                                          _pageController.jumpToPage(_currentPage+1);
+                                          num.add(_currentPage-1);
+                                        }else{
+
+                                          showSnackBar(context, message: "لم يتم ادخال بوابة الدفع",error: true);
+
+                                        }
+
                                       });
+
+
+
 
 
 
@@ -2279,8 +2288,9 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
        if(status){
          setState(() {
            progg=false;
+           Newad=ad;
          });
-         Newad=ad;
+
          print("id");
          print(ad.id.toString());
         // _pageController.jumpToPage(3);

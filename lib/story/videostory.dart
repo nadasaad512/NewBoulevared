@@ -11,6 +11,7 @@ import '../models/detalies.dart';
 import '../screens/Details/ad_story_screen.dart';
 
 import '../screens/Profile/ProfileWidgt/profileScreen.dart';
+import '../screens/maps/location.dart';
 
 class VideoStoryScreen extends StatefulWidget{
   VideoPlayerController controller;
@@ -45,6 +46,9 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
   var mint;
   var second;
   double value=0.5;
+  var cut;
+  var splittime;
+  var edit;
   @override
   void initState() {
     // TODO: implement initState
@@ -66,6 +70,7 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
             : Navigator.pop(context);
       });
     });
+
      widget.controller.play();
 
 
@@ -81,7 +86,10 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
   @override
   Widget build(BuildContext context) {
 
-    return GestureDetector(
+
+
+
+  return GestureDetector(
       onTapDown: (details) => _onTapDown(details),
       child: Container(
           height: double.infinity,
@@ -89,14 +97,19 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
           color: Colors.black,
           child:  Stack(
             children: [
-              Container(
-                height:widget.StroryData.height==null?double.infinity: widget.StroryData.height!.toDouble(),
-                width: widget.StroryData.width==null?double.infinity: widget.StroryData.width!.toDouble(),
-                child: AspectRatio(
-                  aspectRatio: widget.controller.value.aspectRatio,
-                  child: VideoPlayer(widget.controller),
+              Center(
+                child: Container(
+
+                  height:widget.StroryData.height==null?double.infinity: double.parse(widget.StroryData.height!),
+
+                  width: widget.StroryData.width==null?double.infinity: double.parse(widget.StroryData.width!),
+                  child: AspectRatio(
+                    aspectRatio: widget.controller.value.aspectRatio,
+                    child: VideoPlayer(widget.controller),
+                  ),
                 ),
               ),
+
               Positioned(
                   top: 45.0,
                   left: 10.0,
@@ -132,6 +145,9 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
                   children: [
                     InkWell(
                       onTap: (){
+                        widget.controller.pause();
+                        widget.animController.stop();
+
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -258,7 +274,9 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
 
                                   ],
                                 ),
-                                SizedBox(height: 26.h,),
+                                SizedBox(height: 10.h,),
+                                MapScreen(latitud:double.parse(ad.latitude!) ,longitud:double.parse(ad.longitude!) ),
+                                SizedBox(height: 10.h,),
 
                                 Container(
                                   width: 343.w,
@@ -342,6 +360,8 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
                 ),
               ),
 
+
+
             ],
           ),
 
@@ -357,9 +377,20 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
     final currentPosition = await  widget.controller.position;
     final newPosition = builder(currentPosition!);
 
+
+
+
+    setState(() {
+      edit=currentPosition;
+    });
+
+
     newPosition<=Duration(hours:0,minutes: 0,seconds:5 )?start=true:start=false;
     newPosition>= widget.controller.value.duration?end=true:end=false;
     await  widget.controller.seekTo(newPosition);
+
+       print("widget.controller.value");
+       print(widget.controller.value);
 
 
 
@@ -371,14 +402,45 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
     if (dx < screenWidth / 3) {
 
       if(end==true){
-        widget.currentPage < widget.Len_StroryData-1 ?
-        widget.pageController.jumpToPage(widget.currentPage + 1)
-            : null;
 
-      }else{
+        if( widget.currentPage < widget.Len_StroryData-1){
+          widget.controller.dispose();
+          widget.old.dispose();
+          widget.pageController.jumpToPage(widget.currentPage + 1);
+        }
+
+
+      }else {
 
         forward5Seconds();
-        widget.animController.value=widget.animController.value+0.05;
+        if (widget.controller.value.isInitialized) {
+          final int duration = widget.controller.value.duration.inMilliseconds;
+          final int position = widget.controller.value.position.inMilliseconds;
+          int maxBuffering = 0;
+          for (final DurationRange range in widget.controller.value.buffered) {
+            final int end = range.end.inMilliseconds;
+            if (end > maxBuffering) {
+              maxBuffering = end;
+            }
+          }
+          widget.animController.value= position / duration;
+        }
+
+        widget. animController.forward().whenComplete(() {
+          setState(() {
+            if( widget.currentPage < widget.Len_StroryData-1){
+              widget.controller.dispose();
+              widget.old.dispose();
+              widget. pageController.jumpToPage( widget.currentPage + 1);
+            }else{
+              widget.controller.dispose();
+              widget.old.dispose();
+              Navigator.pop(context);
+            }
+
+          });
+        });
+
 
       }
     }
@@ -387,6 +449,8 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
 
       if(start){
         if (widget.currentPage > 0) {
+          widget.controller.dispose();
+          widget.old.dispose();
           widget.pageController.jumpToPage(widget.currentPage - 1);
         }
 
@@ -394,7 +458,36 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
       else{
 
         rewind5Seconds();
-        widget.animController.value=widget.animController.value-0.05;
+        if (widget.controller.value.isInitialized) {
+          final int duration = widget.controller.value.duration.inMilliseconds;
+          final int position = widget.controller.value.position.inMilliseconds;
+
+
+          int maxBuffering = 0;
+          for (final DurationRange range in widget.controller.value.buffered) {
+            final int end = range.end.inMilliseconds;
+            if (end > maxBuffering) {
+              maxBuffering = end;
+            }
+          }
+          widget.animController.value= position / duration;
+        }
+        widget.  animController.forward().whenComplete(() {
+          setState(() {
+
+            if(widget.currentPage < widget.Len_StroryData-1 ){
+              widget.controller.dispose();
+              widget.old.dispose();
+              widget. pageController.jumpToPage( widget.currentPage + 1);
+            }else{
+              widget.controller.dispose();
+            widget.old.dispose();
+
+              Navigator.pop(context);
+            }
+
+          });
+        });
 
 
       }
@@ -421,28 +514,56 @@ class _VideoStoryScreenState extends State<VideoStoryScreen> {
     }
   }
   Widget Detatlies({required String name, required String image}){
-    return  Row(
-      children: [
+    return InkWell(
+      onTap: (){
+        widget.controller.pause();
+        widget.animController.stop();
+        launch(name);
+      },
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
 
-        SvgPicture.asset(image),
-        SizedBox(width: 10.w,),
-        Text(
-          name,
-          style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600),
+
+          children: [
+
+            SvgPicture.asset(image),
+            SizedBox(width: 10.w,),
+            Text(
+              name,
+              overflow: TextOverflow.fade,
+              maxLines: 1,
+              softWrap: false,
+              style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
   Widget Social({required String link, required String image}){
     return   InkWell(
         onTap: (){
+          widget.controller.pause();
+          widget.animController.stop();
           launch(link);
 
         }
         ,
         child: SvgPicture.asset(image));
+  }
+  Widget MapScreen({required double latitud, required double longitud}){
+    return     Container(
+      height: 125.h,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5)
+
+      ),
+      child: location(latitude: latitud,longitude:longitud ),
+
+    );
   }
 
 

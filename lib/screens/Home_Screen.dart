@@ -15,6 +15,7 @@ import '../models/detalies.dart';
 import '../models/special_ads.dart';
 import '../models/user.dart';
 import 'PARTBar/detalies.dart';
+import 'maps/location.dart';
 import 'maps/mapscreen.dart';
 
 class HomeScreen extends StatefulWidget{
@@ -57,9 +58,13 @@ class _HomeScreenState extends State<HomeScreen> {
           child: ListView(
             children: [
 
+
+
+
+
               UserPreferences().user.type=="user"?
               FutureBuilder<List<MyFollowings>>(
-                future: UserApiController().CountFollowers_User(),
+                future: UserApiController().Followers_User(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center();

@@ -795,7 +795,12 @@ class UserApiController with Helpers
 
   Future<Ads> AdDetalies({required int idAD}) async {
     var url = Uri.parse(ApiSettings.AdsDetalies(idAds: idAD));
-    var response = await http.get(url);
+    var response = await http.get(url,headers:
+    {
+      HttpHeaders.authorizationHeader: UserPreferences().token,
+    }
+
+    );
 
 
 

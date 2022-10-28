@@ -36,13 +36,14 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
     try {
       final places = await GeocodingPlatform.instance
           .placemarkFromCoordinates(latLng.latitude, latLng.longitude);
+
       Navigator.pop(context, {
         'lat': latLng.latitude,
         'lon': latLng.longitude,
         'address': places[1].street
       });
     } catch (e) {
-      Navigator.pop(context);
+
       Navigator.pop(context,
           {'lat': latLng.latitude, 'lon': latLng.longitude, 'address': '-'});
     }
@@ -59,7 +60,8 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
       ).then((val) {
         setState(() {
           _markerIcon = val;
-          _markers.add(Marker(
+          _markers.add(
+              Marker(
               markerId: MarkerId('home'),
               position: latLng,
               icon: _markerIcon ?? BitmapDescriptor.defaultMarker));
@@ -134,8 +136,8 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                             fontWeight: FontWeight.w600,
                             fontSize: 17),
                       ),
-                      onPressed: () {
-                        pickLocation();
+                      onPressed: () async{
+                       await pickLocation();
                       }),
                 ),
           Positioned(
@@ -177,7 +179,6 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                       }
                     }
                     locationData = await location.getLocation();
-
                     updateLocationMarker(locationData.latitude ?? 0.0,
                         locationData.longitude ?? 0.0);
                   }),

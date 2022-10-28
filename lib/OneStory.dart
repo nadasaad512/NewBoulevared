@@ -35,8 +35,7 @@ class _StoryPageState extends State<StoryPage> with SingleTickerProviderStateMix
     UserApiController().AdDetalies(idAD: widget.AdId).then((value) {
       setState(() {
         ad = value;
-        StroryData = List.from(value.adImages!)
-          ..addAll(List.from(value.adVideos!));
+        StroryData = List.from(value.adImages!)..addAll(List.from(value.adVideos!));
       });
       setState(() {
         StroryData;
@@ -149,7 +148,6 @@ class _StoryPageState extends State<StoryPage> with SingleTickerProviderStateMix
 
     else {
       if (StroryData[CurrentPage].type == "image") {
-        print("nada");
          if (animController.isAnimating) {
 
            animController.stop();

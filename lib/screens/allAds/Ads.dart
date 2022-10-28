@@ -231,7 +231,7 @@ class _AdsScreenState extends State<AdsScreen> {
                                 borderRadius: BorderRadius.circular(5),
                                 image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image: NetworkImage("_detalies[index].image!")
+                                    image: NetworkImage(_detalies[index].image!)
                                 )
                             ),
                             child:    Container(

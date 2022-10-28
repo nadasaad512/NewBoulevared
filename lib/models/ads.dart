@@ -199,8 +199,9 @@ class AdType {
 
 class ListStory{
   List<story1>? ad;
-
-ListStory({ this.ad});
+  int? page ;
+  int? lengthad ;
+  ListStory({ this.ad, this.page,this.lengthad});
 }
 
 
@@ -225,8 +226,8 @@ class story1 {
   String? file;
   String? createdAt;
   String? duration;
-  int? height;
-  int? width;
+  String? height;
+  String? width;
 
 
   story1();

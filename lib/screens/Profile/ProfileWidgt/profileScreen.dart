@@ -370,8 +370,8 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                                   ConnectionState.waiting) {
                                                 return Center(
                                                 );
-                                              } else if (snapshot.hasData &&
-                                                  snapshot.data!.isNotEmpty) {
+                                              }
+                                              else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                                                 _ads = snapshot.data ?? [];
 
                                                 return _ads[0].adType!.type ==
@@ -1006,7 +1006,9 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                                   ),
                                                 ),
                                                     );
-                                              } else {
+                                              }
+
+                                              else {
                                                 return SizedBox.shrink();
                                               }
                                             },
@@ -1022,8 +1024,8 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                             return Center(
                                                 child:
                                                 CircularProgressIndicator());
-                                          } else if (snapshot.hasData &&
-                                              snapshot.data!.isNotEmpty) {
+                                          }
+                                          else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                                             _ads = snapshot.data ?? [];
 
                                             return GridView.builder(

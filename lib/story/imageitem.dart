@@ -10,6 +10,7 @@ import '../models/detalies.dart';
 import '../screens/Details/ad_story_screen.dart';
 
 import '../screens/Profile/ProfileWidgt/profileScreen.dart';
+import '../screens/maps/location.dart';
 
 
 class ImageStoryScreen extends StatefulWidget{
@@ -38,11 +39,10 @@ class _ImageStoryScreenState extends State<ImageStoryScreen> {
     // TODO: implement initState
     super.initState();
     _calculateImageDimension(image1: widget.StroryData.file.toString()).then((value) {
-      print(value);
-     setState(() {
-       heightImg= value.height;
+
+      heightImg= value.height;
        widthImg= value.width;
-     });
+
     });
 
 
@@ -97,6 +97,7 @@ class _ImageStoryScreenState extends State<ImageStoryScreen> {
               children: [
                 InkWell(
                   onTap: (){
+                   widget. animController.stop();
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -218,7 +219,9 @@ class _ImageStoryScreenState extends State<ImageStoryScreen> {
 
                               ],
                             ),
-                            SizedBox(height: 26.h,),
+                            SizedBox(height: 10.h,),
+                            MapScreen(latitud:double.parse(ad.latitude!) ,longitud:double.parse(ad.longitude!) ),
+                            SizedBox(height: 10.h,),
 
                             Container(
                               width: 343.w,
@@ -230,7 +233,7 @@ class _ImageStoryScreenState extends State<ImageStoryScreen> {
                                 color: Colors.purple.shade50,
                               ),
                               child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+                               margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
                                 child: Column(
                                   children: [
                                     ad.store_url==null?Container():
@@ -323,27 +326,57 @@ class _ImageStoryScreenState extends State<ImageStoryScreen> {
   }
 
   Widget Detatlies({required String name, required String image}){
-    return  Row(
-      children: [
+    return  InkWell(
+      onTap: (){
+        widget.animController.stop();
 
-        SvgPicture.asset(image),
-        SizedBox(width: 10.w,),
-        Text(
-          name,
-          style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w600),
+        launch(name);
+      },
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+
+
+          children: [
+
+            SvgPicture.asset(image),
+            SizedBox(width: 10.w,),
+            Text(
+              name,
+              overflow: TextOverflow.fade,
+              maxLines: 1,
+              softWrap: false,
+              style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
   Widget Social({required String link, required String image}){
     return   InkWell(
         onTap: (){
+          widget.animController.stop();
           launch(link);
 
         }
         ,
         child: SvgPicture.asset(image));
   }
+  Widget MapScreen({required double latitud, required double longitud}){
+    return     Container(
+      height: 125.h,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5)
+
+      ),
+      child: location(latitude: latitud,longitude:longitud ),
+
+    );
+  }
+
+
+
 }
