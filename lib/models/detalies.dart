@@ -43,6 +43,7 @@ class Ads {
   int? categoryId;
   int? cityId;
   String? image;
+  String? ad_paid;
   String? status;
   String? latitude;
   String? longitude;
@@ -70,6 +71,7 @@ class Ads {
     categoryId = json['category_id'];
     cityId = json['city_id'];
     image = json['image'];
+    ad_paid = json['ad_paid'];
 
     store_url = json['store_url'];
     facebook = json['facebook'];
@@ -118,6 +120,7 @@ class Ads {
     data['latitude'] = this.latitude;
     data['longitude'] = this.longitude;
     data['paymentURL'] = this.paymentURL;
+    data['ad_paid'] = this.ad_paid;
 
     data['store_url']=this.store_url;
      data['facebook']=this.facebook;

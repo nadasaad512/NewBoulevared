@@ -11,7 +11,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-import '../MainScreen.dart';
+import '../screens/mainscreen/MainScreen.dart';
 import '../api/User_Controller.dart';
 import '../models/setting.dart';
 import '../models/user.dart';
@@ -161,7 +161,10 @@ class _Back_GroundState extends State<Back_Ground> {
                           SizedBox(height: 20.h,),
                           DraTex(context,titel: "تقييم التطبيق",reviw: true),
                           SizedBox(height: 20.h,),
-                          DraTex(context,titel: "سياسات الاعلان",router: '/ConditionScreen'),
+                          snapshot.data!.type=="advertiser"?
+                          DraTex(context,titel: "سياسات الاعلان",router: '/ConditionScreen'):SizedBox.shrink(),
+                          snapshot.data!.type!="advertiser"?
+                              SizedBox.shrink():
                           SizedBox(height: 20.h,),
                           DraTex(context,titel: "تغيير كلمة المرور",router:'/ChangePassword'),
                           SizedBox(height: 20.h,),

@@ -13,7 +13,7 @@ import '../../models/ads.dart';
 import '../../models/city.dart';
 import '../../models/detalies.dart';
 
-import '../../OneStory.dart';
+import '../../story/OneStory.dart';
 
 class AdsScreen extends StatefulWidget{
   @override

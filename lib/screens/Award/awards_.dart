@@ -159,7 +159,32 @@ class _AwardScreenState extends State<AwardScreen> {
                     }
 
                     else if (snapshot.hasError) {
-                      return Text('');
+                      return  Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+
+                          children: [
+
+
+                            Text('لكي تتمكن من كسب النقاط والدخول في السحوبات سجل الان  ',  overflow: TextOverflow.ellipsis,maxLines: 2,style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600
+                            ),),
+                            TextButton(onPressed: (){
+
+                              Navigator.pushNamed(context, '/register_screen');
+                            }, child: Text("كمستخدم",style: TextStyle(
+
+                                fontWeight: FontWeight.w500,
+                                decoration: TextDecoration.underline,
+                                fontSize: 20.sp,
+                                color: Color(0xff18499A)
+                            ),)),
+
+                          ],
+                        ),
+                      );
                     }
                     return Center(
                       child: Icon(Icons.wifi_off_rounded, size: 80,color: Colors.purple,),

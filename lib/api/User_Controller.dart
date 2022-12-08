@@ -461,9 +461,9 @@ class UserApiController with Helpers
 
   Future<List<Awards>> Awards_CanWin() async {
     var url = Uri.parse(ApiSettings.AwardsCanWin);
-    var response = await http.get(url, headers: {
-      HttpHeaders.authorizationHeader: UserPreferences().token,
-    });
+    var response = await http.get(url,
+
+    );
     if (jsonDecode(response.body)['status'] == true) {
       var json = jsonDecode(response.body);
       var jsonArray = json['awards'] as List;
@@ -500,7 +500,8 @@ class UserApiController with Helpers
   }
   Future<List<MyFollowings>> Followers_User() async {
     var url = Uri.parse(ApiSettings.MyFollower);
-    var response = await http.get(url, headers: {
+    var response = await http.get(url,
+        headers: {
       HttpHeaders.authorizationHeader: UserPreferences().token,
     });
     if (jsonDecode(response.body)['status'] == true) {

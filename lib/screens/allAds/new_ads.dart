@@ -8,6 +8,7 @@ import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
+import 'package:wakelock/wakelock.dart';
 import '../../api/Images_Controller.dart';
 import '../../api/User_Controller.dart';
 import '../../component/TextField.dart';
@@ -85,11 +86,14 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
   List<int>  deletItem=[];
   Ads ad =Ads();
   Ads Newad =Ads();
+  bool nav=false;
+  int navid=0;
 
 
   @override
   void initState() {
     super.initState();
+    Wakelock.enable();
     _pageController = PageController();
     face = TextEditingController();
     twita = TextEditingController();
@@ -173,7 +177,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                         ),
                         shape: BoxShape.circle,
                       ),
-                      child: num.contains(0)
+                      child: num.contains(2)
 
           ?Icon(Icons.done_rounded,color: Colors.white,size: 20,):null
 
@@ -242,7 +246,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                         ),
                         shape: BoxShape.circle,
                       ),
-                      child: num.contains(2)?Icon(Icons.done_rounded,color: Colors.white,size: 20,):null
+                      child: num.contains(0)?Icon(Icons.done_rounded,color: Colors.white,size: 20,):null
 
                   ),
 
@@ -1387,7 +1391,8 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
                                       if(type!=null){
                                         _pageController.jumpToPage(_currentPage+1);
-                                        num.add(_currentPage-1);
+                                        num.add(_currentPage);
+                                        num.add(_currentPage+1);
 
                                       }else{
                                         showSnackBar(context, message: "أدخل البيانات المطلوبة",error: true);
@@ -1434,9 +1439,74 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
               },
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 10.w),
-                child: ListView(
+                child:  nav?
+
+               Container(
+                 margin: EdgeInsets.symmetric(horizontal: 20.w),
+                 child: Column(
+
+                   children: [
+
+                     SizedBox(height: 90.h,),
+                     Text("التأكيد على الدفع  ",style: TextStyle(
+                         color: Color(0xff7B217E),
+                         fontSize: 18.sp,
+                         fontWeight: FontWeight.w600
+                     ),),
+                     SizedBox(height: 30.h,),
+                     ElevatedButton(
+                       onPressed: ()async {
+                         setState(() {
+                           progg=true;
+                         });
+
+                         await  UserApiController().AdDetalies(idAD:navid ).then((value) {
+                           if(value.ad_paid== "yes"){
+                             _pageController.jumpToPage(_currentPage+1);
+                             num.add(_currentPage);
+                             num.add(_currentPage+1);
+                             num.add(0);
+
+
+                           }else{
+                             setState(() {
+                               nav=false;
+                               progg=false;
+                             });
+                             showSnackBar(context, message: "أدخل بوابة الدفع",error: true);
+                             _pageController.jumpToPage(1);
+                           }
+
+
+
+
+
+                         });
+                       },
+
+                       child:progg?
+
+                       CircularProgressIndicator(color: Colors.white,):
+                       Text( 'تحقق',
+                         style: TextStyle(
+                             fontWeight: FontWeight.w700,
+                             fontSize: 18.sp
+                         ),),
+                       style: ElevatedButton.styleFrom(
+                         primary: Color(0xff7B217E),
+
+                         minimumSize: Size(double.infinity, 50.h),
+                       ),
+                     )
+                   ],
+                 ),
+               ):
+
+
+                ListView(
 
                   children: [
+
                     Text("أرفق الصور الخاصة بالاعلان",style: TextStyle(
                         color: Color(0xff7B217E),
                         fontSize: 16.sp,
@@ -1467,7 +1537,6 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                         :
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      reverse: true,
                       child: Row(
                         children: [
                           Container(
@@ -2040,7 +2109,8 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                               onPressed: () {
                                 setState(() {
                                   _currentPage >0 ? _pageController.jumpToPage(_currentPage-1):null;
-                                  num.remove(_currentPage+1);
+                                  num.remove(1);
+                                  print(num);
 
                                 });
 
@@ -2056,6 +2126,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                               ),
                             )),
                             SizedBox(width: 15.w,),
+
                             Expanded(
 
                               child: ElevatedButton(
@@ -2069,25 +2140,14 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                         &&idActive!=null
                                     ){
                                       await uploadImage();
-                                        await launch(Newad.paymentURL.toString());
-                                        setState(() {
-                                             Newad.status;
+                                      Future.delayed(Duration.zero, () {
+                                        launch(Newad.paymentURL.toString()).then((value) {
+                                          setState(() {
+                                            nav=true;
+                                          });
                                         });
-                                      await Future.delayed(const Duration(seconds: 2), (){
-                                        if( Newad.status=="active"){
-                                          _pageController.jumpToPage(_currentPage+1);
-                                          num.add(_currentPage-1);
-                                        }else{
-
-                                          showSnackBar(context, message: "لم يتم ادخال بوابة الدفع",error: true);
-
-                                        }
 
                                       });
-
-
-
-
 
 
 
@@ -2098,7 +2158,10 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
                                 },
 
-                                child:progg?CircularProgressIndicator(color: Colors.white,) :Text( 'اضافة',
+                                child:progg?
+
+                                CircularProgressIndicator(color: Colors.white,):
+                                Text( 'اضافة',
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 18.sp
@@ -2201,6 +2264,10 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
     );
   }
 
+
+
+
+
   OutlineInputBorder get _border {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(5),
@@ -2289,6 +2356,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
          setState(() {
            progg=false;
            Newad=ad;
+           navid=ad.id!;
          });
 
          print("id");

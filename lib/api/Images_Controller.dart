@@ -80,13 +80,16 @@ class ImagesApiController with Helpers {
         //ad
         uploadEvent(true, jsonDecode(event)['message'],ad);
 
-      } else if (response.statusCode != 500) {
+      }
+      else if (response.statusCode != 500)
+      {
         var dataObject = jsonDecode(event)['ad'];
         Ads ad = Ads.fromJson(dataObject);
 
         showSnackBar(context, message: jsonDecode(event)['message'], error: true);
         uploadEvent(false, jsonDecode(event)['message'],ad);
-      } else {
+      }
+      else {
         var dataObject = jsonDecode(event)['ad'];
         Ads ad = Ads.fromJson(dataObject);
 

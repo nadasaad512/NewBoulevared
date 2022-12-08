@@ -1,16 +1,10 @@
 import 'dart:io';
-
 import 'package:new_boulevard/models/activity.dart';
 import 'package:new_boulevard/models/user.dart';
-import 'package:new_boulevard/utils/helpers.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
-
 import '../../api/User_Controller.dart';
-
 import '../../component/TextField.dart';
 import '../../component/background.dart';
 import '../../models/city.dart';

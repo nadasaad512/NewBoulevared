@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../OneStory.dart';
+import '../../story/OneStory.dart';
 import '../../api/User_Controller.dart';
 import '../../component/main_bac.dart';
 

@@ -31,7 +31,7 @@ class ImageStoryScreen extends StatefulWidget{
   State<ImageStoryScreen> createState() => _ImageStoryScreenState();
 }
 
-class _ImageStoryScreenState extends State<ImageStoryScreen> {
+class _ImageStoryScreenState extends State<ImageStoryScreen> with SingleTickerProviderStateMixin {
   double heightImg=0;
   double widthImg=0;
   @override
@@ -51,8 +51,8 @@ class _ImageStoryScreenState extends State<ImageStoryScreen> {
   Widget build(BuildContext context) {
 
     return Container(
-      height: heightImg,
-      width: widthImg,
+      height: heightImg.h,
+      width: widthImg.w,
       decoration: BoxDecoration(
         color: Colors.black,
         image: DecorationImage(

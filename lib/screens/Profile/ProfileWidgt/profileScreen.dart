@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../OneStory.dart';
+import '../../../story/OneStory.dart';
 import '../../../Shared_Preferences/User_Preferences.dart';
 import '../../../component/main_bac.dart';
 

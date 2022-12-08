@@ -1,41 +1,31 @@
 
 import 'package:new_boulevard/screens/Details/ad_story_screen.dart';
-import 'package:new_boulevard/screens/Home_Screen.dart';
-import 'package:new_boulevard/screens/PARTBar/detalies.dart';
+import 'package:new_boulevard/screens/homescreen/Home_Screen.dart';
 import 'package:new_boulevard/screens/PARTBar/partScreen.dart';
 import 'package:new_boulevard/screens/Profile/ProfileWidgt/EditAdmain.dart';
-import 'package:new_boulevard/screens/Profile/ProfileWidgt/Followers_Advertiser.dart';
-import 'package:new_boulevard/screens/Profile/ProfileWidgt/allFollower.dart';
 import 'package:new_boulevard/screens/Profile/ProfileWidgt/profileScreen.dart';
 import 'package:new_boulevard/screens/SpecialAds/SpeciaScreen.dart';
 import 'package:new_boulevard/screens/allAds/Ads.dart';
-
 import 'package:new_boulevard/screens/allAds/new_ads.dart';
 import 'package:new_boulevard/screens/auth/ChangePass.dart';
 import 'package:new_boulevard/screens/auth/Register_screen.dart';
 import 'package:new_boulevard/screens/auth/forgrt_screen.dart';
 import 'package:new_boulevard/screens/auth/login_screen.dart';
-import 'package:new_boulevard/screens/auth/reset_password_screen.dart';
 import 'package:new_boulevard/screens/Award/awards_.dart';
-import 'package:new_boulevard/screens/info_screen.dart';
-import 'package:new_boulevard/OneStory.dart';
-import 'package:new_boulevard/ListStory.dart';
+import 'package:new_boulevard/screens/infoclient/info_screen.dart';
 import 'package:new_boulevard/screens/maps/mapscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
-
-import 'MainScreen.dart';
+import 'screens/mainscreen/MainScreen.dart';
 import 'Shared_Preferences/User_Preferences.dart';
-import 'Splash.dart';
-import 'component/TextField.dart';
-import 'conditinScreen.dart';
+import 'screens/Splash/Splash.dart';
+import 'screens/infoclient/conditinScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await UserPreferences().initPreferences();
-  runApp(  MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {

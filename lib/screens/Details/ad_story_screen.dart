@@ -47,6 +47,7 @@ class _StoryAdsScreenState extends State<StoryAdsScreen> with SingleTickerProvid
   void dispose() {
     // TODO: implement dispose
     _pageController.dispose();
+    _animationController.dispose();
     super.dispose();
 
   }
