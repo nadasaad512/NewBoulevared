@@ -2143,7 +2143,7 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                                     ),
                                     UserPreferences().user.type=="user"?
                                     FutureBuilder<List<MyFollowings>>(
-                                      future: UserApiController().Followers_User(),
+                                      future: UserApiController().CountFollowers_User(),
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState == ConnectionState.waiting) {
                                           return Center();

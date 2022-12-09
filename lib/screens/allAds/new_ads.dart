@@ -967,6 +967,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                    SizedBox(height: 12.h,),
                    FieldScreen(title: "الانستجرام",controller: insta,isicon: true,icon:"images/instegram.svg"),
                    SizedBox(height: 12.h,),
+
                    FieldScreen(title: "تويتر",controller: twita,isicon: true,icon:"images/twitter.svg"),
                    SizedBox(height: 22.h,),
                    Center(
@@ -1002,6 +1003,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                        ),
                      ),
                    ),
+                   SizedBox(height: 100.h,),
 
 
 
