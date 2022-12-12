@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,10 +13,9 @@ import '../../models/Follower_user.dart';
 import '../../models/categories.dart';
 import '../../models/detalies.dart';
 import '../../models/special_ads.dart';
-import '../../models/user.dart';
+
 import '../PARTBar/detalies.dart';
-import '../maps/location.dart';
-import '../maps/mapscreen.dart';
+
 
 class HomeScreen extends StatefulWidget{
   @override
@@ -335,8 +334,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontWeight: FontWeight.w600,
                       fontSize: 16.sp
                   ),),
-                  SizedBox(width: 8.w,),
-                  SvgPicture.asset("images/categorypart.svg",color: Color(0xff7B217E) ,),
+
                   Spacer(),
                   InkWell(
                     onTap: (){

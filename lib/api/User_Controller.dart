@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import '../Shared_Preferences/User_Preferences.dart';
@@ -337,25 +338,20 @@ class UserApiController with Helpers
   }
   Future<User?> getProfile() async {
     var url = Uri.parse(ApiSettings.Profile);
-    var response = await http.get(url, headers: {
-      HttpHeaders.authorizationHeader: UserPreferences().token,
-    });
-    if (jsonDecode(response.body)['status'] == true) {
-      var json = jsonDecode(response.body);
-      var jsonArray = json['user'];
-      User _user = User.fromJson(jsonArray);
-      return _user;
-    } else if (jsonDecode(response.body)['status'] == false) {
-      print("Something went wrong, please try again!");
-      //showSnackBar(context, message: 'Something went wrong, please try again!', error: true);
-    } else {
-      print("Something went wrong, please try again!");
+     if(UserPreferences().token.isNotEmpty){
+       var response = await http.get(url, headers: {
+         HttpHeaders.authorizationHeader: UserPreferences().token,
+       });
+       if (jsonDecode(response.body)['status'] == true) {
+         var json = jsonDecode(response.body);
+         var jsonArray = json['user'];
+         User user = User.fromJson(jsonArray);
+         return user;
+       }
+     }else{
+       return null;
+     }
 
-      // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
-    }
-
-
-    return null;
   }
   Future<bool> Follow_One({required String followed_id, required String action,}) async {
     var url = Uri.parse(ApiSettings.Follow_One);
@@ -630,13 +626,6 @@ class UserApiController with Helpers
           .map((jsonObject) => AdvertiserADs.fromJson(jsonObject))
           .toList();
       return _ads;
-    } else if (jsonDecode(response.body)['status'] == false) {
-      print("Something went wrong, please try again!");
-      //showSnackBar(context, message: 'Something went wrong, please try again!', error: true);
-    } else {
-      print("Something went wrong, please try again!");
-
-      // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
     }
     return [];
   }
@@ -773,15 +762,12 @@ class UserApiController with Helpers
     }
     return false;
   }
-  Future<bool> DeletAttach( {required int id_dele}) async {
-
-
-
+  Future<bool> DeletAttach( {required String id_dele}) async {
 
     var url = Uri.parse(ApiSettings.delet_Attach(dele: id_dele));
-    var response = await http.get(url,headers: {
-    HttpHeaders.authorizationHeader: UserPreferences().token,
-    });
+    log("ApiSettings.delet_Attach(dele: id_dele)");
+    log(ApiSettings.delet_Attach(dele: id_dele));
+    var response = await http.get(url);
 
     if (jsonDecode(response.body)['status'] == true) {
       return true;

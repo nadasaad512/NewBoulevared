@@ -39,7 +39,42 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<User?>(
+    return
+      UserPreferences().token==''?
+      Container(
+        margin: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'كي تتمكن من الاستفادة من خدامتنا سجل الان ',
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style:
+              TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+            ),
+            SizedBox(
+              height: 50.h,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/register_screen');
+              },
+              child: Text(
+                'انشاء  حساب  الان ',
+                style: TextStyle(
+                    fontWeight: FontWeight.w700, fontSize: 18.sp),
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xff7B217E),
+                minimumSize: Size(double.infinity, 50.h),
+              ),
+            ),
+          ],
+        ),
+      ):
+
+      FutureBuilder<User?>(
         future: UserApiController().getProfile(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -1021,9 +1056,7 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                         builder: (context, snapshot) {
                                           if (snapshot.connectionState ==
                                               ConnectionState.waiting) {
-                                            return Center(
-                                                child:
-                                                CircularProgressIndicator());
+                                            return Center(child: CircularProgressIndicator(color: Colors.purple,));
                                           }
                                           else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                                             _ads = snapshot.data ?? [];
@@ -1675,7 +1708,7 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                                   ),
                                                       );
                                                 });
-                                          } else if (snapshot.data!.isEmpty) {
+                                          } else if (snapshot.data!.isEmpty||snapshot.data==[]) {
                                             return Column(
                                               mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -1981,39 +2014,6 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                     ],
                   ),
                 ));
-          } else if (snapshot.hasError) {
-            return Container(
-              margin: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'كي تتمكن من الاستفادة من خدامتنا سجل الان ',
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    style:
-                    TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    height: 50.h,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/register_screen');
-                    },
-                    child: Text(
-                      'انشاء  حساب  الان ',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 18.sp),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xff7B217E),
-                      minimumSize: Size(double.infinity, 50.h),
-                    ),
-                  ),
-                ],
-              ),
-            );
           }
           return Center(
             child: Icon(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../Shared_Preferences/User_Preferences.dart';
 import '../../api/User_Controller.dart';
 import '../../component/TextField.dart';
 import '../../component/main_bac.dart';
@@ -53,6 +54,33 @@ class _AwardScreenState extends State<AwardScreen> {
           },
           child: ListView(
             children: [
+              UserPreferences().token==''?
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+
+                  children: [
+
+
+                    Text('لكي تتمكن من كسب النقاط والدخول في السحوبات سجل الان  ',  overflow: TextOverflow.ellipsis,maxLines: 2,style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600
+                    ),),
+                    TextButton(onPressed: (){
+
+                      Navigator.pushNamed(context, '/register_screen');
+                    }, child: Text("كمستخدم",style: TextStyle(
+
+                        fontWeight: FontWeight.w500,
+                        decoration: TextDecoration.underline,
+                        fontSize: 20.sp,
+                        color: Color(0xff18499A)
+                    ),)),
+
+                  ],
+                ),
+              ):
 
               FutureBuilder<User?>(
                   future: UserApiController().getProfile(),
@@ -158,37 +186,7 @@ class _AwardScreenState extends State<AwardScreen> {
                       );
                     }
 
-                    else if (snapshot.hasError) {
-                      return  Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20.w),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-
-                          children: [
-
-
-                            Text('لكي تتمكن من كسب النقاط والدخول في السحوبات سجل الان  ',  overflow: TextOverflow.ellipsis,maxLines: 2,style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600
-                            ),),
-                            TextButton(onPressed: (){
-
-                              Navigator.pushNamed(context, '/register_screen');
-                            }, child: Text("كمستخدم",style: TextStyle(
-
-                                fontWeight: FontWeight.w500,
-                                decoration: TextDecoration.underline,
-                                fontSize: 20.sp,
-                                color: Color(0xff18499A)
-                            ),)),
-
-                          ],
-                        ),
-                      );
-                    }
-                    return Center(
-                      child: Icon(Icons.wifi_off_rounded, size: 80,color: Colors.purple,),
-                    );
+                    return  SizedBox.shrink();
                   }),
 
               FutureBuilder<List<Awards>>(
@@ -435,15 +433,9 @@ class _AwardScreenState extends State<AwardScreen> {
 
 
                                            ):
-                                           Text("");
+                                          SizedBox.shrink();
                                          }
-
-                                         else if (snapshot.hasError) {
-                                           return Text('');
-                                         }
-                                         return Center(
-                                           child: Icon(Icons.wifi_off_rounded, size: 80,color: Colors.purple,),
-                                         );
+                                         return SizedBox.shrink();
                                        }),
 
 
@@ -458,40 +450,15 @@ class _AwardScreenState extends State<AwardScreen> {
                         );
                       },
                     );
+                  }else if(snapshot.data==[] ){
+                    return SizedBox.shrink();
                   }
 
 
 
                   else {
                     return Center(
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20.w),
-                        child: Column(
-                          children: [
-                            SizedBox(height: 80.h,),
-
-                            Text('كي تتمكن من الاستفادة من خدامتنا سجل الان ',  overflow: TextOverflow.ellipsis,maxLines: 2,style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600
-                            ),),
-                            SizedBox(height: 180.h,),
-                            ElevatedButton(
-                              onPressed: ()  {
-                                Navigator.pushNamed(context, '/register_screen');
-                              },
-                              child:  Text('أنشأ حساب الان ',style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 18.sp
-                              ),),
-                              style: ElevatedButton.styleFrom(
-                                primary: Color(0xff7B217E),
-
-                                minimumSize: Size(double.infinity, 50.h),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      child: Icon(Icons.wifi_off_rounded, size: 80,color: Colors.purple,),
                     );
 
 

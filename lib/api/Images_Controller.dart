@@ -113,6 +113,7 @@ class ImagesApiController with Helpers {
         required  List <double> duration_video,
         required String store_url,
         required String ad_id,
+        required int adTypeid,
         required String facebook,
         required String whatsapp,
         required String instagram,
@@ -182,6 +183,7 @@ class ImagesApiController with Helpers {
     multiPartRequest.fields['details_en']=details_ar;
 
     multiPartRequest.fields['ad_id']=ad_id;
+    multiPartRequest.fields['ad_type_id']=adTypeid.toString();
 
     multiPartRequest.fields['store_url']=store_url;
     multiPartRequest.fields['facebook']=facebook;

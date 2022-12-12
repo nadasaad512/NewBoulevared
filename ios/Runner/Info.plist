@@ -47,5 +47,32 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+
+	<key NSCame raUsageDes cription</key>
+    <string-To take user profile image-/string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string-To choose user profile image</string>
+    <key NSMic rophoneUsageDescription</key
+    Strings>Used to capture audię for image picker plugin-/string
+
+    key>NSAppTransportSecurity</key>
+    <dict>
+    <key>NSALlowsArbitraryLoads</key>
+    true/>
+    </dict>
+    <key>LSApplicationQue ries Schemes</ key>
+    <array>
+    <string-https/string>
+    <string-http:/string>
+    </array>
+
 </dict>
 </plist>
+
+
+
+

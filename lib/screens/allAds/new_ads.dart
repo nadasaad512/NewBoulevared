@@ -88,6 +88,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
   Ads Newad =Ads();
   bool nav=false;
   int navid=0;
+  int adType=0;
 
 
   @override
@@ -112,6 +113,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
        whatsup.text=ad.whatsapp.toString();
        insta.text=ad.instagram.toString();
        link.text=ad.store_url.toString();
+       adType=ad.adTypeId!;
        link.text=ad.twitter.toString();
        info.text=ad.details.toString();
        location=ad.latitude.toString()+ad.longitude.toString();
@@ -154,8 +156,6 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
         ),
         child:  Column(
             children: [
-
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
 
@@ -275,6 +275,8 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
        return  Expanded(
 
          child: PageView(
+
+
            controller: _pageController,
            physics: NeverScrollableScrollPhysics(),
            onPageChanged: (int currentPage) {
@@ -283,8 +285,6 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
              });
            },
            children: [
-
-
              Container(
                margin: EdgeInsets.symmetric(horizontal: 10.w),
                child: ListView(
@@ -349,11 +349,17 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                        child: Container(
                                          margin: EdgeInsets.all(5),
                                          child: InkWell(
-                                           onTap: (){
-                                             setState(() {
+                                           onTap: ()async{
+
                                                ad.adImages!.removeAt(index);
-                                               deletItem.add(ad.adImages![index].id!.toInt());
-                                             });
+                                               setState(() {
+
+                                               });
+                                               await UserApiController().
+                                               DeletAttach(id_dele:ad.adImages![index].id!.toString());
+
+
+
                                            },
                                            child: CircleAvatar(
                                                backgroundColor: Colors.purple,
@@ -450,10 +456,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                        ),
                      ],
                    ):SizedBox.shrink(),
-
-                   SizedBox(height: 12.h,),
-
-
+                     SizedBox(height: 12.h,),
                    Text(" الفيديوهات الخاصة بالاعلان",style: TextStyle(
                        color: Color(0xff7B217E),
                        fontSize: 16.sp,
@@ -515,25 +518,26 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                            ),
                                          ),
 
-                                         Align(
-                                             alignment: Alignment.topLeft,
-                                             child: Container(
-                                               margin: EdgeInsets.all(5),
-                                               child: InkWell(
-                                                 onTap: (){
-                                                   setState(() {
-                                                     ad.adVideos!.removeAt(index);
-                                                     deletItem.add(ad.adVideos![index].id!.toInt());
-                                                   });
-                                                 },
+                                         InkWell(
+                                           onTap: ()async{
+                                             ad.adVideos!.removeAt(index);
+                                             setState(() {
+
+                                             });
+                                             await UserApiController().
+                                             DeletAttach(id_dele:ad.adVideos![index].id!.toString());
+                                           },
+                                           child: Align(
+                                               alignment: Alignment.topLeft,
+                                               child: Container(
+                                                 margin: EdgeInsets.all(5),
                                                  child: CircleAvatar(
                                                      backgroundColor: Colors.purple,
                                                      radius: 10.sp,
-
                                                      child: Icon(Icons.close,size: 10.sp,color: Colors.white,)
                                                  ),
-                                               ),
-                                             )
+                                               )
+                                           ),
                                          ),
 
 
@@ -556,8 +560,6 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                      ),
                    ),
                    SizedBox(height: 12.h,),
-
-
                    videoList.isNotEmpty?
                    Column(
                      mainAxisAlignment: MainAxisAlignment.start,
@@ -667,8 +669,6 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                        ),
                      ],
                    ):SizedBox.shrink(),
-
-
 
                    Text(" الصورة الأساسية لعرض الإعلان",style: TextStyle(
                        color: Color(0xff7B217E),
@@ -978,9 +978,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                            EditProgress=true;
                          });
 
-                         for(int i=0;i<deletItem.length-1;i++){
-                           await UserApiController().DeletAttach(id_dele: deletItem[i]);
-                         }
+
                          await EditImageFuncation();
                          setState(() {
                            EditProgress=false;
@@ -1003,7 +1001,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                        ),
                      ),
                    ),
-                   SizedBox(height: 100.h,),
+                   SizedBox(height: 200.h,),
 
 
 
@@ -2183,7 +2181,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                     ),
 
 
-                    SizedBox(height: 28.h,),
+                    SizedBox(height: 200.h,),
 
 
 
@@ -2390,6 +2388,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
         ad_id: widget.indexAd.toString(),
         lat: lat,
         lon: lon,
+        adTypeid: adType,
         facebook:face.text ,
         whatsapp:whatsup.text ,
         instagram: insta.text,

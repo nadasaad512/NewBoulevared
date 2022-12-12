@@ -31,7 +31,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
 
@@ -59,8 +58,6 @@ class MyApp extends StatelessWidget {
           initialRoute: '/launch_screen',
           routes: {
             '/launch_screen': (context) => SplashScreen(),
-         //   '/AdvStoryDemo': (context) => Home(),
-           // '/YouCanDoit': (context) => StoryPage1(data: 2),
             '/StoryAdsScreen': (context) => StoryAdsScreen(),
             '/NewAdsScreen': (context) => NewAdsScreen(edit: false,indexAd: 2),
             '/MainScreen': (context) => MainScreen(),
@@ -78,8 +75,6 @@ class MyApp extends StatelessWidget {
             '/EditAdmainScreen': (context) => EditAdmainScreen(),
             '/AwardScreen': (context) => AwardScreen(),
             '/GoogleMapPage': (context) => GoogleMapPage(),
-         //   '/Followers_Advertiser': (context) => Followers_Advertiser(id: 27),
-
             '/AdsScreen': (context) => AdsScreen(),
 
 

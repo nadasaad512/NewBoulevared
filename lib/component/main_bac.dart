@@ -1,17 +1,11 @@
 import 'dart:io';
-
 import 'package:new_boulevard/component/TextField.dart';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-
-import '../screens/mainscreen/MainScreen.dart';
 import '../api/User_Controller.dart';
 import '../models/setting.dart';
 import '../models/user.dart';
@@ -35,15 +29,12 @@ class Back_Ground extends StatefulWidget{
 }
 
 class _Back_GroundState extends State<Back_Ground> {
-  int _current=0;
   bool select =false;
 
   late PageController _pageController;
   ImagePicker _imagePicker = ImagePicker();
   PickedFile? _pickedFile;
-
    final GlobalKey<ScaffoldState> _key = GlobalKey();
-   int _selectedIndex = 0;
    TextEditingController NameTextController=TextEditingController();
    TextEditingController emailTextController=TextEditingController();
    TextEditingController phoneTextController=TextEditingController();
@@ -73,13 +64,12 @@ class _Back_GroundState extends State<Back_Ground> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+        resizeToAvoidBottomInset: true,
         key: _key,
 
 
         drawer:
-
-
-        Container(
+            Container(
          width: 280.w,
         child:  FutureBuilder<User?>(
           future: UserApiController().getProfile(),
@@ -654,13 +644,7 @@ class _Back_GroundState extends State<Back_Ground> {
       splashColor: Colors.purple.shade50,
       onTap: ()async{
         Settings settings=await UserApiController().Setting();
-        //url
-
-
-
-
-
-       share? Share.share('check out my website ${settings.url}'):null;
+        share? Share.share('check out my website ${settings.url}'):null;
        wh? await launch("whatsapp://send?phone=${settings.whatsapp}&text=${"Hi"}"):null;
        reviw? await launch(settings.url.toString()):null;
 

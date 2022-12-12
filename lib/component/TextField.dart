@@ -54,6 +54,7 @@ class _FieldScreenState extends State<FieldScreen> {
      height: 50,
      width: 343,
      child: TextFormField(
+
        validator: (v) =>widget.vali? widget.validation!(v):null,
 
        controller: widget.controller,
