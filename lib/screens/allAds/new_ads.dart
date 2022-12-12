@@ -995,7 +995,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                              fontSize: 18.sp
                          ),),
                        style: ElevatedButton.styleFrom(
-                         primary: Color(0xff7B217E),
+                         backgroundColor: Color(0xff7B217E),
 
                          minimumSize: Size(double.infinity, 50.h),
                        ),
@@ -1040,7 +1040,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                              fontSize: 18.sp
                          ),),
                          style: ElevatedButton.styleFrom(
-                           primary: Color(0xff7B217E),
+                           backgroundColor: Color(0xff7B217E),
 
                            minimumSize: Size(160.w, 50.h),
                          ),
@@ -1409,7 +1409,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                         fontSize: 18.sp
                                     ),),
                                   style: ElevatedButton.styleFrom(
-                                    primary: Color(0xff7B217E),
+                                    backgroundColor: Color(0xff7B217E),
 
                                     minimumSize: Size(double.infinity, 50.h),
                                   ),
@@ -1493,7 +1493,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                              fontSize: 18.sp
                          ),),
                        style: ElevatedButton.styleFrom(
-                         primary: Color(0xff7B217E),
+                         backgroundColor: Color(0xff7B217E),
 
                          minimumSize: Size(double.infinity, 50.h),
                        ),
@@ -2120,7 +2120,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                   fontSize: 18.sp
                               ),),
                               style: ElevatedButton.styleFrom(
-                                primary: Color(0xff969696),
+                                backgroundColor: Color(0xff969696),
 
                                 minimumSize: Size(164.w, 50.h),
                               ),
@@ -2167,7 +2167,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                       fontSize: 18.sp
                                   ),),
                                 style: ElevatedButton.styleFrom(
-                                  primary: Color(0xff7B217E),
+                                  backgroundColor: Color(0xff7B217E),
 
                                   minimumSize: Size(double.infinity, 50.h),
                                 ),
@@ -2247,7 +2247,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                       fontSize: 18.sp
                   ),),
                   style: ElevatedButton.styleFrom(
-                    primary:Color(0xff7B217E),
+                    backgroundColor: Color(0xff7B217E),
 
                     minimumSize: Size(160.w, 50.h),
                   ),
@@ -2301,28 +2301,21 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
   pickvideo() async {
     final video = await picker.getVideo(source: ImageSource.gallery);
-    _video = File(video!.path);
-    var a = await videoInfo.getVideoInfo(_video!.path);
-    // a.height;
-    // a.width;
+    if(video !=null){
+      _video = File(video.path);
+      var a = await videoInfo.getVideoInfo(_video!.path);
+      _videoPlayerController = VideoPlayerController.file(_video!)
+        ..initialize().then((value) {
+          videoList.add(_videoPlayerController!);
+          videoList1.add(_video!.path);
+          duration_video.add(a!.duration!);
+          height.add(a.height!);
+          width.add(a.width!);
+          setState(() {});
+          _videoPlayerController!.pause();
+        });
+    }
 
-    print("Duration is ${a!.duration}");
-
-
-
-    _videoPlayerController = VideoPlayerController.file(_video!)
-      ..initialize().then((value) {
-        videoList.add(_videoPlayerController!);
-        videoList1.add(_video!.path);
-        duration_video.add(a.duration!);
-        height.add(a.height!);
-        width.add(a.width!);
-        setState(() {});
-        _videoPlayerController!.pause();
-
-
-
-      });
   }
 
 

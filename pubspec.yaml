@@ -41,10 +41,10 @@ dependencies:
   video_player: ^2.4.5
   share_plus: ^4.0.10
   url_launcher: ^6.1.4
-  google_maps_flutter: ^2.1.10
+  google_maps_flutter:
   flutter_video_info: ^1.2.0
-  geocoding: ^2.0.4
-  location: ^4.4.0
+  geocoding:
+  location:
   image_size_getter: ^2.1.2
   wakelock: ^0.6.2
 

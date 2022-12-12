@@ -104,9 +104,6 @@ class _locationState extends State<location> {
             markers: _markers,
 
           ),
-
-
-
         ],
       ),
     );

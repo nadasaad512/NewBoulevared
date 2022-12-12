@@ -522,6 +522,7 @@ class UserApiController with Helpers
     var response = await http.get(url, headers: {
       HttpHeaders.authorizationHeader: UserPreferences().token,
     });
+
     if (jsonDecode(response.body)['status'] == true) {
       var json = jsonDecode(response.body);
       var jsonArray = json['myFollowings'] as List;

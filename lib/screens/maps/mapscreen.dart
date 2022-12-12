@@ -158,6 +158,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                     color: Colors.white,
                   ),
                   onPressed: () async {
+
                     var location = gps.Location();
                     bool serviceEnabled;
                     gps.PermissionStatus permissionGranted;
