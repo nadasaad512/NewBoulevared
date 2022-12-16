@@ -12,8 +12,6 @@ import '../api/User_Controller.dart';
 import '../models/ads.dart';
 import '../models/detalies.dart';
 
-
-
 class StoryPage extends StatefulWidget {
   int AdId;
 
@@ -57,6 +55,7 @@ class _StoryPageState extends State<StoryPage>
       });
     });
   }
+
   @override
   void dispose() {
     Wakelock.disable();
@@ -72,7 +71,7 @@ class _StoryPageState extends State<StoryPage>
       backgroundColor: Colors.black,
       body: PageView.builder(
         controller: pageController,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: StroryData.length,
         onPageChanged: (int currentPage) {
           setState(() {
@@ -84,12 +83,11 @@ class _StoryPageState extends State<StoryPage>
             controller.dispose();
             animController.stop();
             animController.reset();
-            animController.duration = Duration(seconds: 10);
+            animController.duration = const Duration(seconds: 10);
             animController.forward().whenComplete(() {
-                CurrentPage < StroryData.length - 1
-                    ? pageController.jumpToPage(CurrentPage + 1)
-                    : Navigator.pop(context);
-
+              CurrentPage < StroryData.length - 1
+                  ? pageController.jumpToPage(CurrentPage + 1)
+                  : Navigator.pop(context);
             });
 
             return GestureDetector(
@@ -180,7 +178,7 @@ class _StoryPageState extends State<StoryPage>
                               ],
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           InkWell(
                             onTap: () {
                               Navigator.pop(context);
@@ -208,7 +206,7 @@ class _StoryPageState extends State<StoryPage>
                         onTap: () {
                           showModalBottomSheet(
                             context: context,
-                            shape: RoundedRectangleBorder(
+                            shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
                               topRight: Radius.circular(15),
                               topLeft: Radius.circular(15),
@@ -217,7 +215,7 @@ class _StoryPageState extends State<StoryPage>
                               return Container(
                                   margin: EdgeInsets.symmetric(
                                       horizontal: 16.w, vertical: 16.h),
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                       borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(15),
                                     topLeft: Radius.circular(15),
@@ -232,11 +230,11 @@ class _StoryPageState extends State<StoryPage>
                                           Text(
                                             "وصف الإعلان",
                                             style: TextStyle(
-                                                color: Color(0xff7B217E),
+                                                color: const Color(0xff7B217E),
                                                 fontSize: 16.sp,
                                                 fontWeight: FontWeight.w600),
                                           ),
-                                          Spacer(),
+                                          const Spacer(),
                                           IconButton(
                                             onPressed: () {
                                               Navigator.pop(context);
@@ -266,13 +264,13 @@ class _StoryPageState extends State<StoryPage>
                                               onPressed: () {},
                                               icon: Icon(
                                                 Icons.location_on,
-                                                color: Color(0xff7B217E),
+                                                color: const Color(0xff7B217E),
                                                 size: 30.sp,
                                               )),
                                           Text(
                                             " السعودية-   ${ad.city!.name.toString()}",
                                             style: TextStyle(
-                                                color: Color(0xff7B217E),
+                                                color: const Color(0xff7B217E),
                                                 fontSize: 16.sp,
                                                 fontWeight: FontWeight.w400),
                                           ),
@@ -341,8 +339,10 @@ class _StoryPageState extends State<StoryPage>
                                                       : Social(
                                                           image:
                                                               "images/whatsapp.svg",
+                                                          isWhatsapp: true,
+                                                          context: context,
                                                           link:
-                                                              "https://wa.me/${ad.whatsapp}/?text=${Uri.parse("Hi")}"),
+                                                              "${ad.whatsapp}"),
                                                   SizedBox(
                                                     width: 26.w,
                                                   ),
@@ -379,7 +379,7 @@ class _StoryPageState extends State<StoryPage>
                                 SizedBox(
                                   width: 10.w,
                                 ),
-                                Text(
+                                const Text(
                                   'اسحب للأعلى لمعرفة المزيد عن الإعلان',
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -402,10 +402,10 @@ class _StoryPageState extends State<StoryPage>
   }
 
   Future forward5Seconds() async => goToPosition(
-      (currentPosition) => currentPosition + Duration(seconds: 10));
+      (currentPosition) => currentPosition + const Duration(seconds: 10));
 
   Future rewind5Seconds() async => goToPosition(
-      (currentPosition) => currentPosition - Duration(seconds: 10));
+      (currentPosition) => currentPosition - const Duration(seconds: 10));
 
   Future goToPosition(
     Duration Function(Duration currentPosition) builder,
@@ -413,7 +413,7 @@ class _StoryPageState extends State<StoryPage>
     final currentPosition = await controller.position;
     final newPosition = builder(currentPosition!);
 
-    newPosition <= Duration(hours: 0, minutes: 0, seconds: 10)
+    newPosition <= const Duration(hours: 0, minutes: 0, seconds: 10)
         ? start = true
         : start = false;
     print("newPosition$newPosition");
@@ -514,8 +514,8 @@ class _StoryPageState extends State<StoryPage>
   }
 
   loedvideo() async {
-    end=false;
-    start=false;
+    end = false;
+    start = false;
     controller.dispose();
     animController.stop();
     animController.reset();
@@ -567,12 +567,20 @@ class _StoryPageState extends State<StoryPage>
     );
   }
 
-  Widget Social({required String link, required String image}) {
+  Widget Social(
+      {required String link,
+      required String image,
+      BuildContext? context,
+      isWhatsapp = false}) {
     return InkWell(
         onTap: () {
-          controller.pause();
-          animController.stop();
-          launch(link);
+          if (isWhatsapp) {
+            controller.pause();
+            animController.stop();
+            launch(link);
+          } else {
+            _launchWhatsapp(context: context, number: link);
+          }
         },
         child: SvgPicture.asset(image));
   }
@@ -590,25 +598,21 @@ class _StoryPageState extends State<StoryPage>
     final double dx = details.globalPosition.dx;
     if (dx < screenWidth / 3) {
       if (StroryData[CurrentPage].type == "image") {
-           if(CurrentPage < StroryData.length - 1){
-             controller.dispose();
-             animController.stop();
-             animController.reset();
-             animController.duration = Duration(seconds: 10);
-             animController.forward().whenComplete(() {
-               CurrentPage < StroryData.length - 1
-                   ? pageController.jumpToPage(CurrentPage + 1)
-                   : Navigator.pop(context);
+        if (CurrentPage < StroryData.length - 1) {
+          controller.dispose();
+          animController.stop();
+          animController.reset();
+          animController.duration = const Duration(seconds: 10);
+          animController.forward().whenComplete(() {
+            CurrentPage < StroryData.length - 1
+                ? pageController.jumpToPage(CurrentPage + 1)
+                : Navigator.pop(context);
+          });
 
-             });
-
-             pageController.jumpToPage(CurrentPage + 1);
-           }else{
-             null;
-           }
-
-
-
+          pageController.jumpToPage(CurrentPage + 1);
+        } else {
+          null;
+        }
       } else {
         null;
       }
@@ -618,25 +622,23 @@ class _StoryPageState extends State<StoryPage>
         controller.dispose();
         animController.stop();
         animController.reset();
-        animController.duration = Duration(seconds: 10);
+        animController.duration = const Duration(seconds: 10);
         animController.forward().whenComplete(() {
           CurrentPage < StroryData.length - 1
               ? pageController.jumpToPage(CurrentPage + 1)
               : Navigator.pop(context);
-
         });
 
         if (CurrentPage > 0) {
-            if (CurrentPage == 1) {
-              CurrentPage = 0;
-              pageController.jumpToPage(CurrentPage);
-            } else {
-              pageController.jumpToPage(CurrentPage - 1);
-            }
-          }else{
+          if (CurrentPage == 1) {
+            CurrentPage = 0;
+            pageController.jumpToPage(CurrentPage);
+          } else {
+            pageController.jumpToPage(CurrentPage - 1);
+          }
+        } else {
           null;
         }
-
       }
     } else {
       if (StroryData[CurrentPage].type == "image") {
@@ -644,14 +646,26 @@ class _StoryPageState extends State<StoryPage>
           animController.stop();
         } else {
           animController.forward().whenComplete(() {
-
-              CurrentPage < StroryData.length - 1
-                  ? pageController.jumpToPage(CurrentPage + 1)
-                  : Navigator.pop(context);
-
+            CurrentPage < StroryData.length - 1
+                ? pageController.jumpToPage(CurrentPage + 1)
+                : Navigator.pop(context);
           });
         }
       }
     }
+  }
+}
+
+_launchWhatsapp({number, context}) async {
+  var whatsapp = number;
+  var whatsappAndroid = Uri.parse("?phone=$whatsapp&text=hello");
+  if (await canLaunchUrl(whatsappAndroid)) {
+    await launchUrl(whatsappAndroid);
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("WhatsApp is not installed on the device"),
+      ),
+    );
   }
 }

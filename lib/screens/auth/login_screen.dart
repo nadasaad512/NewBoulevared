@@ -6,20 +6,15 @@ import '../../api/User_Controller.dart';
 import '../../component/TextField.dart';
 import '../../component/background.dart';
 
-
-
-
-class LOGAIN_SCREEN extends StatefulWidget{
+class LOGAIN_SCREEN extends StatefulWidget {
   @override
   State<LOGAIN_SCREEN> createState() => _LOGAIN_SCREENState();
 }
 
-class _LOGAIN_SCREENState extends State<LOGAIN_SCREEN> with Helpers{
-
-
+class _LOGAIN_SCREENState extends State<LOGAIN_SCREEN> with Helpers {
   late TextEditingController _emailTextController;
   late TextEditingController _passwordTextController;
-  bool progss =false;
+  bool progss = false;
 
   @override
   void initState() {
@@ -35,113 +30,120 @@ class _LOGAIN_SCREENState extends State<LOGAIN_SCREEN> with Helpers{
     super.dispose();
   }
 
-
-
   @override
-  Widget build(BuildContext context)  {
-
-   return BackGround(
-     child:  Container(
-       margin: EdgeInsets.only(
-         left: 16.w,
-         right: 16.w,
-         top: 100.h
-       ),
-       child: SingleChildScrollView(
-         child:  Column(
-           children: [
-
-             Text("تسجيل الدخول",style: TextStyle(
-               fontWeight: FontWeight.w700,
-               fontSize: 22.sp,
-             ),),
-             SizedBox(height: 26.h,),
-             FieldScreen(title: "البريد الالكتروني",controller: _emailTextController,),
-             SizedBox(height: 16.h,),
-             FieldScreen(title: "كلمة المرور",security: true,controller:  _passwordTextController,),
-             SizedBox(height: 16.h,),
-
-
-             TextButton(onPressed: (){
-
-               Navigator.pushNamed(context, '/forget_password_screen');
-             }, child: Text("نسيت كلمة المرور ؟",style: TextStyle(
-                 fontWeight: FontWeight.w500,
-                 decoration: TextDecoration.underline,
-                 fontSize: 14.sp,
-                 color: Color(0xff18499A)
-             ),)),
-             ElevatedButton  (
-               onPressed: () async {
-                 setState(() {
-                   progss=true;
-                 });
-                 await  login();
-               },
-               child: progss?CircularProgressIndicator(color: Colors.white,):
-
-
-               Text('تسجيل الدخول',style: TextStyle(
-                   fontWeight: FontWeight.w700,
-                   fontSize: 18.sp
-               ),),
-               style: ElevatedButton.styleFrom(
-                 primary: Color(0xff7B217E),
-
-                 minimumSize: Size(double.infinity, 50.h),
-               ),
-             ),
-
-             SizedBox(height: 20.h,),
-             Row(
-               mainAxisAlignment: MainAxisAlignment.center,
-               children: [
-                 TextButton(
-                     onPressed: (){
-
-
-                   Navigator.pushNamed(context, '/register_screen');
-                 }, child: Text("تسجيل جديد",style: TextStyle(
-                     fontWeight: FontWeight.w700,
-                     fontSize: 16.sp,
-
-                     color: Color(0xff7B217E)
-                 ),)),
-                 Text("ليس لديك حساب ؟",style: TextStyle(
-                   fontWeight: FontWeight.w400,
-                   fontSize: 15.sp,
-
-                 ),),
-
-               ],
-             ),
-             SizedBox(height: 400.h,)
-           ],
-         ),
-
-
-       ),
-     ),
-   );
-
+  Widget build(BuildContext context) {
+    return BackGround(
+      child: Container(
+        margin: EdgeInsets.only(left: 16.w, right: 16.w, top: 100.h),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                "تسجيل الدخول",
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 22.sp,
+                ),
+              ),
+              SizedBox(
+                height: 26.h,
+              ),
+              FieldScreen(
+                title: "البريد الالكتروني",
+                controller: _emailTextController,
+              ),
+              SizedBox(
+                height: 16.h,
+              ),
+              FieldScreen(
+                title: "كلمة المرور",
+                security: true,
+                controller: _passwordTextController,
+              ),
+              SizedBox(
+                height: 16.h,
+              ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/forget_password_screen');
+                  },
+                  child: Text(
+                    "نسيت كلمة المرور ؟",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        decoration: TextDecoration.underline,
+                        fontSize: 14.sp,
+                        color: const Color(0xff18499A)),
+                  )),
+              ElevatedButton(
+                onPressed: () async {
+                  setState(() {
+                    progss = true;
+                  });
+                  await login();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xff7B217E),
+                  minimumSize: Size(double.infinity, 50.h),
+                ),
+                child: progss
+                    ? const CircularProgressIndicator(
+                        color: Colors.white,
+                      )
+                    : Text(
+                        'تسجيل الدخول',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 18.sp),
+                      ),
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/register_screen');
+                      },
+                      child: Text(
+                        "تسجيل جديد",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16.sp,
+                            color: const Color(0xff7B217E)),
+                      )),
+                  Text(
+                    "ليس لديك حساب ؟",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15.sp,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 400.h,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
-
-
-
-
   Future login() async {
-
-    bool loggedIn = await UserApiController().
-    login(context, email: _emailTextController.text, password: _passwordTextController.text);
+    bool loggedIn = await UserApiController().login(context,
+        email: _emailTextController.text,
+        password: _passwordTextController.text);
 
     if (loggedIn) {
-        Navigator.pushReplacementNamed(context, '/MainScreen');
+      Navigator.pushReplacementNamed(context, '/MainScreen');
       _emailTextController.clear();
       _passwordTextController.clear();
-    }else{
+    } else {
       setState(() {
-        progss=false;
+        progss = false;
       });
     }
   }

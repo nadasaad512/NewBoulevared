@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class BackGround extends StatelessWidget{
+class BackGround extends StatelessWidget {
   final Widget child;
   bool back;
   String rout;
 
   //BackAuthScreen
 
-   BackGround({
-
+  BackGround({
     required this.child,
-    this.back=false,
-    this.rout="",
-  }) ;
+    this.back = false,
+    this.rout = "",
+  });
   @override
   Widget build(BuildContext context) {
-  return Scaffold(
-      body:  Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
+    return Scaffold(
+        body: Stack(
+      children: [
+        Container(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: AlignmentDirectional.centerStart,
                 end: AlignmentDirectional.centerEnd,
@@ -30,66 +29,50 @@ class BackGround extends StatelessWidget{
                   Color(0xff18499A),
                 ],
               ),
-
-
-
             ),
-            child: back?
-            Row(
-
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 60.h,horizontal: 20.w),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-
-                    child: InkWell(
-
-                        onTap: (){
-
-                          Navigator.pushNamed(context, rout);
-                        },
-                        child: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,))
-                  ),
-                ),
-              ],
-            ):null
+            child: back
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                            vertical: 60.h, horizontal: 20.w),
+                        child: Align(
+                            alignment: Alignment.topLeft,
+                            child: InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(context, rout);
+                                },
+                                child: const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: Colors.white,
+                                ))),
+                      ),
+                    ],
+                  )
+                : null),
+        Container(
+          width: double.infinity,
+          height: double.infinity,
+          margin: EdgeInsets.only(top: 156.h),
+          decoration: const BoxDecoration(
+            color: Color(0xffFFF4FF),
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20),
+              topLeft: Radius.circular(20),
+            ),
           ),
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            margin: EdgeInsets.only(
-                top: 156.h
-            ),
-            decoration: BoxDecoration(
-              color: Color(0xffFFF4FF),
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(20),
-                topLeft: Radius.circular(20),
-              ),
-            ),
-            child: child,
-          ),
-          Positioned(
-              right: 110.w,
-              left: 110.w,
-              top: 78.h,
-
-              child: CircleAvatar(
-                radius:77.sp,
+          child: child,
+        ),
+        Positioned(
+            right: 110.w,
+            left: 110.w,
+            top: 78.h,
+            child: CircleAvatar(
+                radius: 77.sp,
                 backgroundColor: Colors.white,
-
-                backgroundImage: AssetImage("images/logo.png")
-
-              )
-
-
-          )
-        ],
-      )
-  );
-
+                backgroundImage: const AssetImage("images/logo.png")))
+      ],
+    ));
   }
-
 }
