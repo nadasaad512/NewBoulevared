@@ -47,6 +47,7 @@ dependencies:
   location:
   image_size_getter: ^2.1.2
   wakelock: ^0.6.2
+  geolocator: ^9.0.2
 
 
 

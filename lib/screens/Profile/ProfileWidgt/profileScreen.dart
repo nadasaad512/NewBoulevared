@@ -2281,7 +2281,7 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                                         }
                                       },
                                     ):
-                                    Text( UserPreferences().user.type),
+                                   SizedBox.shrink()
 
 
                                   ],

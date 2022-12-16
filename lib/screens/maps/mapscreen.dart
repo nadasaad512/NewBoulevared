@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as gps;
 
@@ -30,6 +31,25 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
           CameraPosition(target: LatLng(latitude, longitude), zoom: 18.00)));
 
     setState(() {});
+  }
+  getUserLocation() async {
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+    }
+    Position position = await Geolocator.getCurrentPosition();
+    var myLocation = LatLng(position.latitude, position.longitude);
+    updateLocationMarker(position.latitude,
+        position.longitude);
+
   }
 
   pickLocation() async {
@@ -159,30 +179,34 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                   ),
                   onPressed: () async {
 
-                    var location = gps.Location();
-                    bool serviceEnabled;
-                    gps.PermissionStatus permissionGranted;
-                    gps.LocationData locationData;
+                    // var location = gps.Location();
+                    // bool serviceEnabled;
+                    // gps.PermissionStatus permissionGranted;
+                    // gps.LocationData locationData;
+                    //
+                    // serviceEnabled = await location.serviceEnabled();
+                    // if (!serviceEnabled) {
+                    //   serviceEnabled = await location.requestService();
+                    //   if (!serviceEnabled) {
+                    //     return;
+                    //   }
+                    // }
+                    //
+                    // permissionGranted = await location.hasPermission();
+                    // if (permissionGranted == gps.PermissionStatus.denied) {
+                    //   permissionGranted = await location.requestPermission();
+                    //   if (permissionGranted != gps.PermissionStatus.granted) {
+                    //     return;
+                    //   }
+                    // }
+                    // locationData = await location.getLocation();
+                    // updateLocationMarker(locationData.latitude ?? 0.0,
+                    //     locationData.longitude ?? 0.0);
+                    getUserLocation();
+                  }
 
-                    serviceEnabled = await location.serviceEnabled();
-                    if (!serviceEnabled) {
-                      serviceEnabled = await location.requestService();
-                      if (!serviceEnabled) {
-                        return;
-                      }
-                    }
 
-                    permissionGranted = await location.hasPermission();
-                    if (permissionGranted == gps.PermissionStatus.denied) {
-                      permissionGranted = await location.requestPermission();
-                      if (permissionGranted != gps.PermissionStatus.granted) {
-                        return;
-                      }
-                    }
-                    locationData = await location.getLocation();
-                    updateLocationMarker(locationData.latitude ?? 0.0,
-                        locationData.longitude ?? 0.0);
-                  }),
+                  ),
             ),
           ),
           widget.onlyView == true

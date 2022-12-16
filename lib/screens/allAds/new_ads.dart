@@ -350,13 +350,14 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                          margin: EdgeInsets.all(5),
                                          child: InkWell(
                                            onTap: ()async{
-
+                                                var id =ad.adImages![index].id!;
                                                ad.adImages!.removeAt(index);
                                                setState(() {
 
                                                });
+
                                                await UserApiController().
-                                               DeletAttach(id_dele:ad.adImages![index].id!.toString());
+                                               DeletAttach(id_dele:id);
 
 
 
@@ -520,12 +521,13 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
                                          InkWell(
                                            onTap: ()async{
+                                             var id =ad.adVideos![index].id!;
                                              ad.adVideos!.removeAt(index);
                                              setState(() {
 
                                              });
                                              await UserApiController().
-                                             DeletAttach(id_dele:ad.adVideos![index].id!.toString());
+                                             DeletAttach(id_dele:id);
                                            },
                                            child: Align(
                                                alignment: Alignment.topLeft,

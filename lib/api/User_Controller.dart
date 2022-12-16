@@ -763,21 +763,14 @@ class UserApiController with Helpers
     }
     return false;
   }
-  Future<bool> DeletAttach( {required String id_dele}) async {
-
+  Future<bool> DeletAttach( {required int id_dele}) async {
     var url = Uri.parse(ApiSettings.delet_Attach(dele: id_dele));
-    log("ApiSettings.delet_Attach(dele: id_dele)");
     log(ApiSettings.delet_Attach(dele: id_dele));
-    var response = await http.get(url);
+    var response = await http.get(url,headers:
+    {
+      HttpHeaders.authorizationHeader: UserPreferences().token,
+    });
 
-    if (jsonDecode(response.body)['status'] == true) {
-      return true;
-    }
-    else if (jsonDecode(response.body)['status'] == false) {
-
-    } else {
-
-    }
     return false;
   }
 
