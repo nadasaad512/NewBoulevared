@@ -20,8 +20,7 @@ import 'api_setting.dart';
 import 'package:http/http.dart' as http;
 
 class UserApiController with Helpers {
-  Future<bool> login(BuildContext context,
-      {required String email, required String password}) async {
+  Future<bool> login(BuildContext context, {required String email, required String password}) async {
     var url = Uri.parse(ApiSettings.LOGIN);
     var response = await http.post(url, body: {
       'email': email,
@@ -37,6 +36,27 @@ class UserApiController with Helpers {
     } else if (jsonDecode(response.body)['status'] == false) {
       showSnackBar(context,
           message: jsonDecode(response.body)['message'], error: true);
+    } else {
+      showSnackBar(context,
+          message: 'Something went wrong, please try again!', error: true);
+    }
+    return false;
+  }
+  Future<bool> DeletAccount(BuildContext context,) async {
+    var url = Uri.parse(ApiSettings.AccountDelet);
+    var response = await http.get(url,
+        headers: {
+          HttpHeaders.authorizationHeader: UserPreferences().token,
+        },
+
+    );
+
+    if (jsonDecode(response.body)['status'] == true) {
+      showSnackBar(context, message: "تم حذف حسابك بنجاح", error: false);
+      Navigator.pushReplacementNamed(context, '/launch_screen');
+      return true;
+    } else if (jsonDecode(response.body)['status'] == false) {
+      showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
     } else {
       showSnackBar(context,
           message: 'Something went wrong, please try again!', error: true);

@@ -145,12 +145,12 @@ class _Back_GroundState extends State<Back_Ground> {
                             DraTex(context,
                                 titel: "الرئيسية", router: '/MainScreen'),
                             SizedBox(
-                              height: 20.h,
+                              height: 15.h,
                             ),
                             DraTex(context,
                                 titel: "عن التطبيق", router: '/InfoScreen'),
                             SizedBox(
-                              height: 20.h,
+                              height: 15.h,
                             ),
                             DraTex(
                               context,
@@ -158,17 +158,17 @@ class _Back_GroundState extends State<Back_Ground> {
                               wh: true,
                             ),
                             SizedBox(
-                              height: 20.h,
+                              height: 15.h,
                             ),
                             DraTex(context,
                                 titel: "مشاركة التطبيق", share: true),
                             SizedBox(
-                              height: 20.h,
+                              height: 15.h,
                             ),
                             DraTex(context,
                                 titel: "تقييم التطبيق", reviw: true),
                             SizedBox(
-                              height: 20.h,
+                              height: 15.h,
                             ),
                             snapshot.data!.type == "advertiser"
                                 ? DraTex(context,
@@ -178,13 +178,13 @@ class _Back_GroundState extends State<Back_Ground> {
                             snapshot.data!.type != "advertiser"
                                 ? const SizedBox.shrink()
                                 : SizedBox(
-                                    height: 20.h,
+                                    height: 15.h,
                                   ),
                             DraTex(context,
                                 titel: "تغيير كلمة المرور",
                                 router: '/ChangePassword'),
                             SizedBox(
-                              height: 20.h,
+                              height: 15.h,
                             ),
                             snapshot.data!.type == "advertiser"
                                 ? DraTex(context,
@@ -194,7 +194,13 @@ class _Back_GroundState extends State<Back_Ground> {
                                     titel: "التسجيل كمعلن",
                                     router: '/register_screen'),
                             SizedBox(
-                              height: 20.h,
+                              height: 15.h,
+                            ),
+                            snapshot.data!.type == "advertiser"|| snapshot.data!.type =="user"
+                                ? DeleTAccount()
+                                : const SizedBox.shrink(),
+                            SizedBox(
+                              height: 15.h,
                             ),
                             DraTex(context, titel: "تسجيل الخروج", log: true),
                           ],
@@ -763,6 +769,34 @@ class _Back_GroundState extends State<Back_Ground> {
         router != null ? Navigator.pushNamed(context, router) : null;
       },
       child: Text(titel,
+          style: TextStyle(
+              color: const Color(0xff7B217E),
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600)),
+    );
+  }
+
+  Widget DeleTAccount() {
+    bool isdelet=false;
+    return InkWell(
+      hoverColor: Colors.purple.shade50,
+      focusColor: Colors.purple.shade50,
+      highlightColor: Colors.purple.shade50,
+      splashColor: Colors.purple.shade50,
+      onTap: () async {
+        setState(() {
+          isdelet=true;
+        });
+
+       await UserApiController().DeletAccount(context);
+        setState(() {
+          isdelet=false;
+        });
+      },
+      child:
+      isdelet==true?
+          CircularProgressIndicator(color: Colors.white,):
+      Text("حذف الحساب ",
           style: TextStyle(
               color: const Color(0xff7B217E),
               fontSize: 16.sp,

@@ -2,6 +2,7 @@ class ApiSettings {
   static const _BASE_URL = 'https://boulevard20.com';
   static const _API_URL = '$_BASE_URL/api/';
   static const City = '${_API_URL}getCities';
+  static const AccountDelet = '${_API_URL}deleteMyAccount';
   static const CommercialActivities = '${_API_URL}getCommercialActivities';
   static const LOGIN = '${_API_URL}loginForUsers';
   static const LOGOUT = '${_API_URL}logout';
