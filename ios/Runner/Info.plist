@@ -31,11 +31,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app needs access to location when in the background.</string>
+	<string>We need location permissions in order to improve the story service so that the story location can be known (not mandatory)</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open.</string>
+	<string>We need location permissions in order to improve the story service so that the story location can be known (not mandatory)</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To choose Image and video Story </string>
+	<string>We need permissions to access photos or videos in order to include them in stories.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
