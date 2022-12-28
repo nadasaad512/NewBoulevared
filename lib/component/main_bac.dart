@@ -759,7 +759,7 @@ class _Back_GroundState extends State<Back_Ground> {
       splashColor: Colors.purple.shade50,
       onTap: () async {
         Settings settings = await UserApiController().Setting();
-        share ? Share.share('check out my website ${settings.url}') : null;
+        share ? await Share.share('check out my website ${settings.url}') : null;
         wh
             ? _launchWhatsapp(context: context, number: settings.whatsapp)
             : null;
