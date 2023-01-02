@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:new_boulevard/component/TextField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -758,8 +759,20 @@ class _Back_GroundState extends State<Back_Ground> {
       highlightColor: Colors.purple.shade50,
       splashColor: Colors.purple.shade50,
       onTap: () async {
+        final box = context.findRenderObject() as RenderBox?;
         Settings settings = await UserApiController().Setting();
-        share ? await Share.share('check out my website ${settings.url}') : null;
+
+        if (share && defaultTargetPlatform == TargetPlatform.iOS && MediaQuery.of(context).size.height > 700) {
+          await Share.share(
+            settings.url.toString(),
+            subject: "check out my website",
+            sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+          );
+        }else if(share){
+          await Share.share('check out my website ${settings.url}');
+        }
+
+
         wh
             ? _launchWhatsapp(context: context, number: settings.whatsapp)
             : null;

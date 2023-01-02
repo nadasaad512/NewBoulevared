@@ -4,6 +4,7 @@ import 'package:new_boulevard/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:new_boulevard/utils/helpers.dart';
 import '../../api/User_Controller.dart';
 import '../../component/TextField.dart';
 import '../../component/background.dart';
@@ -15,10 +16,12 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends State<RegisterScreen> with Helpers{
   bool progss = false;
   bool Aprogss = false;
   String gender = "user";
+
+
 
   GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> AregisterFormKey = GlobalKey<FormState>();
@@ -42,7 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   var _selected1;
   String ? idActive;
   List<Activity> ActiveList = [];
-
+  bool check = false;
 
   @override
   void initState() {
@@ -161,84 +164,80 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   FieldScreen(
                       title: "الاسم التجاري", controller: ANameTextController),
                   SizedBox(height: 16.h,),
-                  Center(
-                    child: FutureBuilder<List<Activity>>(
-                      future: UserApiController().Commercial_Activities(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator(
-                            color: Colors.purple,));
-                        } else
-                        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                          ActiveList = snapshot.data ?? [];
-                          return Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            height: 50.h,
-                            width: 330.w,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                shape: BoxShape.rectangle,
+                  FutureBuilder<List<Activity>>(
+                    future: UserApiController().Commercial_Activities(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator(
+                          color: Colors.purple,));
+                      } else
+                      if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                        ActiveList = snapshot.data ?? [];
+                        return Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          height: 50.h,
+                          width: 330.w,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              shape: BoxShape.rectangle,
 
 
-                                border: Border.all(
-                                  color: Colors.grey.shade400,
-                                )
+                              border: Border.all(
+                                color: Colors.grey.shade400,
+                              )
+                          ),
+
+                          child: DropdownButton(
+
+
+                            isExpanded: true,
+                            underline: Container(),
+                            menuMaxHeight: 500.h,
+
+                            hint: Text("النشاط التجاري ", style: TextStyle(
+                              color: Colors.grey.shade500,
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w400,
+                            ),),
+
+                            iconEnabledColor: Colors.white,
+
+                            value: _selected1,
+                            icon: Icon(Icons.arrow_forward_ios_rounded,
+                              color: Colors.grey.shade500, size: 18,),
+                            iconSize: 30,
+                            elevation: 16,
+                            style: TextStyle(
+                                color: Colors.black, fontSize: 16.sp,
+                                fontWeight: FontWeight.w400
                             ),
+                            onChanged: (newValue) {
+                              setState(() {
+                                _selected1 = newValue;
+                              });
+                            },
+                            items: snapshot.data!.map<
+                                DropdownMenuItem<String>>((Activity value) {
+                              return DropdownMenuItem<String>(
 
-                            child: DropdownButton(
-
-
-                              isExpanded: true,
-                              underline: Container(),
-                              menuMaxHeight: 500.h,
-
-                              hint: Text("النشاط التجاري ", style: TextStyle(
-                                color: Colors.grey.shade500,
-                                fontSize: 15.sp,
-                                fontWeight: FontWeight.w400,
-                              ),),
-
-                              iconEnabledColor: Colors.white,
-
-                              value: _selected1,
-                              icon: Icon(Icons.arrow_forward_ios_rounded,
-                                color: Colors.grey.shade500, size: 18,),
-                              iconSize: 30,
-                              elevation: 16,
-                              style: TextStyle(
-                                  color: Colors.black, fontSize: 16.sp,
-                                  fontWeight: FontWeight.w400
-                              ),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _selected1 = newValue;
-                                });
-                              },
-                              items: snapshot.data!.map<
-                                  DropdownMenuItem<String>>((Activity value) {
-                                return DropdownMenuItem<String>(
-
-                                  onTap: () {
-                                    setState(() {
-                                      idActive = value.id.toString();
-                                    });
-                                  },
-                                  value: value.name,
-                                  child: Text(value.name!),
-                                );
-                              }).toList(),
-                            ),
-                          );
-                        } else {
-                          return Center(
-                            child: Icon(Icons.wifi_off_rounded, size: 80,color: Colors.purple,),
-                          );
-                        }
-                      },
-                    ),
-
-
+                                onTap: () {
+                                  setState(() {
+                                    idActive = value.id.toString();
+                                  });
+                                },
+                                value: value.name,
+                                child: Text(value.name!),
+                              );
+                            }).toList(),
+                          ),
+                        );
+                      } else {
+                        return Center(
+                          child: Icon(Icons.wifi_off_rounded, size: 80,color: Colors.purple,),
+                        );
+                      }
+                    },
                   ),
                   SizedBox(height: 16.h,),
                   FieldScreen(title: "البريد الالكتروني",
@@ -389,8 +388,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   SizedBox(height: 20.h,),
+
+
                   Row(
                     children: [
+
                       Text("من خلال التسجيل انت توافق على ", style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 13.sp,
@@ -411,22 +413,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                     ],
                   ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Text("و سياسة الخصوصية", style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12.sp,
+                  Row(
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Text("و سياسة الخصوصية", style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12.sp,
 
-                        color: Colors.blue.shade900
-                    ),),
-                  ),
+                            color: Colors.blue.shade900
+                        ),),
+                      ),
+                      Checkbox(
+                        value: check,
+                        activeColor: Color(0xff7B217E),
+
+                        onChanged: (bool? value) {
+                          setState(() {
+                            check = value!;
+                          });
+                        },
+
+                      ),
+                    ],
+                  )
+                 ,
                   SizedBox(height: 20.h,),
                   ElevatedButton(
                     onPressed: () async {
                       setState(() {
                         Aprogss = true;
                       });
-                      await register_Advertiser();
+                      check?
+                      await register_Advertiser():
+                      showSnackBar( context,message: "تحقق من الشروط وسياسة الخصوصية ",error: true) ;
+                      setState(() {
+                        Aprogss = false;
+                      });
                     },
                     child: Aprogss ? CircularProgressIndicator(
                       color: Colors.white,) : Text(
@@ -508,14 +531,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                     ],
                   ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Text("و سياسة الخصوصية", style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12.sp,
+                  Row(
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Text("و سياسة الخصوصية", style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12.sp,
 
-                        color: Colors.blue.shade900
-                    ),),
+                            color: Colors.blue.shade900
+                        ),),
+                      ),
+                      Checkbox(
+                        value: check,
+                        activeColor: Color(0xff7B217E),
+
+                        onChanged: (bool? value) {
+                          setState(() {
+                            check = value!;
+                          });
+                        },
+
+                      ),
+                    ],
                   ),
                   SizedBox(height: 20.h,),
 
@@ -524,7 +562,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       setState(() {
                         progss = true;
                       });
-                      await register_AsUser();
+                      check?
+                      await register_AsUser():
+                      showSnackBar( context,message: "تحقق من الشروط وسياسة الخصوصية ",error: true) ;
+                      setState(() {
+                        progss = false;
+                      });
                     },
                     child: progss ? CircularProgressIndicator(
                       color: Colors.white,) : Text(
