@@ -414,8 +414,8 @@ class _Back_GroundState extends State<Back_Ground> {
                           Icons.menu,
                           color: Colors.white,
                         )),
-                    const Spacer(),
-                    //SizedBox(width: 80.w,),
+                   // const Spacer(),
+                    SizedBox(width: 80.w,),
                     Text(
                       widget.childTab,
                       style: TextStyle(

@@ -49,6 +49,7 @@ dependencies:
   wakelock: ^0.6.2
   geolocator: ^9.0.2
   change_app_package_name: ^1.1.0
+  flutter_html: ^2.2.1
 
 
 

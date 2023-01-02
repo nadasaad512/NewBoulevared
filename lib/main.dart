@@ -12,7 +12,9 @@ import 'package:new_boulevard/screens/auth/Register_screen.dart';
 import 'package:new_boulevard/screens/auth/forgrt_screen.dart';
 import 'package:new_boulevard/screens/auth/login_screen.dart';
 import 'package:new_boulevard/screens/Award/awards_.dart';
+import 'package:new_boulevard/screens/infoclient/Terms%20and%20Conditions.dart';
 import 'package:new_boulevard/screens/infoclient/info_screen.dart';
+import 'package:new_boulevard/screens/infoclient/privacy%20policies.dart';
 import 'package:new_boulevard/screens/maps/mapscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -76,6 +78,8 @@ class MyApp extends StatelessWidget {
             '/AwardScreen': (context) => AwardScreen(),
             '/GoogleMapPage': (context) => GoogleMapPage(),
             '/AdsScreen': (context) => AdsScreen(),
+            '/privacypolicies': (context) => privacypolicies(),
+            '/TermsandConditions': (context) => TermsandConditions(),
 
 
 

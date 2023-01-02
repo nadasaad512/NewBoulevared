@@ -17,6 +17,8 @@ class ApiSettings {
       '${_API_URL}getAdsByCategory?category_id=$catId&city_id=$cityid';
 
   static const Change_Password = '${_API_URL}changePassword';
+  static const Condition = '${_API_URL}pageDetails?page_id=3';
+  static const Security = '${_API_URL}pageDetails?page_id=2';
 
   static const reSendCode = '${_API_URL}reSendCode';
   static const Profile = '${_API_URL}profile';

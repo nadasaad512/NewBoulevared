@@ -14,6 +14,7 @@ import 'package:new_boulevard/models/special_ads.dart';
 import '../models/detalies.dart';
 import '../models/setting.dart';
 import '../models/story.dart';
+import '../models/terms.dart';
 import '../models/user.dart';
 import '../utils/helpers.dart';
 import 'api_setting.dart';
@@ -310,6 +311,41 @@ class UserApiController with Helpers {
       // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
     }
     return [];
+  }
+
+  Future<terms> ConditionLink() async {
+    var url = Uri.parse(ApiSettings.Condition);
+    var response = await http.get(url);
+    if (jsonDecode(response.body)['status'] == true)
+    {
+      var json = jsonDecode(response.body);
+      var jsonArray = json['page'];
+      terms page = terms.fromJson(jsonArray);
+      return page;
+
+    }
+    else {
+      terms page = terms();
+     return page;
+    }
+
+  }
+  Future<terms> Security() async {
+    var url = Uri.parse(ApiSettings.Security);
+    var response = await http.get(url);
+    if (jsonDecode(response.body)['status'] == true)
+    {
+      var json = jsonDecode(response.body);
+      var jsonArray = json['page'];
+      terms page = terms.fromJson(jsonArray);
+      return page;
+
+    }
+    else {
+      terms page = terms();
+      return page;
+    }
+
   }
 
   Future<List<Categories>> getCategories() async {

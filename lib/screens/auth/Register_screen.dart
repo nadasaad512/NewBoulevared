@@ -398,12 +398,17 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                         fontSize: 13.sp,
 
                       ),),
-                      Text("الشروط والأحكام ", style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13.sp,
+                      InkWell(
+                        onTap: (){
+                          Navigator.pushNamed(context, '/TermsandConditions');
+                        },
+                        child: Text("الشروط والأحكام ", style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13.sp,
 
-                          color: Colors.blue.shade900
-                      ),),
+                            color: Colors.blue.shade900
+                        ),),
+                      ),
                       Text("الخاصة بنا ", style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 13.sp,
@@ -415,14 +420,19 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                   ),
                   Row(
                     children: [
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Text("و سياسة الخصوصية", style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12.sp,
+                      InkWell(
+                        onTap: (){
+                          Navigator.pushNamed(context, '/privacypolicies');
+                        },
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Text("و سياسة الخصوصية", style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12.sp,
 
-                            color: Colors.blue.shade900
-                        ),),
+                              color: Colors.blue.shade900
+                          ),),
+                        ),
                       ),
                       Checkbox(
                         value: check,
@@ -516,12 +526,17 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                         fontSize: 13.sp,
 
                       ),),
-                      Text("الشروط والأحكام ", style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13.sp,
+                      InkWell(
+                        onTap: (){
+                          Navigator.pushNamed(context, '/TermsandConditions');
+                        },
+                        child: Text("الشروط والأحكام ", style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13.sp,
 
-                          color: Colors.blue.shade900
-                      ),),
+                            color: Colors.blue.shade900
+                        ),),
+                      ),
                       Text("الخاصة بنا ", style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 13.sp,
@@ -533,14 +548,19 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                   ),
                   Row(
                     children: [
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Text("و سياسة الخصوصية", style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12.sp,
+                      InkWell(
+                        onTap: (){
+                          Navigator.pushNamed(context, '/privacypolicies');
+                        },
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Text("و سياسة الخصوصية", style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12.sp,
 
-                            color: Colors.blue.shade900
-                        ),),
+                              color: Colors.blue.shade900
+                          ),),
+                        ),
                       ),
                       Checkbox(
                         value: check,
