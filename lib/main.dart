@@ -60,6 +60,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/launch_screen',
           routes: {
             '/launch_screen': (context) => SplashScreen(),
+            '/LOGAIN_SCREEN': (context) => RegisterScreen(),
             '/StoryAdsScreen': (context) => StoryAdsScreen(),
             '/NewAdsScreen': (context) => NewAdsScreen(edit: false,indexAd: 2),
             '/MainScreen': (context) => MainScreen(),

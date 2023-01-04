@@ -12,6 +12,8 @@ class privacypolicies extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return BackGround(
+      back: true,
+        rout: '/LOGAIN_SCREEN',
         child:Container(
           margin: EdgeInsets.symmetric(horizontal: 20.w),
           child: SingleChildScrollView(

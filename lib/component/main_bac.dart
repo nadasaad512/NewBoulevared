@@ -405,6 +405,7 @@ class _Back_GroundState extends State<Back_Ground> {
                     left: 10.w,
                     right: 10.w),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
                         onPressed: () {
@@ -414,7 +415,6 @@ class _Back_GroundState extends State<Back_Ground> {
                           Icons.menu,
                           color: Colors.white,
                         )),
-                   // const Spacer(),
                     SizedBox(width: 80.w,),
                     Text(
                       widget.childTab,
@@ -424,7 +424,7 @@ class _Back_GroundState extends State<Back_Ground> {
                           fontWeight: FontWeight.w700),
                     ),
                     const Spacer(),
-                    //SizedBox(width: 80.w,),
+
                     widget.ad == true
                         ? FutureBuilder<User?>(
                             future: UserApiController().getProfile(),
@@ -451,13 +451,12 @@ class _Back_GroundState extends State<Back_Ground> {
                           )
                         : const Text(""),
 
-                    //Spacer(),
+
 
                     widget.back == true
                         ? IconButton(
                             onPressed: () {
-                              //Navigator.pop(context);
-                              //widget.backRout==null?Navigator.pop(context):
+
                               Navigator.pushNamed(context, '/MainScreen');
                             },
                             icon: const Icon(

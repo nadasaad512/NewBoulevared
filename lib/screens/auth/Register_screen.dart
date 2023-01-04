@@ -392,6 +392,22 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
 
                   Row(
                     children: [
+                      SizedBox(
+                        height: 10.h,
+                        width: 20.w,
+                        child: Checkbox(
+                          value: check,
+                          activeColor: Color(0xff7B217E),
+
+                          onChanged: (bool? value) {
+                            setState(() {
+                              check = value!;
+                            });
+                          },
+
+                        ),
+                      ),
+                      SizedBox(width: 20.h,),
 
                       Text("من خلال التسجيل انت توافق على ", style: TextStyle(
                         fontWeight: FontWeight.w600,
@@ -409,45 +425,37 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                             color: Colors.blue.shade900
                         ),),
                       ),
-                      Text("الخاصة بنا ", style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13.sp,
 
-                      ),),
 
 
                     ],
                   ),
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: (){
-                          Navigator.pushNamed(context, '/privacypolicies');
-                        },
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: Text("و سياسة الخصوصية", style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12.sp,
+                 Row(
+                   children: [
+                     Text("الخاصة بنا ", style: TextStyle(
+                       fontWeight: FontWeight.w600,
+                       fontSize: 13.sp,
 
-                              color: Colors.blue.shade900
-                          ),),
-                        ),
-                      ),
-                      Checkbox(
-                        value: check,
-                        activeColor: Color(0xff7B217E),
+                     ),),
+                     InkWell(
+                       onTap: (){
+                         Navigator.pushNamed(context, '/privacypolicies');
+                       },
+                       child: Align(
+                         alignment: Alignment.topRight,
+                         child: Text("و سياسة الخصوصية", style: TextStyle(
+                             fontWeight: FontWeight.w600,
+                             fontSize: 12.sp,
 
-                        onChanged: (bool? value) {
-                          setState(() {
-                            check = value!;
-                          });
-                        },
+                             color: Colors.blue.shade900
+                         ),),
+                       ),
+                     ),
+                   ],
+                 ),
 
-                      ),
-                    ],
-                  )
-                 ,
+
+
                   SizedBox(height: 20.h,),
                   ElevatedButton(
                     onPressed: () async {
@@ -521,6 +529,22 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
 
 
                     children: [
+                      SizedBox(
+                        height: 10.h,
+                        width: 20.w,
+                        child: Checkbox(
+                          value: check,
+                          activeColor: Color(0xff7B217E),
+
+                          onChanged: (bool? value) {
+                            setState(() {
+                              check = value!;
+                            });
+                          },
+
+                        ),
+                      ),
+                      SizedBox(width: 20.h,),
                       Text("من خلال التسجيل انت توافق على ", style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 13.sp,
@@ -537,17 +561,18 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                             color: Colors.blue.shade900
                         ),),
                       ),
-                      Text("الخاصة بنا ", style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13.sp,
 
-                      ),),
 
 
                     ],
                   ),
                   Row(
                     children: [
+                      Text("الخاصة بنا ", style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13.sp,
+
+                      ),),
                       InkWell(
                         onTap: (){
                           Navigator.pushNamed(context, '/privacypolicies');
@@ -562,17 +587,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                           ),),
                         ),
                       ),
-                      Checkbox(
-                        value: check,
-                        activeColor: Color(0xff7B217E),
 
-                        onChanged: (bool? value) {
-                          setState(() {
-                            check = value!;
-                          });
-                        },
-
-                      ),
                     ],
                   ),
                   SizedBox(height: 20.h,),
