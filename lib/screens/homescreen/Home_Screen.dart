@@ -247,6 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                               );
 
+
                             },
                             child: Container(
                               margin: EdgeInsets.only(
@@ -501,6 +502,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                  decoration: BoxDecoration(
                                      color:   Color(0xff7B217E),
                                      borderRadius: BorderRadius.circular(5),
+
                                      image: DecorationImage(
                                          fit: BoxFit.cover,
                                          image: NetworkImage(

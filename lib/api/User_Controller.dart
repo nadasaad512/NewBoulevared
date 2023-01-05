@@ -120,18 +120,13 @@ class UserApiController with Helpers {
     multiPartRequest.headers['X-Requested-With'] = 'XMLHttpRequest';
     var response = await multiPartRequest.send();
     response.stream.transform(utf8.decoder).listen((event) {
-      if (response.statusCode < 400) {
+      if (response.statusCode ==true) {
         var dataObject = jsonDecode(event)['user'];
-        showSnackBar(context,
-            message: jsonDecode(event)['message'], error: false);
+        showSnackBar(context, message: jsonDecode(event)['message'], error: false);
         uploadEvent(true, jsonDecode(event)['message']);
-      } else if (response.statusCode != 500) {
+      } else  {
         showSnackBar(context,
             message: jsonDecode(event)['message'], error: true);
-        uploadEvent(false, jsonDecode(event)['message']);
-      } else {
-        showSnackBar(context,
-            message: 'Something went wrong, please try again!', error: true);
         uploadEvent(false, jsonDecode(event)['message']);
       }
     });

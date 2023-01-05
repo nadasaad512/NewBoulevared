@@ -462,9 +462,22 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                       setState(() {
                         Aprogss = true;
                       });
-                      check?
+                      check&&
+                          ANameTextController.text.isNotEmpty&&
+                      AemailTextController.text.isNotEmpty&&
+                      AphoneTextController.text.isNotEmpty&&
+                          ApasswordTextController.text.isNotEmpty&&
+                          _pickedFile!=null&&
+                          _selected!=null&&
+                          _selected1!=null
+
+
+
+
+
+                          ?
                       await register_Advertiser():
-                      showSnackBar( context,message: "تحقق من الشروط وسياسة الخصوصية ",error: true) ;
+                      showSnackBar( context,message: "أدخل البيانات المطلوبة  ",error: true) ;
                       setState(() {
                         Aprogss = false;
                       });
@@ -597,9 +610,13 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                       setState(() {
                         progss = true;
                       });
-                      check?
+                      check&&
+                          NameTextController.text.isNotEmpty&&
+                      emailTextController.text.isNotEmpty&&
+                      phoneTextController.text.isNotEmpty
+                          ?
                       await register_AsUser():
-                      showSnackBar( context,message: "تحقق من الشروط وسياسة الخصوصية ",error: true) ;
+                      showSnackBar( context,message: "أدخل البيانات المطلوبة ",error: true) ;
                       setState(() {
                         progss = false;
                       });
