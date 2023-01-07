@@ -279,11 +279,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child:Row(
 
                                       children: [
+                                    _special_ads[index].advertiser!.imageProfile!=null?
+                                        CircleAvatar(radius: 14, backgroundImage: NetworkImage(
 
-                                        CircleAvatar(radius: 14,
-                                          backgroundImage: NetworkImage(
-
-                                              _special_ads[index].advertiser!.imageProfile.toString()),),
+                                              _special_ads[index].advertiser!.imageProfile.toString()),):
+                                      CircleAvatar(radius: 12.sp,
+                                      backgroundColor: Color(0xff7B217E),
+                                      child: Icon(Icons.person_rounded,color: Colors.white,
+                                        size: 15.sp,)),
                                         SizedBox(width: 10.w,),
                                         Text(
 
@@ -522,11 +525,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                        child:Row(
 
                                          children: [
+                                           BestAds[index].advertiser!.imageProfile!=null?
 
                                            CircleAvatar(radius: 14,
                                              backgroundImage: NetworkImage(
 
-                                                 BestAds[index].advertiser!.imageProfile!.toString()),),
+                                                 BestAds[index].advertiser!.imageProfile!.toString()),):
+                                           CircleAvatar(radius: 12.sp,
+                                               backgroundColor: Color(0xff7B217E),
+                                               child: Icon(Icons.person_rounded,color: Colors.white,
+                                               size: 15.sp,)),
                                            SizedBox(width: 10.w,),
                                            Text(
 

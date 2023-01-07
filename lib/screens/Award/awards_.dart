@@ -326,14 +326,19 @@ class _AwardScreenState extends State<AwardScreen> {
 
                                                                ],
                                                              ),
+                                                             snapshot.data!.imageProfile!=null?
                                                              CircleAvatar(
                                                                radius: 66.sp,
-                                                               backgroundImage:  snapshot.data!.imageProfile!=null?
+                                                               backgroundImage:
 
                                                                NetworkImage(
                                                                  snapshot.data!.imageProfile!
-                                                               ):null
-                                                             ),
+                                                               )
+                                                             ):
+                                                             CircleAvatar(radius:66.sp,
+                                                                 backgroundColor: Color(0xff7B217E),
+                                                                 child: Icon(Icons.person_rounded,color: Colors.white,
+                                                                   size: 50.sp,)),
                                                              SizedBox(height: 22.h,),
                                                              FieldScreen(title: "اسم البريد الالكتروني",controller: emailTextController,),
                                                              SizedBox(height: 16.h,),

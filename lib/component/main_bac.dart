@@ -573,7 +573,7 @@ class _Back_GroundState extends State<Back_Ground> {
                                                                 height: 132.h,
                                                                 width: 132.w,
                                                                 decoration: BoxDecoration(
-                                                                    color: Colors.yellow,
+                                                                    color:Color(0xff7B217E),
                                                                     shape: BoxShape.circle,
                                                                     image: _pickedFile != null
                                                                         ? DecorationImage(

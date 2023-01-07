@@ -183,13 +183,18 @@ class _ListStoryScreenState extends State<ListStoryScreen>
                                       },
                                       child: Row(
                                         children: [
+                                          widget.PageFollowing[PageCurrent].ads![0].advertiser!.imageProfile!=null?
 
                                           CircleAvatar(
                                               radius: 21.sp,
 
-                                              backgroundImage:widget.PageFollowing[PageCurrent].ads![0].advertiser!.imageProfile!=null?
-                                              NetworkImage(widget.PageFollowing[PageCurrent].ads![0].advertiser!.imageProfile!):null
-                                          ),
+                                              backgroundImage:
+                                              NetworkImage(widget.PageFollowing[PageCurrent].ads![0].advertiser!.imageProfile!)
+                                          ):
+                                          CircleAvatar(radius: 21.sp,
+                                              backgroundColor: Color(0xff7B217E),
+                                              child: Icon(Icons.person_rounded,color: Colors.white,
+                                                size: 15.sp,)),
                                           SizedBox(width: 10.w,),
 
 
@@ -297,13 +302,17 @@ class _ListStoryScreenState extends State<ListStoryScreen>
                                     },
                                     child: Row(
                                       children: [
-
+                                        widget.PageFollowing[PageCurrent].ads![0].advertiser!.imageProfile!=null?
                                         CircleAvatar(
                                             radius: 21.sp,
 
-                                            backgroundImage:widget.PageFollowing[PageCurrent].ads![0].advertiser!.imageProfile!=null?
-                                            NetworkImage(widget.PageFollowing[PageCurrent].ads![0].advertiser!.imageProfile!):null
-                                        ),
+                                            backgroundImage:
+                                            NetworkImage(widget.PageFollowing[PageCurrent].ads![0].advertiser!.imageProfile!)
+                                        ):
+                                        CircleAvatar(radius: 21.sp,
+                                            backgroundColor: Color(0xff7B217E),
+                                            child: Icon(Icons.person_rounded,color: Colors.white,
+                                              size: 15.sp,)),
                                         SizedBox(width: 10.w,),
 
 

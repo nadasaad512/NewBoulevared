@@ -586,7 +586,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                  crossAxisCount: 1,
                                  mainAxisSpacing: 10.w
                              ),
-                            
+
                              shrinkWrap: true,
                              itemBuilder: (BuildContext, index){
                                return  Container(

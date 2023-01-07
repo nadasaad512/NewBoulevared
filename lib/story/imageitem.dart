@@ -96,13 +96,17 @@ class _ImageStoryScreenState extends State<ImageStoryScreen>
                   },
                   child: Row(
                     children: [
+                  widget.ad.advertiser!.imageProfile != null?
                       CircleAvatar(
                           radius: 21.sp,
                           backgroundImage:
-                              widget.ad.advertiser!.imageProfile != null
-                                  ? NetworkImage(
+                              NetworkImage(
                                       widget.ad.advertiser!.imageProfile!)
-                                  : null),
+                                  ):
+                      CircleAvatar(radius: 21.sp,
+                          backgroundColor: Color(0xff7B217E),
+                          child: Icon(Icons.person_rounded,color: Colors.white,
+                            size: 15.sp,)),
                       SizedBox(
                         width: 10.w,
                       ),

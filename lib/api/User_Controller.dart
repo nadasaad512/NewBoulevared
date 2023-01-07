@@ -120,7 +120,7 @@ class UserApiController with Helpers {
     multiPartRequest.headers['X-Requested-With'] = 'XMLHttpRequest';
     var response = await multiPartRequest.send();
     response.stream.transform(utf8.decoder).listen((event) {
-      if (response.statusCode ==true) {
+      if (jsonDecode(event)['code'] ==200) {
         var dataObject = jsonDecode(event)['user'];
         showSnackBar(context, message: jsonDecode(event)['message'], error: false);
         uploadEvent(true, jsonDecode(event)['message']);

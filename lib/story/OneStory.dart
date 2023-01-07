@@ -158,13 +158,18 @@ class _StoryPageState extends State<StoryPage>
                             },
                             child: Row(
                               children: [
+                                ad.advertiser!.imageProfile != null
+                                    ?
                                 CircleAvatar(
                                     radius: 21.sp,
                                     backgroundImage:
-                                        ad.advertiser!.imageProfile != null
-                                            ? NetworkImage(
+                                       NetworkImage(
                                                 ad.advertiser!.imageProfile!)
-                                            : null),
+                                           ):
+                                CircleAvatar(radius: 21.sp,
+                                    backgroundColor: Color(0xff7B217E),
+                                    child: Icon(Icons.person_rounded,color: Colors.white,
+                                      size: 15.sp,)),
                                 SizedBox(
                                   width: 10.w,
                                 ),
