@@ -41,16 +41,23 @@ class _FieldScreenState extends State<FieldScreen> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50,
-      width: 343,
+      height: 70.h,
+      width: 343.w,
       child: TextFormField(
         validator: (v) => widget.vali ? widget.validation!(v) : null,
         controller: widget.controller,
+        style: TextStyle(
+          fontSize: 10.sp
+        ),
+        scrollPhysics: ScrollPhysics(),
+
         keyboardType: widget.type,
         obscureText: _obscureText,
         cursorColor: Colors.black,
+
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
+
           hintText: widget.title,
           hintStyle: TextStyle(
             color: Colors.grey.shade500,
@@ -59,6 +66,7 @@ class _FieldScreenState extends State<FieldScreen> {
           ),
           enabledBorder: _border,
           focusedBorder: _border,
+
           errorStyle: TextStyle(fontSize: 11.sp, color: Colors.red),
           prefixIcon: widget.isicon
               ? SvgPicture.asset(

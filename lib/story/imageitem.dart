@@ -244,7 +244,7 @@ class _ImageStoryScreenState extends State<ImageStoryScreen>
                                     ad.store_url == null
                                         ? Container()
                                         : Detatlies(
-                                            name: ad.store_url!,
+                                            name: "الموقع",
                                             image: "images/earth.svg"),
                                     SizedBox(
                                       height: 20.h,

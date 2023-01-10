@@ -309,7 +309,7 @@ class _StoryPageState extends State<StoryPage>
                                               ad.store_url == null
                                                   ? Container()
                                                   : Detatlies(
-                                                      name: ad.store_url!,
+                                                      name:"الموقع",
                                                       image:
                                                           "images/earth.svg"),
                                               SizedBox(
@@ -554,6 +554,7 @@ class _StoryPageState extends State<StoryPage>
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
+         
           children: [
             SvgPicture.asset(image),
             SizedBox(
