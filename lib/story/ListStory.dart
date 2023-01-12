@@ -51,7 +51,7 @@ class _ListStoryScreenState extends State<ListStoryScreen>
     PageCurrent=widget.initialindex;
     pageController = PageController();
     StoryController = PageController();
-    //UserApiController().AdDetalies(idAD: widget.PageFollowing[PageCurrent].ads![0].id!);
+    UserApiController().AdDetalies(idAD: widget.PageFollowing[PageCurrent].ads![0].id!);
     animController = AnimationController(vsync: this);
     controller = VideoPlayerController.network("");
     controller.initialize();
