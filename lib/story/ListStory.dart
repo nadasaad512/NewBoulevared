@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,27 +46,32 @@ class _ListStoryScreenState extends State<ListStoryScreen>
   @override
   void initState() {
     super.initState();
+    log("init");
     Wakelock.enable();
-
     PageCurrent=widget.initialindex;
-    UserApiController().AdDetalies(idAD: widget.PageFollowing[PageCurrent].ads![0].id!);
+    pageController = PageController();
+    StoryController = PageController();
+    //UserApiController().AdDetalies(idAD: widget.PageFollowing[PageCurrent].ads![0].id!);
     animController = AnimationController(vsync: this);
     controller = VideoPlayerController.network("");
     controller.initialize();
     old = controller;
     for (var y = 0; y < widget.PageFollowing.length; y++) {
-      for (var i = 0; i < widget.PageFollowing[y].ads!.length-1; i++) {
-        img.addAll(widget.PageFollowing[y].ads![i].adImages!);
-        vido.addAll(widget.PageFollowing[y].ads![i].adVideos!);
+      log('y.toString()${y.toString()}');
+      log('ad.toString()${widget.PageFollowing[y].ads!.length.toString()}');
+      for (var i = 0; i < widget.PageFollowing[y].ads!.length; i++) {
+        log('i.toString()${i.toString()}');
+
+       img.addAll(widget.PageFollowing[y].ads![i].adImages!);
+       vido.addAll(widget.PageFollowing[y].ads![i].adVideos!);
       }
 
-      Story.add(ListStory(ad: List.from(img)..addAll(List.from(vido)), page: y,lengthad:widget.PageFollowing[y].ads!.length ));
-      img = [];
-      vido = [];
+     Story.add(ListStory(ad: List.from(img)..addAll(List.from(vido)), page: y,lengthad:widget.PageFollowing[y].ads!.length ));
+     img = [];
+     vido = [];
     }
 
-    pageController = PageController();
-    StoryController = PageController();
+
 
   }
 

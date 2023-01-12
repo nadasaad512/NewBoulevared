@@ -554,7 +554,7 @@ class _StoryPageState extends State<StoryPage>
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-         
+
           children: [
             SvgPicture.asset(image),
             SizedBox(

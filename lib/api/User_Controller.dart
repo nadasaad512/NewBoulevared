@@ -599,12 +599,9 @@ class UserApiController with Helpers {
           .toList();
       return folow;
     } else if (jsonDecode(response.body)['status'] == false) {
-      print("Something went wrong, please try again!");
-      //showSnackBar(context, message: 'Something went wrong, please try again!', error: true);
-    } else {
-      print("Something went wrong, please try again!");
 
-      // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
+    } else {
+
     }
     return [];
   }
@@ -872,11 +869,11 @@ class UserApiController with Helpers {
       return ad;
     } else if (jsonDecode(response.body)['status'] == false) {
       print("Something went wrong, please try again!");
-      //showSnackBar(context, message: 'Something went wrong, please try again!', error: true);
+
     } else {
       print("Something went wrong, please try again!");
 
-      // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
+
     }
     print("Something went wrong, please try again!");
     Ads ad = Ads();
