@@ -32,6 +32,7 @@ class Settings {
   String? whatsapp;
   String? description;
   String? advertisingPolicies;
+  List<Banners>? banners;
 
   Settings();
 
@@ -40,6 +41,12 @@ class Settings {
     url = json['url'];
     advertisingPolicies = json['advertisingPolicies'];
     description = json['description'];
+     if (json['banners'] != null) {
+      banners = <Banners>[];
+      json['banners'].forEach((v) {
+        banners!.add(new Banners.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -48,7 +55,32 @@ class Settings {
     data['url'] = url;
     data['advertisingPolicies'] = advertisingPolicies;
     data['whatsapp'] = whatsapp;
+     if (this.banners != null) {
+      data['banners'] = this.banners!.map((v) => v.toJson()).toList();
+    }
     data['description'] = description;
+    return data;
+  }
+}
+
+class Banners {
+  int? id;
+  String? image;
+  Null? name;
+
+  Banners({this.id, this.image, this.name});
+
+  Banners.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    image = json['image'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['image'] = this.image;
+    data['name'] = this.name;
     return data;
   }
 }

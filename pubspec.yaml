@@ -48,7 +48,8 @@ dependencies:
   image_size_getter: ^2.1.2
   wakelock: ^0.6.2
   geolocator: ^9.0.2
-  change_app_package_name: ^1.1.0
+  flutter_swiper_view: ^1.1.8
+
 
 
 

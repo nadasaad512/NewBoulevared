@@ -40,6 +40,8 @@ class ApiSettings {
 
 //Ads
   static const setting = '${_API_URL}settings';
+  static const bestads = '${_API_URL}getBestOffers';
+  static const Notifications = '${_API_URL}getMyNotifications';
   static const AllSpecialAds = '${_API_URL}getAllSpecialAds';
   static const getBestTenAds = '${_API_URL}getBestTenAds';
   static const CreateNewAd = '${_API_URL}createNewAd';

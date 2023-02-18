@@ -12,6 +12,7 @@ mixin Helpers {
         content: Text(message),
 
 
+
         behavior: SnackBarBehavior.floating,
         margin: EdgeInsets.only(
             bottom: MediaQuery.of(context).size.height - 200.h,

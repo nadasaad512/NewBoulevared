@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:new_boulevard/models/notification.dart';
 import '../Shared_Preferences/User_Preferences.dart';
+import '../models/BestOffers.dart';
 import '../models/Folllowers_Advertiser.dart';
 import '../models/Follower_user.dart';
 import '../models/activity.dart';
@@ -12,6 +14,8 @@ import '../models/categories.dart';
 import '../models/city.dart';
 import 'package:new_boulevard/models/special_ads.dart';
 import '../models/detalies.dart';
+import '../models/notification.dart';
+import '../models/notification.dart';
 import '../models/setting.dart';
 import '../models/story.dart';
 import '../models/terms.dart';
@@ -262,6 +266,29 @@ class UserApiController with Helpers {
       print("Something went wrong, please try again!");
 
       // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
+    }
+    return [];
+  }
+
+  Future<List<Banners>> getbaner() async {
+    var url = Uri.parse(ApiSettings.setting);
+    var response = await http.get(url);
+    
+    if (jsonDecode(response.body)['status'] == true) {
+      var json = jsonDecode(response.body);
+      print(json);
+      var jsonArray = json['settings']['banners'] as List;
+      List<Banners> city =
+         jsonArray.map((jsonObject) => Banners.fromJson(jsonObject)).toList();
+          print("nada1");
+      return city;
+     
+    } else if (jsonDecode(response.body)['status'] == false) {
+       print("nada2");
+    
+    } else {
+       print("nada3");
+      
     }
     return [];
   }
@@ -823,6 +850,38 @@ class UserApiController with Helpers {
       print("Something went wrong, please try again!");
 
       // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
+    }
+    return [];
+  }
+  Future<List<Offers>> getBestAds() async {
+    var url = Uri.parse(ApiSettings.bestads);
+    var response = await http.get(url);
+
+    if (jsonDecode(response.body)['status'] == true) {
+      var json = jsonDecode(response.body);
+      var jsonArray = json['offers'] as List;
+      List<Offers> specialAds =
+          jsonArray.map((jsonObject) => Offers.fromJson(jsonObject)).toList();
+      return specialAds;
+    } else if (jsonDecode(response.body)['status'] == false) {
+    } else {
+
+    }
+    return [];
+  }
+  Future<List<notification>> Notifications() async {
+    var url = Uri.parse(ApiSettings.Notifications);
+    var response = await http.get(url);
+
+    if (jsonDecode(response.body)['status'] == true) {
+      var json = jsonDecode(response.body);
+      var jsonArray = json['data'] as List;
+      List<notification> specialAds =
+          jsonArray.map((jsonObject) => notification.fromJson(jsonObject)).toList();
+      return specialAds;
+    } else if (jsonDecode(response.body)['status'] == false) {
+    } else {
+
     }
     return [];
   }

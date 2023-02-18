@@ -57,6 +57,7 @@ class User {
   late String password;
   City? city;
   int? pointsCount;
+  int? new_notifications;
   String? imageProfile;
   int? followMeCount;
   String? facebook;
@@ -80,6 +81,7 @@ class User {
     instagram = json['instagram'];
     twitter = json['twitter'];
     website = json['website'];
+    new_notifications = json['new_notifications'];
 
     rememberToken = json['remember_token'];
     imageProfile = json['image_profile'];
@@ -108,6 +110,7 @@ class User {
     data['twitter'] = twitter;
     data['type'] = type;
     data['status'] = status;
+    data['new_notifications'] = new_notifications;
     data['created_at'] = createdAt;
     data['access_token'] = accessToken;
     data['follow_me_count'] = followMeCount;
