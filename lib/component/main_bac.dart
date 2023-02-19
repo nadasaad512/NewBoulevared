@@ -73,6 +73,7 @@ class _Back_GroundState extends State<Back_Ground> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
         resizeToAvoidBottomInset: true,
         key: _key,
         drawer: SizedBox(
@@ -710,7 +711,7 @@ class _Back_GroundState extends State<Back_Ground> {
                 height: double.infinity,
                 margin: EdgeInsets.only(top: 90.h),
                 decoration: const BoxDecoration(
-                  color: Color(0xffFFF4FF),
+                  color: Colors.white,
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(15),
                     topLeft: Radius.circular(15),

@@ -1,17 +1,18 @@
 
+import 'dart:async';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:new_boulevard/screens/homescreen/widget/ImageRotater.dart';
-
+import 'package:new_boulevard/utils/helpers.dart';
 import '../../models/BestOffers.dart';
+import '../../models/notification.dart';
 import '../../models/setting.dart';
 import '../../story/ListStory.dart';
 import '../../story/OneStory.dart';
 import '../../Shared_Preferences/User_Preferences.dart';
 import '../../api/User_Controller.dart';
 import '../../component/main_bac.dart';
-
 import '../../models/Follower_user.dart';
 import '../../models/categories.dart';
 import '../../models/detalies.dart';
@@ -25,7 +26,7 @@ class HomeScreen extends StatefulWidget{
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with Helpers{
   List<MyFollowings> _folow = [];
   List<MyFollowings> test = [];
   List<SpecialAds> _special_ads = [];
@@ -33,60 +34,88 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Ads> BestAds = [];
   List<Ads> offerad = [];
     List<Banners> banners= [];
+    List<notification> massages= [];
     List<Offers> offer= [];
-  var result;
-
 
   @override
   void initState() {
     // TODO: implement initState
  UserApiController().HSpecialAds().then((value) => _special_ads=value);
- 
-    super.initState();
+
+
+
   }
+
   @override
   Widget build(BuildContext context) {
     return Back_Ground(
      childTab: "الرئيسية",
       ad: true,
       child: RefreshIndicator(
-
-
         color: Colors.purple,
         onRefresh: () async {
           await Future.delayed(Duration(milliseconds: 1500));
-          setState(() {
-
+          await UserApiController().Notifications().then((value) {
+            setState(() {
+              massages=value;
+            });
           });
+
+          if(massages.isNotEmpty){
+            for(int i=0;i<massages.length;i++){
+              Flushbar(
+
+                messageText: Text(massages[i].message.toString(),style: TextStyle(
+                    color: Colors.white
+                ),),
+                padding: EdgeInsets.all(20),
+                backgroundGradient: LinearGradient(
+                  begin: AlignmentDirectional.centerStart,
+                  end: AlignmentDirectional.centerEnd,
+                  colors: [
+                    Color(0xff7B217E),
+                    Color(0xff7B217E),
+                    Color(0xff18499A),
+                  ],
+                ),
+
+
+                borderRadius: BorderRadius.circular(8),
+
+                icon: Icon(
+                  Icons.notifications_on_outlined,
+                  color: Colors.white,
+                ),
+
+                duration: Duration(seconds: 3),
+                margin: EdgeInsets.only(
+                    top: 100.h,
+                    right: 10.w,
+                    left: 10.w
+                ),
+                flushbarPosition: FlushbarPosition.TOP,
+                leftBarIndicatorColor: Colors.white,
+              )..show(context);
+
+              await Future.delayed(Duration(seconds: 3));
+            }
+          }
+
+
+
         },
         child:     Container(
+
           margin: EdgeInsets.symmetric(horizontal: 12.w),
           child: ListView(
             children: [
-              // Center(
-              //   child: TextButton(
-              //     child: Text('Show Message'),
-              //     onPressed: () {
-              //       ScaffoldMessenger.of(context).showSnackBar(
-              //         SnackBar(
-              //           content: Text("message"),
-              //
-              //
-              //
-              //           behavior: SnackBarBehavior.floating,
-              //          action: SnackBarAction(
-              //            label: "ksl",
-              //            onPressed: (){
-              //              ScaffoldMessenger.of(context).
-              //            },
-              //          ),
-              //
-              //           backgroundColor:  Colors.green  ,
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // ),
+
+
+
+
+
+
+
               FutureBuilder<List<Banners>>(
                 future: UserApiController().getbaner(),
                 builder: (context, snapshot) {
@@ -271,10 +300,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     _special_ads = snapshot.data ?? [];
 
                     return SizedBox(
-                      height: 166.h,
+                      height: 220.h,
+                      width: 300.w,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: _special_ads.length,
+                        shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: (){
@@ -298,7 +329,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               margin: EdgeInsets.only(
                                   left: 12.w
                               ),
-                              width: 130.w,
+                              height: 220.h,
+                              width: 150.w,
                               decoration: BoxDecoration(
                                   color:   Color(0xff7B217E),
                                   borderRadius: BorderRadius.circular(5),
@@ -407,21 +439,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Center();
                   } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                     _categories = snapshot.data ?? [];
-                    return   GridView.builder(
-                        scrollDirection: Axis.vertical,
+                    return SizedBox(
+                      height: 230.h,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
                         itemCount: 8,
-                        gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 165.w / 98.h,
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 13.w,
-                            mainAxisSpacing: 14.h
-
-                        ),
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext, index){
-                          return  InkWell(
+                        itemBuilder: (context, index) {
+                          return InkWell(
                             onTap: (){
                               Navigator.pushReplacement(
                                 context,
@@ -434,31 +458,50 @@ class _HomeScreenState extends State<HomeScreen> {
 
                               );
                             },
-                            child: Container(
-                                width: 165.w,
-                                height: 98.h,
-                                decoration: BoxDecoration(
-                                    color:   Color(0xff7B217E),
-                                    borderRadius: BorderRadius.circular(5),
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: NetworkImage(_categories[index].image.toString())
-                                    )
-                                ),
+                            child: Column(
+                              children: [
+                                Container(
+                                    width: 130.w,
+                                    height: 190.h,
+                                    decoration: BoxDecoration(
+                                        color:   Color(0xff7B217E),
+                                        borderRadius: BorderRadius.circular(5),
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(_categories[index].image.toString())
+                                        )
+                                    ),
 
-                                child: Center(
+                                    // child: Center(
+                                    //   child:  Text(_categories[index].name.toString(),style: TextStyle(
+                                    //       color:  Color(0xffFFFFFF),
+                                    //       fontWeight: FontWeight.w600,
+                                    //       fontSize: 18.sp
+                                    //   ),) ,
+                                    // )
+                                ),
+                                SizedBox(height: 10.h,),
+                                Center(
                                   child:  Text(_categories[index].name.toString(),style: TextStyle(
-                                      color:  Color(0xffFFFFFF),
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18.sp
+                                    color:  Color(0xff7B217E),
+                                      fontWeight: FontWeight.normal,
+
+
+                                     // fontSize: 18.sp
                                   ),) ,
                                 )
-                            ),
+                              ],
+                            )
                           );
-                        }
-
-
+                        },
+                        separatorBuilder:(BuildContext, index){
+                          return  SizedBox(width: 10.w,);
+                        },
+                      ),
                     );
+
+
+
                   } else {
                     return Center(
                       child: Icon(Icons.wifi_off_rounded, size: 80,color: Colors.purple,),
@@ -512,7 +555,7 @@ class _HomeScreenState extends State<HomeScreen> {
                        BestAds = snapshot.data ?? [];
 
                        return SizedBox(
-                         height: 166.h,
+                         height: 200.h,
                          child: ListView.builder(
                            scrollDirection: Axis.horizontal,
                            itemCount: BestAds.length,
@@ -540,6 +583,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                      left: 12.w
                                  ),
                                  width: 130.w,
+                                 //height: 190.h,
                                  decoration: BoxDecoration(
                                      color:   Color(0xff7B217E),
                                      borderRadius: BorderRadius.circular(5),
@@ -619,6 +663,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     return ListView.builder(
                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+
                       itemCount: offer.length,
                       itemBuilder: (context, index) {
                         return Column(
@@ -635,7 +681,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: 16.h,),
 
                             SizedBox(
-                              height: 166.h,
+                              height: 200.h,
+
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: offer[index].ads!.length,
@@ -664,6 +711,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           left: 12.w
                                       ),
                                       width: 130.w,
+                                      //height: 80.h,
                                       decoration: BoxDecoration(
                                           color:   Color(0xff7B217E),
                                           borderRadius: BorderRadius.circular(5),

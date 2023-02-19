@@ -25,15 +25,15 @@ class _CasualImageSliderState extends State<CasualImageSlider> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 2), (timer) {
-      setState(() {
+    Timer.periodic(Duration(seconds: 3), (timer) {
+
         _currentIndex = _random.nextInt(widget.imageUrls.length);
         _controller.animateToPage(
           _currentIndex,
           duration: Duration(seconds: 2),
           curve: Curves.easeInOut,
         );
-      });
+
     });
   }
 
@@ -83,9 +83,5 @@ class _CasualImageSliderState extends State<CasualImageSlider> {
     );
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+
 }

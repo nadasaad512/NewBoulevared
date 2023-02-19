@@ -162,7 +162,19 @@ class _AdsScreenState extends State<AdsScreen> {
 
                                     child:TextButton(onPressed: ()
                                     {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                StoryPage(
+                                                  AdId:_detalies[index].id!,
 
+                                                )
+                                        ),
+
+
+
+                                      );
 
 
 
@@ -255,7 +267,19 @@ class _AdsScreenState extends State<AdsScreen> {
                                       child:TextButton(onPressed: ()
                                       {
 
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  StoryPage(
+                                                    AdId:_detalies[index].id!,
 
+                                                  )
+                                          ),
+
+
+
+                                        );
 
 
                                       }, child: Icon(

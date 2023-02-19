@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) {
         return  MaterialApp(
+
           localizationsDelegates: [
             GlobalCupertinoLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -52,10 +53,13 @@ class MyApp extends StatelessWidget {
           ],
          locale: Locale('ar', 'AE'),
 
+
           debugShowCheckedModeBanner: false,
           useInheritedMediaQuery: true,
           theme: ThemeData(
-            fontFamily: "Cairo"
+           // fontFamily: "Cairo",
+
+
           ),
           initialRoute: '/launch_screen',
           routes: {

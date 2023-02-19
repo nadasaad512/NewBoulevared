@@ -276,18 +276,17 @@ class UserApiController with Helpers {
     
     if (jsonDecode(response.body)['status'] == true) {
       var json = jsonDecode(response.body);
-      print(json);
       var jsonArray = json['settings']['banners'] as List;
       List<Banners> city =
          jsonArray.map((jsonObject) => Banners.fromJson(jsonObject)).toList();
-          print("nada1");
+
       return city;
      
     } else if (jsonDecode(response.body)['status'] == false) {
-       print("nada2");
+
     
     } else {
-       print("nada3");
+
       
     }
     return [];
@@ -844,12 +843,9 @@ class UserApiController with Helpers {
           jsonArray.map((jsonObject) => Ads.fromJson(jsonObject)).toList();
       return specialAds;
     } else if (jsonDecode(response.body)['status'] == false) {
-      print("Something went wrong, please try again!");
-      //showSnackBar(context, message: 'Something went wrong, please try again!', error: true);
-    } else {
-      print("Something went wrong, please try again!");
 
-      // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
+    } else {
+
     }
     return [];
   }
@@ -871,18 +867,26 @@ class UserApiController with Helpers {
   }
   Future<List<notification>> Notifications() async {
     var url = Uri.parse(ApiSettings.Notifications);
-    var response = await http.get(url);
+    var response = await http.get(url, headers: {
+    HttpHeaders.authorizationHeader: UserPreferences().token,
+    });
+
 
     if (jsonDecode(response.body)['status'] == true) {
       var json = jsonDecode(response.body);
-      var jsonArray = json['data'] as List;
+      var jsonArray = json['notifications'] as List;
+
       List<notification> specialAds =
           jsonArray.map((jsonObject) => notification.fromJson(jsonObject)).toList();
+      print("1");
       return specialAds;
     } else if (jsonDecode(response.body)['status'] == false) {
+      print("11111");
     } else {
+      print("111");
 
     }
+    print("11");
     return [];
   }
 
