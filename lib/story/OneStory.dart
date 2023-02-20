@@ -615,13 +615,22 @@ class _StoryPageState extends State<StoryPage>
                 : Navigator.pop(context);
           });
 
+          if (CurrentPage==StroryData.length-1){
+            print("here");
+
+          }
+
           pageController.jumpToPage(CurrentPage + 1);
         } else {
-          null;
+          Navigator.pop(context);
+
         }
       } else {
         null;
       }
+
+
+
     } else if (dx > 2 * screenWidth / 3) {
       if (StroryData[CurrentPage].type == "image") {
         controller.dispose();

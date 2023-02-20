@@ -50,6 +50,7 @@ dependencies:
   geolocator: ^9.0.2
   flutter_swiper_view: ^1.1.8
   another_flushbar: ^1.12.29
+  cached_network_image: ^3.2.3
 
 
 
@@ -75,7 +76,7 @@ flutter_icons:
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
+  # activated in the `analysis_options.yaml` file located        at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0

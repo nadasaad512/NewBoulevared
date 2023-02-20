@@ -31,10 +31,9 @@ class PartScreen extends StatelessWidget{
               itemCount: _categories.length,
               scrollDirection: Axis.vertical,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 165.w / 98.h,
+                  childAspectRatio: 165.w / 265.h,
                   crossAxisCount: 2,
-                  crossAxisSpacing: 5.w,
-                  mainAxisSpacing: 14.h
+                  mainAxisSpacing: 5.h
 
               ),
               itemBuilder: (BuildContext, index){
@@ -54,26 +53,38 @@ class PartScreen extends StatelessWidget{
                     );
 
                   },
-                  child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10.w),
-                      width: 165.w,
-                      height: 98.h,
-                      decoration: BoxDecoration(
-                          color:   Color(0xff7B217E),
-                          borderRadius: BorderRadius.circular(5),
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(_categories[index].image!)
-                        )
+                  child: Column(
+                    children: [
+                      Container(
+                          margin: EdgeInsets.symmetric(horizontal: 10.w),
+                          width: 165.w,
+                          height: 250.h,
+                          decoration: BoxDecoration(
+                              color:   Color(0xff7B217E),
+                              borderRadius: BorderRadius.circular(5),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(_categories[index].image!)
+                              )
+                          ),
+
                       ),
-                      child: Center(
-                        child:  Text(_categories[index].name!,style: TextStyle(
-                            color:  Color(0xffFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18.sp
+                      SizedBox(height: 10.h,),
+                      Center(
+                        child:  Text(_categories[index].name.toString(),style: TextStyle(
+                          color:  Color(0xff7B217E),
+                          fontWeight: FontWeight.normal,
+                          fontSize: 18.sp
+
+
+                          // fontSize: 18.sp
                         ),) ,
                       )
-                  ),
+                    ],
+                  )
+
+
+
                 );
               },
 

@@ -63,14 +63,15 @@ class _AwardScreenState extends State<AwardScreen> {
                   children: [
 
 
-                    Text('لكي تتمكن من كسب النقاط والدخول في السحوبات سجل الان  ',  overflow: TextOverflow.ellipsis,maxLines: 2,style: TextStyle(
+
+                    Text('لتتمكن من كسب النقاط والدخول في السحوبات  ',  overflow: TextOverflow.ellipsis,maxLines: 2,style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600
                     ),),
                     TextButton(onPressed: (){
 
                       Navigator.pushNamed(context, '/register_screen');
-                    }, child: Text("كمستخدم",style: TextStyle(
+                    }, child: Text("سجل الان",style: TextStyle(
 
                         fontWeight: FontWeight.w500,
                         decoration: TextDecoration.underline,
@@ -166,14 +167,14 @@ class _AwardScreenState extends State<AwardScreen> {
                           children: [
 
 
-                            Text('لكي تتمكن من كسب النقاط والدخول في السحوبات سجل الان  ',  overflow: TextOverflow.ellipsis,maxLines: 2,style: TextStyle(
+                            Text('لتتمكن من كسب النقاط والدخول في السحوبات   ',  overflow: TextOverflow.ellipsis,maxLines: 2,style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600
                             ),),
                             TextButton(onPressed: (){
 
                               Navigator.pushNamed(context, '/register_screen');
-                            }, child: Text("كمستخدم",style: TextStyle(
+                            }, child: Text("سجل الان",style: TextStyle(
 
                                 fontWeight: FontWeight.w500,
                                 decoration: TextDecoration.underline,
@@ -455,12 +456,9 @@ class _AwardScreenState extends State<AwardScreen> {
                         );
                       },
                     );
-                  }else if(snapshot.data==[] ){
+                  }else if(snapshot.data==[]||snapshot.data!.isEmpty ){
                     return SizedBox.shrink();
                   }
-
-
-
                   else {
                     return Center(
                       child: Icon(Icons.wifi_off_rounded, size: 80,color: Colors.purple,),

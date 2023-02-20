@@ -46,7 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'كي تتمكن من الاستفادة من خدامتنا سجل الان ',
+                  'لتتمكن من الاستفادة من خدامتنا سجل الان ',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style:

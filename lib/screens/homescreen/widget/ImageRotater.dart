@@ -19,23 +19,27 @@ class CasualImageSlider extends StatefulWidget {
 
 class _CasualImageSliderState extends State<CasualImageSlider> {
   final _controller = PageController();
-  final _random = Random();
   int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 3), (timer) {
-
-        _currentIndex = _random.nextInt(widget.imageUrls.length);
+    Timer.periodic(Duration(seconds: 5), (timer) {
+      setState(() {
+        if (_currentIndex == widget.imageUrls.length - 1) {
+          _currentIndex = 0;
+        } else {
+          _currentIndex++;
+        }
         _controller.animateToPage(
           _currentIndex,
           duration: Duration(seconds: 2),
           curve: Curves.easeInOut,
         );
-
+      });
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
