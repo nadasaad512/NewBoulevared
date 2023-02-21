@@ -6,7 +6,7 @@ class BackGround extends StatelessWidget {
   bool back;
   String rout;
 
-  //BackAuthScreen
+
 
   BackGround({
     required this.child,
@@ -16,6 +16,7 @@ class BackGround extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
         body: Stack(
       children: [
         Container(
@@ -52,11 +53,12 @@ class BackGround extends StatelessWidget {
                   )
                 : null),
         Container(
+
           width: double.infinity,
           height: double.infinity,
           margin: EdgeInsets.only(top: 156.h),
           decoration: const BoxDecoration(
-            color: Color(0xffFFF4FF),
+            color: Colors.white,
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(20),
               topLeft: Radius.circular(20),
@@ -71,7 +73,9 @@ class BackGround extends StatelessWidget {
             child: CircleAvatar(
                 radius: 77.sp,
                 backgroundColor: Colors.white,
-                backgroundImage: const AssetImage("images/logo.png")))
+                backgroundImage:  ExactAssetImage("images/bv2.png")
+
+            ))
       ],
     ));
   }
