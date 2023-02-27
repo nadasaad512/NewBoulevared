@@ -60,9 +60,18 @@ class _LOGAIN_SCREENState extends State<LOGAIN_SCREEN> with Helpers {
                 security: true,
                 controller: _passwordTextController,
               ),
-              SizedBox(
-                height: 16.h,
-              ),
+
+              TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context,'/MainScreen');
+                  },
+                  child: Text(
+                    "تصفح الان بدون تسجيل دخول",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14.sp,
+                        color: const Color(0xff18499A)),
+                  )),
               TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/forget_password_screen');
@@ -88,13 +97,13 @@ class _LOGAIN_SCREENState extends State<LOGAIN_SCREEN> with Helpers {
                 ),
                 child: progss
                     ? const CircularProgressIndicator(
-                        color: Colors.white,
-                      )
+                  color: Colors.white,
+                )
                     : Text(
-                        'تسجيل الدخول',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 18.sp),
-                      ),
+                  'تسجيل الدخول',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 18.sp),
+                ),
               ),
               SizedBox(
                 height: 20.h,

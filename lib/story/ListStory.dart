@@ -374,15 +374,8 @@ class _ListStoryScreenState extends State<ListStoryScreen>
   loedImage(){
 
     Size size1=  _calculateImageDimension(image1: Story[PageCurrent].ad![CurrentStory].file.toString());
-    print("size1");
-    print(size1);
-
-
       heightImg= size1.height;
       widthImg= size1.width;
-
-
-
     animController.stop();
     animController.reset();
     animController.duration = Duration(seconds: 10);
@@ -397,8 +390,14 @@ class _ListStoryScreenState extends State<ListStoryScreen>
 
         else {
           if (CurrentStory == Story[PageCurrent].ad!.length - 1) {
-            PageCurrent++;
-            pageController.jumpToPage(PageCurrent);
+            if(PageCurrent<widget.PageFollowing.length-1){
+              PageCurrent++;
+              pageController.jumpToPage(PageCurrent);
+            }else{
+              Navigator.pop(context);
+            }
+
+
           }
         }}
     });
@@ -434,18 +433,23 @@ class _ListStoryScreenState extends State<ListStoryScreen>
       if (Story[PageCurrent].ad![CurrentStory].type == "image") {
         if (CurrentStory < Story[PageCurrent].ad!.length - 1) {
          setState(() {
-           print(CurrentStory);
            StoryController.jumpToPage(CurrentStory+1);
-           print(CurrentStory);
          });
         }
 
         else {
           if (CurrentStory == Story[PageCurrent].ad!.length - 1) {
-            pageController.jumpToPage(PageCurrent+1);
+            if(PageCurrent<widget.PageFollowing.length-1){
+              PageCurrent++;
+              pageController.jumpToPage(PageCurrent);
+            }else{
+              Navigator.pop(context);
+            }
+
           }
         }
       }
+      ///video
 
       else{
         if(end==true)
@@ -518,6 +522,7 @@ class _ListStoryScreenState extends State<ListStoryScreen>
       }
 
     }
+    ///back
 
 
 

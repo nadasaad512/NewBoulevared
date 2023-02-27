@@ -62,6 +62,16 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
     passwordTextController = TextEditingController();
     phoneTextController = TextEditingController();
     SurepasswordTextController = TextEditingController();
+    UserApiController().Commercial_Activities().then((value) {
+      setState(() {
+        ActiveList=value;
+      });
+    });
+    UserApiController().getCity().then((value) {
+      setState(() {
+        cit=value;
+      });
+    });
   }
 
   @override
@@ -164,80 +174,63 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                   FieldScreen(
                       title: "الاسم التجاري", controller: ANameTextController),
                   SizedBox(height: 16.h,),
-                  FutureBuilder<List<Activity>>(
-                    future: UserApiController().Commercial_Activities(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator(
-                          color: Colors.purple,));
-                      } else
-                      if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                        ActiveList = snapshot.data ?? [];
-                        return Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20.w),
-                          height: 50.h,
-                          width: 330.w,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              shape: BoxShape.rectangle,
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    height: 50.h,
+                    width: 330.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        shape: BoxShape.rectangle,
 
 
-                              border: Border.all(
-                                color: Colors.grey.shade400,
-                              )
-                          ),
+                        border: Border.all(
+                          color: Colors.grey.shade400,
+                        )
+                    ),
 
-                          child: DropdownButton(
+                    child: DropdownButton(
 
 
-                            isExpanded: true,
-                            underline: Container(),
-                            menuMaxHeight: 500.h,
+                      isExpanded: true,
+                      underline: Container(),
+                      menuMaxHeight: 500.h,
 
-                            hint: Text("النشاط التجاري ", style: TextStyle(
-                              color: Colors.grey.shade500,
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.w400,
-                            ),),
+                      hint: Text("النشاط التجاري ", style: TextStyle(
+                        color: Colors.grey.shade500,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w400,
+                      ),),
 
-                            iconEnabledColor: Colors.white,
+                      iconEnabledColor: Colors.white,
 
-                            value: _selected1,
-                            icon: Icon(Icons.arrow_forward_ios_rounded,
-                              color: Colors.grey.shade500, size: 18,),
-                            iconSize: 30,
-                            elevation: 16,
-                            style: TextStyle(
-                                color: Colors.black, fontSize: 16.sp,
-                                fontWeight: FontWeight.w400
-                            ),
-                            onChanged: (newValue) {
-                              setState(() {
-                                _selected1 = newValue;
-                              });
-                            },
-                            items: snapshot.data!.map<
-                                DropdownMenuItem<String>>((Activity value) {
-                              return DropdownMenuItem<String>(
+                      value: _selected1,
+                      icon: Icon(Icons.arrow_forward_ios_rounded,
+                        color: Colors.grey.shade500, size: 18,),
+                      iconSize: 30,
+                      elevation: 16,
+                      style: TextStyle(
+                          color: Colors.black, fontSize: 16.sp,
+                          fontWeight: FontWeight.w400
+                      ),
+                      onChanged: (newValue) {
+                        setState(() {
+                          _selected1 = newValue;
+                        });
+                      },
+                      items: ActiveList.map<
+                          DropdownMenuItem<String>>((Activity value) {
+                        return DropdownMenuItem<String>(
 
-                                onTap: () {
-                                  setState(() {
-                                    idActive = value.id.toString();
-                                  });
-                                },
-                                value: value.name,
-                                child: Text(value.name!),
-                              );
-                            }).toList(),
-                          ),
+                          onTap: () {
+                            setState(() {
+                              idActive = value.id.toString();
+                            });
+                          },
+                          value: value.name,
+                          child: Text(value.name!),
                         );
-                      } else {
-                        return Center(
-                          child: Icon(Icons.wifi_off_rounded, size: 80,color: Colors.purple,),
-                        );
-                      }
-                    },
+                      }).toList(),
+                    ),
                   ),
                   SizedBox(height: 16.h,),
                   FieldScreen(title: "البريد الالكتروني",
@@ -255,84 +248,63 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                     security: true,
                     controller: ASurepasswordTextController,),
                   SizedBox(height: 16.h,),
-                  Center(
-                    child: FutureBuilder<List<Cities>>(
-                      future: UserApiController().getCity(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator(
-                            color: Colors.purple,));
-                        } else
-                        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                          cit = snapshot.data ?? [];
-                          return Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            height: 50.h,
-                            width: 330.w,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                shape: BoxShape.rectangle,
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    height: 50.h,
+                    width: 330.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        shape: BoxShape.rectangle,
 
 
-                                border: Border.all(
-                                    color: Color(0xffC4C4C4)
-                                )
-                            ),
-
-                            child: DropdownButton(
-
-
-                              isExpanded: true,
-                              underline: Container(),
-                              menuMaxHeight: 500.h,
-
-                              hint: Text("المدينة", style: TextStyle(
-                                color: Colors.grey.shade500,
-                                fontSize: 15.sp,
-                                fontWeight: FontWeight.w400,
-                              ),),
-
-                              iconEnabledColor: Colors.white,
-
-                              value: _selected,
-                              icon: Icon(Icons.arrow_forward_ios_rounded,
-                                color: Colors.grey.shade500, size: 18,),
-                              iconSize: 30,
-                              elevation: 16,
-                              style: TextStyle(
-                                  color: Colors.black, fontSize: 16.sp,
-                                  fontWeight: FontWeight.w400
-                              ),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _selected = newValue;
-                                });
-                              },
-                              items: snapshot.data!.map<
-                                  DropdownMenuItem<String>>((Cities value) {
-                                return DropdownMenuItem<String>(
-
-                                  onTap: () {
-                                    setState(() {
-                                      id = value.id.toString();
-                                    });
-                                  },
-                                  value: value.name,
-                                  child: Text(value.name),
-                                );
-                              }).toList(),
-                            ),
-                          );
-                        } else {
-                          return Center(
-                            child: Icon(Icons.wifi_off_rounded, size: 80,color: Colors.purple,),
-                          );
-                        }
-                      },
+                        border: Border.all(
+                            color: Color(0xffC4C4C4)
+                        )
                     ),
 
+                    child: DropdownButton(
 
+
+                      isExpanded: true,
+                      underline: Container(),
+                      menuMaxHeight: 500.h,
+
+                      hint: Text("المدينة", style: TextStyle(
+                        color: Colors.grey.shade500,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w400,
+                      ),),
+
+                      iconEnabledColor: Colors.white,
+
+                      value: _selected,
+                      icon: Icon(Icons.arrow_forward_ios_rounded,
+                        color: Colors.grey.shade500, size: 18,),
+                      iconSize: 30,
+                      elevation: 16,
+                      style: TextStyle(
+                          color: Colors.black, fontSize: 16.sp,
+                          fontWeight: FontWeight.w400
+                      ),
+                      onChanged: (newValue) {
+                        setState(() {
+                          _selected = newValue;
+                        });
+                      },
+                      items: cit.map<
+                          DropdownMenuItem<String>>((Cities value) {
+                        return DropdownMenuItem<String>(
+
+                          onTap: () {
+                            setState(() {
+                              id = value.id.toString();
+                            });
+                          },
+                          value: value.name,
+                          child: Text(value.name),
+                        );
+                      }).toList(),
+                    ),
                   ),
                   SizedBox(height: 16.h,),
                   Container(

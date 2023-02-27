@@ -144,38 +144,35 @@ class _Back_GroundState extends State<Back_Ground> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            DraTex(context,
-                                titel: "الرئيسية", router: '/MainScreen'),
+                            DraTex(context, titel: "الرئيسية",router: '/MainScreen'),
                             SizedBox(
                               height: 15.h,
                             ),
-                            DraTex(context,
-                                titel: "عن التطبيق", router: '/InfoScreen'),
+                            DraTex(context, titel: "عن التطبيق",router: '/InfoScreen'),
                             SizedBox(
                               height: 15.h,
                             ),
                             DraTex(
                               context,
                               titel: "تواصل معنا",
-                              wh: true,
+                              contact: true
                             ),
                             SizedBox(
                               height: 15.h,
                             ),
-                            DraTex(context,
-                                titel: "مشاركة التطبيق", share: true),
+                            DraTex(context, titel: "مشاركة التطبيق", share: true),
                             SizedBox(
                               height: 15.h,
                             ),
-                            DraTex(context,
-                                titel: "تقييم التطبيق", reviw: true),
+                            DraTex(context, titel: "تقييم التطبيق", reviw: true),
                             SizedBox(
                               height: 15.h,
                             ),
                             snapshot.data!.type == "advertiser"
                                 ? DraTex(context,
                                     titel: "سياسات الاعلان",
-                                    router: '/ConditionScreen')
+                              router: '/ConditionScreen'
+                                   )
                                 : const SizedBox.shrink(),
                             snapshot.data!.type != "advertiser"
                                 ? const SizedBox.shrink()
@@ -184,17 +181,16 @@ class _Back_GroundState extends State<Back_Ground> {
                                   ),
                             DraTex(context,
                                 titel: "تغيير كلمة المرور",
-                                router: '/ChangePassword'),
+                              router: '/ChangePassword'
+                                ),
                             SizedBox(
                               height: 15.h,
                             ),
                             snapshot.data!.type == "advertiser"
-                                ? DraTex(context,
-                                    titel: "إضافة اعلان",
-                                    router: '/NewAdsScreen')
-                                : DraTex(context,
-                                    titel: "التسجيل كمعلن",
-                                    router: '/register_screen'),
+                                ? DraTex(context, titel: "إضافة اعلان",router: '/NewAdsScreen')
+                                : InkWell(
+
+                                child: DraTex(context, titel: "التسجيل كمعلن", router: '/register_screen')),
                             SizedBox(
                               height: 15.h,
                             ),
@@ -204,7 +200,7 @@ class _Back_GroundState extends State<Back_Ground> {
                             SizedBox(
                               height: 15.h,
                             ),
-                            DraTex(context, titel: "تسجيل الخروج", log: true),
+                            DraTex(context, titel: "تسجيل الخروج",log: true),
                           ],
                         ),
                       )
@@ -271,7 +267,7 @@ class _Back_GroundState extends State<Back_Ground> {
                             SizedBox(
                               height: 20.h,
                             ),
-                            DraTex(context, titel: "تواصل معنا"),
+                            DraTex(context, titel: "تواصل معنا",contact: true),
                             SizedBox(
                               height: 20.h,
                             ),
@@ -748,10 +744,10 @@ class _Back_GroundState extends State<Back_Ground> {
 
   Widget DraTex(BuildContext context,
       {required String titel,
-      String? router,
-      bool log = false,
       bool share = false,
-      bool wh = false,
+      bool contact = false,
+      bool log = false,
+        String? router,
       bool reviw = false}) {
     return InkWell(
       hoverColor: Colors.purple.shade50,
@@ -771,14 +767,19 @@ class _Back_GroundState extends State<Back_Ground> {
         }else if(share){
           await Share.share('check out my website ${settings.url}');
         }
+          log? await logout():null;
+
+        if(reviw){
+          Platform.isIOS?
+          await launch(settings.instagram.toString()):
+          await launch(settings.linked_in.toString());
+        }
+        print(settings.whatsapp);
+        contact? _launchWhatsapp( number: settings.whatsapp):null;
 
 
-        wh
-            ? _launchWhatsapp(context: context, number: settings.whatsapp)
-            : null;
-        reviw ? await launch(settings.url.toString()) : null;
 
-        log ? await logout() : null;
+
         router != null ? Navigator.pushNamed(context, router) : null;
       },
       child: Text(titel,
@@ -823,16 +824,11 @@ class _Back_GroundState extends State<Back_Ground> {
   }
 }
 
-_launchWhatsapp({number, context}) async {
-  var whatsapp = number;
-  var whatsappAndroid = Uri.parse("?phone=$whatsapp&text=hello");
-  if (await canLaunchUrl(whatsappAndroid)) {
-    await launchUrl(whatsappAndroid);
+_launchWhatsapp({number}) async {
+  final url = "whatsapp://send?phone=$number";
+  if (await canLaunch(url)) {
+    await launch(url);
   } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("WhatsApp is not installed on the device"),
-      ),
-    );
+    throw 'Could not launch $url';
   }
 }

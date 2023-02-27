@@ -30,6 +30,8 @@ class Settings {
   int? id;
   String? url;
   String? whatsapp;
+  String? linked_in;
+  String? instagram;
   String? description;
   String? advertisingPolicies;
   List<Banners>? banners;
@@ -39,6 +41,9 @@ class Settings {
   Settings.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     url = json['url'];
+    linked_in = json['linked_in'];
+    instagram = json['instagram'];
+    whatsapp = json['whatsapp'];
     advertisingPolicies = json['advertisingPolicies'];
     description = json['description'];
      if (json['banners'] != null) {
@@ -53,6 +58,9 @@ class Settings {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['url'] = url;
+    data['linked_in'] = linked_in;
+    data['instagram'] = instagram;
+    data['whatsapp'] = whatsapp;
     data['advertisingPolicies'] = advertisingPolicies;
     data['whatsapp'] = whatsapp;
      if (this.banners != null) {
@@ -66,21 +74,20 @@ class Settings {
 class Banners {
   int? id;
   String? image;
-  Null? name;
 
-  Banners({this.id, this.image, this.name});
+
+  Banners({this.id, this.image, });
 
   Banners.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     image = json['image'];
-    name = json['name'];
+
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['image'] = this.image;
-    data['name'] = this.name;
     return data;
   }
 }
