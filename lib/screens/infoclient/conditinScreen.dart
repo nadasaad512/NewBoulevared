@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../api/User_Controller.dart';
 import '../../../models/setting.dart';
+import '../../loed/loed.dart';
 
 class ConditionScreen extends StatelessWidget {
   @override
@@ -42,10 +43,7 @@ class ConditionScreen extends StatelessWidget {
                     future: UserApiController().Setting(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                            child: CircularProgressIndicator(
-                          color: Colors.purple,
-                        ));
+                        return LoedWidget();
                       } else if (snapshot.hasData) {
                         return Text(
                           snapshot.data!.advertisingPolicies.toString(),

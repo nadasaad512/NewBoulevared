@@ -669,18 +669,19 @@ class _StoryPageState extends State<StoryPage>
       }
     }
   }
-}
-
-_launchWhatsapp({number, context}) async {
-  var whatsapp = number;
-  var whatsappAndroid = Uri.parse("?phone=$whatsapp&text=hello");
-  if (await canLaunchUrl(whatsappAndroid)) {
-    await launchUrl(whatsappAndroid);
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("WhatsApp is not installed on the device"),
-      ),
-    );
+  _launchWhatsapp({number, context}) async {
+    var whatsapp = number;
+    var whatsappAndroid = Uri.parse("?phone=$whatsapp&text=hello");
+    if (await canLaunchUrl(whatsappAndroid)) {
+      await launchUrl(whatsappAndroid);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("WhatsApp is not installed on the device"),
+        ),
+      );
+    }
   }
 }
+
+

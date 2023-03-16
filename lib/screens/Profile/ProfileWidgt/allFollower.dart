@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../api/User_Controller.dart';
 import '../../../component/main_bac.dart';
+import '../../../loed/loed.dart';
 import '../../../models/Folllowers_Advertiser.dart';
 
 class AllFollower extends StatelessWidget{
@@ -24,7 +25,7 @@ class AllFollower extends StatelessWidget{
        builder: (context, snapshot) {
          if (snapshot.connectionState ==
              ConnectionState.waiting) {
-           return Center(child: CircularProgressIndicator(color: Colors.purple,));
+           return LoedWidget();
          } else if (snapshot.hasData &&
              snapshot.data!.isNotEmpty) {
            _folow = snapshot.data ?? [];

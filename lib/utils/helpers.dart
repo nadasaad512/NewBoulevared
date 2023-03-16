@@ -10,9 +10,11 @@ mixin Helpers {
   void showSnackBar(BuildContext context, {required String message, bool error = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
-
-
+        content: GestureDetector(
+          onTap: (){
+            ScaffoldMessenger.of(context).removeCurrentSnackBar();
+          },
+            child: Text(message)),
 
         behavior: SnackBarBehavior.floating,
         margin: EdgeInsets.only(

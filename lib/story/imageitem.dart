@@ -7,7 +7,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/ads.dart';
 import '../models/detalies.dart';
 import '../screens/Details/ad_story_screen.dart';
-
 import '../screens/Profile/ProfileWidgt/profileScreen.dart';
 import '../screens/maps/location.dart';
 

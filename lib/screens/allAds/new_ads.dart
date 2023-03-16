@@ -12,6 +12,7 @@ import 'package:wakelock/wakelock.dart';
 import '../../api/Images_Controller.dart';
 import '../../api/User_Controller.dart';
 import '../../component/TextField.dart';
+import '../../loed/loed.dart';
 import '../../models/ads.dart';
 import '../../models/categories.dart';
 import '../../models/city.dart';
@@ -123,6 +124,26 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
      });
     }):null;
+    UserApiController().Normal_Type().then((value) {
+      setState(() {
+        Normal_Price=value;
+      });
+    });
+    UserApiController().Special_Type().then((value) {
+      setState(() {
+        Special_Price=value;
+      });
+    });
+    UserApiController().getCategories().then((value) {
+      setState(() {
+        categories=value;
+      });
+    });
+    UserApiController().getCity().then((value) {
+      setState(() {
+        cit=value;
+      });
+    });
 
 
   }
@@ -1077,6 +1098,8 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
             });
           },
           children: [
+            Normal_Price.isEmpty||Special_Price.isEmpty?
+            LoedWidget():
             SingleChildScrollView(
 
               child: RefreshIndicator(
@@ -1100,254 +1123,215 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                           fontWeight: FontWeight.w600
                       ),),
                       SizedBox(height: 25.h,),
-                      Container(
 
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              children: [
-                                Container(
-                                  height: 38.h,
-                                  width: 96.w,
-                                  decoration: BoxDecoration(
-                                      color: Color(0xff18499A),
-                                      borderRadius: BorderRadius.circular(14)
-                                  ),
-                                  child: Center(
-                                    child: Text("إعلان عادي",style:
-                                    TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white
-                                    ),),
-                                  ),
+
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              Container(
+                                height: 38.h,
+                                width: 96.w,
+                                decoration: BoxDecoration(
+                                    color: Color(0xff18499A),
+                                    borderRadius: BorderRadius.circular(14)
                                 ),
-                                FutureBuilder<List<AdType>>(
-                                  future: UserApiController().Normal_Type(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState == ConnectionState.waiting) {
-                                      return Center();
-                                    } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                                      Normal_Price = snapshot.data ?? [];
-                                      return SizedBox(
-                                        width: 166.w,
-                                        child: GridView.builder(
-                                            scrollDirection: Axis.vertical,
-                                            itemCount: Normal_Price.length,
-                                            gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                                childAspectRatio: 166.w / 54.h,
-                                                crossAxisCount: 1,
-                                                // crossAxisSpacing: 13.w,
-                                                mainAxisSpacing: 14.h
+                                child: Center(
+                                  child: Text("إعلان عادي",style:
+                                  TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white
+                                  ),),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 166.w,
+                                child: GridView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: Normal_Price.length,
+                                    gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        childAspectRatio: 166.w / 54.h,
+                                        crossAxisCount: 1,
+                                        // crossAxisSpacing: 13.w,
+                                        mainAxisSpacing: 14.h
 
-                                            ),
+                                    ),
 
-                                            shrinkWrap: true,
-                                            itemBuilder: (BuildContext, index){
-                                              return   InkWell(
-                                                onTap: (){
+                                    shrinkWrap: true,
+                                    itemBuilder: (BuildContext, index){
+                                      return   InkWell(
+                                        onTap: (){
 
 
-                                                  setState(() {
-                                                    type=Normal_Price[index].id;
-                                                    price=Normal_Price[index].price!;
-                                                    if(specialindex==null){
-                                                      normallindex=index;
+                                          setState(() {
+                                            type=Normal_Price[index].id;
+                                            price=Normal_Price[index].price!;
+                                            if(specialindex==null){
+                                              normallindex=index;
 
-                                                    }else{
-                                                      specialindex=null;
-                                                      normallindex=index;
+                                            }else{
+                                              specialindex=null;
+                                              normallindex=index;
 
-                                                    }
-
-                                                  });
-                                                  print(index);
-                                                },
-                                                child: Container(
-                                                  height: 54.h,
-                                                  width: 166,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(5),
-                                                      color:normallindex==index?
-
-                                                      Color(0xff18499A):
-                                                      Color(0xffF9F9F9)
-                                                  ),
-                                                  child: Row(
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Text("${Normal_Price[index].daysCount} يوم",style: TextStyle(
-                                                          fontSize: 16.sp,
-                                                          color:normallindex==index?
-                                                          Colors.white:Colors.black,
-
-                                                          fontWeight: FontWeight.w500
-                                                      ),),
-                                                      SizedBox(width: 18.w,),
-                                                      Text("${Normal_Price[index].price} ريال",style: TextStyle(
-                                                          color:normallindex==index?
-                                                          Colors.white:Color(0xff7B217E),
-                                                          fontSize: 16.sp,
-                                                          fontWeight: FontWeight.w600
-                                                      ),),
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
                                             }
 
+                                          });
+                                          print(index);
+                                        },
+                                        child: Container(
+                                          height: 54.h,
+                                          width: 166,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(5),
+                                              color:normallindex==index?
 
+                                              Color(0xff18499A):
+                                              Color(0xffF9F9F9)
+                                          ),
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text("${Normal_Price[index].daysCount} يوم",style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                  color:normallindex==index?
+                                                  Colors.white:Colors.black,
+
+                                                  fontWeight: FontWeight.w500
+                                              ),),
+                                              SizedBox(width: 18.w,),
+                                              Text("${Normal_Price[index].price} ريال",style: TextStyle(
+                                                  color:normallindex==index?
+                                                  Colors.white:Color(0xff7B217E),
+                                                  fontSize: 16.sp,
+                                                  fontWeight: FontWeight.w600
+                                              ),),
+                                            ],
+                                          ),
                                         ),
                                       );
-
-
-
-
-
-                                    } else {
-                                      return Center(
-
-                                      );
                                     }
-                                  },
+
+
                                 ),
+                              )
 
 
-                              ],
-                            ),
+                            ],
+                          ),
 
-                            SizedBox(width: 11.w,),
-                            Column(
-                              children: [
-                                Container(
-                                  height: 38.h,
-                                  width: 96.w,
-                                  decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: AlignmentDirectional.centerEnd,
-                                        end: AlignmentDirectional.centerStart,
-                                        colors: [
-                                          Color(0xff7B217E),
-                                          Color(0xff7B217E),
-                                          Color(0xff18499A),
-                                        ],
-                                      ),
-                                      borderRadius: BorderRadius.circular(14)
-                                  ),
-                                  child: Center(
-                                    child: Text("اعلان مميز",style:
-                                    TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white
-                                    ),),
-                                  ),
+                          SizedBox(width: 11.w,),
+                          Column(
+                            children: [
+                              Container(
+                                height: 38.h,
+                                width: 96.w,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: AlignmentDirectional.centerEnd,
+                                      end: AlignmentDirectional.centerStart,
+                                      colors: [
+                                        Color(0xff7B217E),
+                                        Color(0xff7B217E),
+                                        Color(0xff18499A),
+                                      ],
+                                    ),
+                                    borderRadius: BorderRadius.circular(14)
                                 ),
-                                FutureBuilder<List<AdType>>(
-                                  future: UserApiController().Special_Type(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState == ConnectionState.waiting) {
-                                      return Center();
-                                    } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                                      Special_Price = snapshot.data ?? [];
-                                      return SizedBox(
-                                        width: 166.w,
-                                        child: GridView.builder(
-                                            scrollDirection: Axis.vertical,
-                                            itemCount: Special_Price.length,
-                                            gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                                childAspectRatio: 166.w / 54.h,
-                                                crossAxisCount: 1,
-                                                // crossAxisSpacing: 13.w,
-                                                mainAxisSpacing: 14.h
+                                child: Center(
+                                  child: Text("اعلان مميز",style:
+                                  TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white
+                                  ),),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 166.w,
+                                child: GridView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: Special_Price.length,
+                                    gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        childAspectRatio: 166.w / 54.h,
+                                        crossAxisCount: 1,
+                                        // crossAxisSpacing: 13.w,
+                                        mainAxisSpacing: 14.h
 
-                                            ),
+                                    ),
 
-                                            shrinkWrap: true,
-                                            itemBuilder: (BuildContext, index){
-                                              return   InkWell(
-                                                onTap: (){
-                                                  setState(() {
+                                    shrinkWrap: true,
+                                    itemBuilder: (BuildContext, index){
+                                      return   InkWell(
+                                        onTap: (){
+                                          setState(() {
 
-                                                    price=Special_Price[index].price!;
-                                                    type=Special_Price[index].id!;
-                                                    if(normallindex==null){
-                                                      specialindex=index;
-                                                    }else{
-                                                      normallindex=null;
-                                                      specialindex=index;
-                                                    }
-
-                                                  });
-
-                                                },
-                                                child:
-
-
-                                                Container(
-                                                  margin: EdgeInsets.symmetric(
-                                                      horizontal: 16.w
-                                                  ),
-                                                  height: 54.h,
-                                                  width: 166,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(5),
-                                                      color: specialindex==index?
-                                                      Color(0xff18499A):
-                                                      Color(0xffF9F9F9)
-                                                  ),
-                                                  child: Row(
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-
-                                                      Text("${Special_Price[index].daysCount} يوم",style: TextStyle(
-                                                          color:specialindex==index?
-                                                          Colors.white:Colors.black,
-                                                          fontSize: 16.sp,
-                                                          fontWeight: FontWeight.w500
-                                                      ),),
-                                                      SizedBox(width: 18.w,),
-                                                      Text("${Special_Price[index].price} ريال",style: TextStyle(
-                                                          color:specialindex==index?
-                                                          Colors.white:Color(0xff7B217E),
-
-                                                          fontSize: 16.sp,
-                                                          fontWeight: FontWeight.w600
-                                                      ),),
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
+                                            price=Special_Price[index].price!;
+                                            type=Special_Price[index].id!;
+                                            if(normallindex==null){
+                                              specialindex=index;
+                                            }else{
+                                              normallindex=null;
+                                              specialindex=index;
                                             }
 
+                                          });
 
+                                        },
+                                        child:
+
+
+                                        Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 16.w
+                                          ),
+                                          height: 54.h,
+                                          width: 166,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(5),
+                                              color: specialindex==index?
+                                              Color(0xff18499A):
+                                              Color(0xffF9F9F9)
+                                          ),
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+
+                                              Text("${Special_Price[index].daysCount} يوم",style: TextStyle(
+                                                  color:specialindex==index?
+                                                  Colors.white:Colors.black,
+                                                  fontSize: 16.sp,
+                                                  fontWeight: FontWeight.w500
+                                              ),),
+                                              SizedBox(width: 18.w,),
+                                              Text("${Special_Price[index].price} ريال",style: TextStyle(
+                                                  color:specialindex==index?
+                                                  Colors.white:Color(0xff7B217E),
+
+                                                  fontSize: 16.sp,
+                                                  fontWeight: FontWeight.w600
+                                              ),),
+                                            ],
+                                          ),
                                         ),
                                       );
-
-
-
-
-
-                                    } else {
-                                      return Center(
-
-                                      );
                                     }
-                                  },
+
+
                                 ),
+                              )
 
 
-                              ],
-                            ),
+                            ],
+                          ),
 
-                          ],
-                        ),
+                        ],
                       ),
                       SizedBox(height: 22.h,),
                       Center(
@@ -1815,146 +1799,118 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                       ],
                     ),
                     SizedBox(height: 14.h,),
-                    FutureBuilder<List<Categories>>(
-                      future: UserApiController().getCategories(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center();
-                        } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                          categories = snapshot.data ?? [];
-                          return  Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            height: 50.h,
-                            width: 343.w,
-                            decoration:  BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                shape: BoxShape.rectangle,
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      height: 50.h,
+                      width: 343.w,
+                      decoration:  BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          shape: BoxShape.rectangle,
 
-                                border: Border.all(
-                                    color: Color(0xffC4C4C4)
-                                )
-                            ),
+                          border: Border.all(
+                              color: Color(0xffC4C4C4)
+                          )
+                      ),
 
-                            child: DropdownButton(
-                              isExpanded: true,
-                              underline: Container(),
-                              menuMaxHeight: 500.h,
-                              hint: Text("القسم",style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: Color(0xffC4C4C4),
+                      child: DropdownButton(
+                        isExpanded: true,
+                        underline: Container(),
+                        menuMaxHeight: 500.h,
+                        hint: Text("القسم",style: TextStyle(
+                            fontSize: 16.sp,
+                            color: Color(0xffC4C4C4),
 
-                                  fontWeight: FontWeight.w400
-                              ),),
-                              iconEnabledColor:Colors.white ,
-                              value: _selected1,
-                              icon: Icon(Icons.arrow_forward_ios_rounded,color: Color(0xffC4C4C4),size: 18,),
-                              iconSize: 30,
-                              elevation: 16,
-                              style: TextStyle(color: Colors.black,  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w400
-                              ),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _selected1=newValue;
-                                });
-                              },
-                              items: snapshot.data!.map<DropdownMenuItem<String>>((Categories value) {
-                                return DropdownMenuItem<String>(
+                            fontWeight: FontWeight.w400
+                        ),),
+                        iconEnabledColor:Colors.white ,
+                        value: _selected1,
+                        icon: Icon(Icons.arrow_forward_ios_rounded,color: Color(0xffC4C4C4),size: 18,),
+                        iconSize: 30,
+                        elevation: 16,
+                        style: TextStyle(color: Colors.black,  fontSize: 16.sp,
+                            fontWeight: FontWeight.w400
+                        ),
+                        onChanged: (newValue) {
+                          setState(() {
+                            _selected1=newValue;
+                          });
+                        },
+                        items: categories.map<DropdownMenuItem<String>>((Categories value) {
+                          return DropdownMenuItem<String>(
 
-                                  onTap: (){
-                                    setState(() {
-                                      idActive=value.id.toString();
-                                    });
+                            onTap: (){
+                              setState(() {
+                                idActive=value.id.toString();
+                              });
 
-                                  },
-                                  value: value.name,
-                                  child: Text(value.name!=null?value.name!:'اقسام '),
-                                );
-                              }).toList(),
-                            ),
+                            },
+                            value: value.name,
+                            child: Text(value.name!=null?value.name!:'اقسام '),
                           );
-                        } else {
-                          return Center(
-                            child: Icon(Icons.wifi_off_rounded, size: 80,color: Colors.purple,),
-                          );
-                        }
-                      },
+                        }).toList(),
+                      ),
                     ),
                     SizedBox(height: 12.h,),
-                    FutureBuilder<List<Cities>>(
-                      future: UserApiController().getCity(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center();
-                        } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                          cit = snapshot.data ?? [];
-                          return  Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            height: 50.h,
-                            width: 343.w,
-                            decoration:  BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                shape: BoxShape.rectangle,
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      height: 50.h,
+                      width: 343.w,
+                      decoration:  BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          shape: BoxShape.rectangle,
 
-                                border: Border.all(
-                                    color: Color(0xffC4C4C4)
-                                )
-                            ),
+                          border: Border.all(
+                              color: Color(0xffC4C4C4)
+                          )
+                      ),
 
-                            child: DropdownButton(
+                      child: DropdownButton(
 
 
-                              isExpanded: true,
-                              underline: Container(),
-                              menuMaxHeight: 500.h,
+                        isExpanded: true,
+                        underline: Container(),
+                        menuMaxHeight: 500.h,
 
-                              hint: Text("المدينة",style: TextStyle(
-                                  fontSize: 16.sp,
-                                  color: Color(0xffC4C4C4),
+                        hint: Text("المدينة",style: TextStyle(
+                            fontSize: 16.sp,
+                            color: Color(0xffC4C4C4),
 
-                                  fontWeight: FontWeight.w400
-                              ),),
+                            fontWeight: FontWeight.w400
+                        ),),
 
-                              iconEnabledColor:Colors.white ,
+                        iconEnabledColor:Colors.white ,
 
-                              value: _selected,
-                              icon: Icon(Icons.arrow_forward_ios_rounded,color: Color(0xffC4C4C4),size: 18,),
-                              iconSize: 30,
-                              elevation: 16,
-                              style: TextStyle(color: Colors.black,  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w400
-                              ),
-                              onChanged: (newValue) {
+                        value: _selected,
+                        icon: Icon(Icons.arrow_forward_ios_rounded,color: Color(0xffC4C4C4),size: 18,),
+                        iconSize: 30,
+                        elevation: 16,
+                        style: TextStyle(color: Colors.black,  fontSize: 16.sp,
+                            fontWeight: FontWeight.w400
+                        ),
+                        onChanged: (newValue) {
 
 
-                                setState(() {
-                                  _selected=newValue;
+                          setState(() {
+                            _selected=newValue;
 
-                                });
+                          });
 
-                              },
-                              items: snapshot.data!.map<DropdownMenuItem<String>>((Cities value) {
+                        },
+                        items: cit.map<DropdownMenuItem<String>>((Cities value) {
 
-                                return DropdownMenuItem<String>(
+                          return DropdownMenuItem<String>(
 
-                                  onTap: (){
-                                    setState(() {
-                                      id=value.id.toString();
-                                    });
+                            onTap: (){
+                              setState(() {
+                                id=value.id.toString();
+                              });
 
-                                  },
-                                  value: value.name,
-                                  child: Text(value.name),
-                                );
-                              }).toList(),
-                            ),
+                            },
+                            value: value.name,
+                            child: Text(value.name),
                           );
-                        } else {
-                          return Center(
-                            child: Icon(Icons.wifi_off_rounded, size: 80,color: Colors.purple,),
-                          );
-                        }
-                      },
+                        }).toList(),
+                      ),
                     ),
                     SizedBox(height: 16.h,),
                     Text("بيانات أخرى - اختيارية",style: TextStyle(

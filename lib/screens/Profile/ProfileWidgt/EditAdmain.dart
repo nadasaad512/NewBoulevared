@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../component/TextField.dart';
 import '../../../component/main_bac.dart';
+import '../../../loed/loed.dart';
 import '../../../models/activity.dart';
 import '../../../models/city.dart';
 import '../../../models/user.dart';
@@ -51,11 +52,20 @@ class _EditAdmainScreenState extends State<EditAdmainScreen> {
     phoneTextController = TextEditingController();
     commercialActivities = TextEditingController();
     domain = TextEditingController();
-
     face = TextEditingController();
     twita = TextEditingController();
     whatsup = TextEditingController();
     insta = TextEditingController();
+    UserApiController().Commercial_Activities().then((value) {
+      setState(() {
+        ActiveList=value;
+      });
+    });
+    UserApiController().getCity().then((value) {
+      setState(() {
+        cit=value;
+      });
+    });
   }
 
   @override
@@ -80,7 +90,7 @@ class _EditAdmainScreenState extends State<EditAdmainScreen> {
         future: UserApiController().getProfile(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator(color: Colors.purple,));
+            return LoedWidget();
           }
           else if (snapshot.hasData) {
 
@@ -104,8 +114,10 @@ class _EditAdmainScreenState extends State<EditAdmainScreen> {
 
                 childTab: "تعديل الملف الشخصي",
                 child: Container(
+
                     margin: EdgeInsets.symmetric(horizontal: 16.w,vertical: 16.h),
                     decoration: BoxDecoration(
+                      color: Colors.white,
 
                         borderRadius: BorderRadius.only(
                           topRight: Radius.circular(15),
@@ -114,6 +126,7 @@ class _EditAdmainScreenState extends State<EditAdmainScreen> {
                     ),
                     height: 520.h,
                     width: double.infinity,
+
 
                     alignment: Alignment.center,
                     child: ListView(
@@ -171,188 +184,131 @@ class _EditAdmainScreenState extends State<EditAdmainScreen> {
                         SizedBox(height: 24.h,),
                         FieldScreen(title: "الاسم التجاري",controller: NameTextController,),
                         SizedBox(height: 16.h,),
-                        Center(
-                          child: FutureBuilder<List<Activity>>(
-                            future: UserApiController().Commercial_Activities(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(child: CircularProgressIndicator(
-                                  color: Colors.purple,));
-                              } else
-                              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                                ActiveList = snapshot.data ?? [];
-                                return Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                                  height: 50.h,
-                                  width: 330.w,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      shape: BoxShape.rectangle,
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          height: 50.h,
+                          width: 330.w,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              shape: BoxShape.rectangle,
 
 
-                                      border: Border.all(
-                                        color: Colors.grey.shade400,
-                                      )
-                                  ),
-
-                                  child: DropdownButton(
-
-
-                                    isExpanded: true,
-                                    underline: Container(),
-                                    menuMaxHeight: 500.h,
-
-                                    hint: Text("النشاط التجاري ", style: TextStyle(
-                                      color: Colors.grey.shade500,
-                                      fontSize: 15.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),),
-
-                                    iconEnabledColor: Colors.white,
-
-                                    value: _selected1,
-                                    icon: Icon(Icons.arrow_forward_ios_rounded,
-                                      color: Colors.grey.shade500, size: 18,),
-                                    iconSize: 30,
-                                    elevation: 16,
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 16.sp,
-                                        fontWeight: FontWeight.w400
-                                    ),
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        _selected1 = newValue;
-                                      });
-                                    },
-                                    items: snapshot.data!.map<
-                                        DropdownMenuItem<String>>((Activity value) {
-                                      return DropdownMenuItem<String>(
-
-                                        onTap: () {
-                                          setState(() {
-                                            idActive = value.id.toString();
-                                          });
-                                        },
-                                        value: value.name,
-                                        child: Text(value.name!),
-                                      );
-                                    }).toList(),
-                                  ),
-                                );
-                              } else {
-                                return Center(
-                                  child: Column(
-                                    children: [
-                                      Icon(Icons.warning, size: 80),
-                                      Text(
-                                        'NO DATA',
-                                        style: TextStyle(fontSize: 26),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }
-                            },
+                              border: Border.all(
+                                color: Colors.grey.shade400,
+                              )
                           ),
 
+                          child: DropdownButton(
 
+
+                            isExpanded: true,
+                            underline: Container(),
+                            menuMaxHeight: 500.h,
+
+                            hint: Text("النشاط التجاري ", style: TextStyle(
+                              color: Colors.grey.shade500,
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w400,
+                            ),),
+
+                            iconEnabledColor: Colors.white,
+
+                            value: _selected1,
+                            icon: Icon(Icons.arrow_forward_ios_rounded,
+                              color: Colors.grey.shade500, size: 18,),
+                            iconSize: 30,
+                            elevation: 16,
+                            style: TextStyle(
+                                color: Colors.black, fontSize: 16.sp,
+                                fontWeight: FontWeight.w400
+                            ),
+                            onChanged: (newValue) {
+                              setState(() {
+                                _selected1 = newValue;
+                              });
+                            },
+                            items: ActiveList.map<
+                                DropdownMenuItem<String>>((Activity value) {
+                              return DropdownMenuItem<String>(
+
+                                onTap: () {
+                                  setState(() {
+                                    idActive = value.id.toString();
+                                  });
+                                },
+                                value: value.name,
+                                child: Text(value.name!),
+                              );
+                            }).toList(),
+                          ),
                         ),
                         SizedBox(height: 16.h,),
                         FieldScreen(title: "الهاتف",controller: phoneTextController,),
                         SizedBox(height: 16.h,),
                         FieldScreen(title: "الايميل",controller: emailTextController,),
                         SizedBox(height: 16.h,),
-                        Center(
-                          child: FutureBuilder<List<Cities>>(
-                            future: UserApiController().getCity(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return Center(child: CircularProgressIndicator(color: Colors.purple,));
-                              } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                                cit = snapshot.data ?? [];
-                                return  Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                                 height: 50.h,
-                                width: 343.w,
-                                decoration:  BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  shape: BoxShape.rectangle,
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          height: 50.h,
+                          width: 343.w,
+                          decoration:  BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              shape: BoxShape.rectangle,
 
 
 
-                                  border: Border.all(
-                                      color: Color(0xffC4C4C4)
-                                  )
-                                ),
-
-                                  child: DropdownButton(
-
-
-                                    isExpanded: true,
-                                    underline: Container(),
-                                    menuMaxHeight: 500.h,
-
-                                    hint: Text("المدينة",style: TextStyle(
-                                        fontSize: 16.sp,
-                                        color: Color(0xffC4C4C4),
-
-                                        fontWeight: FontWeight.w400
-                                    ),),
-
-                                    iconEnabledColor:Colors.white ,
-
-                                    value: _selected,
-                                    icon: Icon(Icons.arrow_forward_ios_rounded,color: Color(0xffC4C4C4),size: 18,),
-                                    iconSize: 30,
-                                    elevation: 16,
-                                    style: TextStyle(color: Colors.black,  fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400
-                                    ),
-                                    onChanged: (newValue) {
-
-
-                                      setState(() {
-                                        _selected=newValue;
-
-                                      });
-
-                                    },
-                                    items: snapshot.data!.map<DropdownMenuItem<String>>((Cities value) {
-
-                                      return DropdownMenuItem<String>(
-
-                                        onTap: (){
-                                          setState(() {
-                                            id=value.id.toString();
-                                          });
-
-                                        },
-                                        value: value.name,
-                                        child: Text(value.name),
-                                      );
-                                    }).toList(),
-                                  ),
-                                );
-                              } else {
-                                return Center(
-                                  child: Column(
-                                    children: [
-                                      Icon(Icons.warning, size: 80),
-                                      Text(
-                                        'NO DATA',
-                                        style: TextStyle(fontSize: 26),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }
-                            },
+                              border: Border.all(
+                                  color: Color(0xffC4C4C4)
+                              )
                           ),
 
+                          child: DropdownButton(
 
 
+                            isExpanded: true,
+                            underline: Container(),
+                            menuMaxHeight: 500.h,
 
+                            hint: Text("المدينة",style: TextStyle(
+                                fontSize: 16.sp,
+                                color: Color(0xffC4C4C4),
+
+                                fontWeight: FontWeight.w400
+                            ),),
+
+                            iconEnabledColor:Colors.white ,
+
+                            value: _selected,
+                            icon: Icon(Icons.arrow_forward_ios_rounded,color: Color(0xffC4C4C4),size: 18,),
+                            iconSize: 30,
+                            elevation: 16,
+                            style: TextStyle(color: Colors.black,  fontSize: 16.sp,
+                                fontWeight: FontWeight.w400
+                            ),
+                            onChanged: (newValue) {
+
+
+                              setState(() {
+                                _selected=newValue;
+
+                              });
+
+                            },
+                            items: cit.map<DropdownMenuItem<String>>((Cities value) {
+
+                              return DropdownMenuItem<String>(
+
+                                onTap: (){
+                                  setState(() {
+                                    id=value.id.toString();
+                                  });
+
+                                },
+                                value: value.name,
+                                child: Text(value.name),
+                              );
+                            }).toList(),
+                          ),
                         ),
 
                         SizedBox(height: 16.h,),

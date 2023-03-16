@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../api/User_Controller.dart';
 import '../../component/background.dart';
+import '../../loed/loed.dart';
 import '../../models/setting.dart';
 import '../../models/terms.dart';
 
@@ -31,10 +32,7 @@ class privacypolicies extends StatelessWidget{
                     future: UserApiController().Security(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.purple,
-                            ));
+                        return LoedWidget();
                       } else if (snapshot.hasData) {
 
                         return 

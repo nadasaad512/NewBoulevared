@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../loed/loed.dart';
 import '../../../story/OneStory.dart';
 import '../../../Shared_Preferences/User_Preferences.dart';
 import '../../../component/main_bac.dart';
@@ -76,10 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
             future: UserApiController().getProfile(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                    child: CircularProgressIndicator(
-                  color: Colors.purple,
-                ));
+                return LoedWidget();
               } else if (snapshot.hasData) {
                 user = snapshot.data;
                 return snapshot.data!.type == "advertiser"
@@ -1759,12 +1757,17 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                   ),
                                   CircleAvatar(
                                     radius: 44.sp,
+                                    backgroundColor: Color(0xff7B217E),
                                     backgroundImage:
                                         snapshot.data!.imageProfile == null
                                             ? null
                                             : NetworkImage(
                                                 snapshot.data!.imageProfile!),
+                                    child:  snapshot.data!.imageProfile == null?
+                                    Icon(Icons.person,color: Colors.white,size: 30.sp,):
+                                    SizedBox.shrink(),
                                   ),
+
                                   SizedBox(
                                     height: 14.h,
                                   ),
@@ -1825,10 +1828,7 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    return const Center(
-                                        child: CircularProgressIndicator(
-                                      color: Colors.purple,
-                                    ));
+                                    return LoedWidget();
                                   } else if (snapshot.hasData &&
                                       snapshot.data!.isNotEmpty) {
                                     _folow = snapshot.data ?? [];
@@ -1896,6 +1896,7 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                                                       height:
                                                                           71.h,
                                                                       decoration: BoxDecoration(
+                                                                        color: Colors.grey[300]!,
                                                                           borderRadius: BorderRadius.circular(
                                                                               5),
                                                                           image: snapshot.data!.imageProfile != null
@@ -2070,10 +2071,7 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
         future: UserApiController().info_Admain(userid: widget.id),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-                child: CircularProgressIndicator(
-              color: Colors.purple,
-            ));
+            return LoedWidget();
           } else if (snapshot.hasData) {
             return Back_Ground(
                 Bar: true,

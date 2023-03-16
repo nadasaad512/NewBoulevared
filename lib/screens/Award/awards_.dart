@@ -5,6 +5,7 @@ import '../../Shared_Preferences/User_Preferences.dart';
 import '../../api/User_Controller.dart';
 import '../../component/TextField.dart';
 import '../../component/main_bac.dart';
+import '../../loed/loed.dart';
 import '../../models/award.dart';
 import '../../models/user.dart';
 
@@ -194,7 +195,7 @@ class _AwardScreenState extends State<AwardScreen> {
                 future: UserApiController().Awards_CanWin(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator(color: Colors.purple,));
+                    return LoedWidget();
                   }
                   else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                     award = snapshot.data ?? [];
@@ -229,7 +230,7 @@ class _AwardScreenState extends State<AwardScreen> {
                                   height: 188.h,
                                   width: 323.w,
                                   decoration: BoxDecoration(
-                                      color: Colors.purple,
+                                      color: Colors.grey[300]!,
                                       borderRadius: BorderRadius.circular(5),
                                       image: DecorationImage(
                                         fit: BoxFit.cover,

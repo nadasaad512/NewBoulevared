@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../api/User_Controller.dart';
+import '../../../loed/loed.dart';
 import '../../../models/Folllowers_Advertiser.dart';
 //User followe
 class Followers_Advertiser extends StatefulWidget{
@@ -20,7 +21,7 @@ class _Followers_AdvertiserState extends State<Followers_Advertiser> {
       future: UserApiController().Followers_Advertiser(widget.id),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return LoedWidget();
         } else if (snapshot.hasData &&
             snapshot.data!.isNotEmpty) {
           _folow = snapshot.data ?? [];

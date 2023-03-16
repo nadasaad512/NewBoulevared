@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_boulevard/screens/homescreen/widget/ImageRotater.dart';
 import 'package:new_boulevard/utils/helpers.dart';
+import '../../loed/loed.dart';
 import '../../models/BestOffers.dart';
 import '../../models/notification.dart';
 import '../../models/setting.dart';
@@ -36,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
     List<Banners> banners= [];
     List<notification> massages= [];
     List<Offers> offer= [];
+   bool isDone=false;
 
   @override
   void initState() {
@@ -65,12 +67,14 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
  UserApiController().getbaner().then((value) {
    setState(() {
      banners=value;
+     isDone=true;
    });
  });
  UserPreferences().user.type=="user"?
  UserApiController().Followers_User().then((value) {
    setState(() {
      _folow=value;
+
    });
  }):
  null;
@@ -87,7 +91,11 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
     return Back_Ground(
      childTab: "الرئيسية",
       ad: true,
-      child: RefreshIndicator(
+      child:
+      isDone==false?
+      LoedWidget():
+
+      RefreshIndicator(
         color: Colors.purple,
         onRefresh: () async {
           loeddata();
@@ -157,6 +165,8 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                   child: CasualImageSlider( imageUrls: banners)):
               SizedBox.shrink(),
 
+
+
               SizedBox(height: 16.h,),
               _folow.isNotEmpty?
               SizedBox(
@@ -206,10 +216,15 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
                                 child: CircleAvatar(
                                     radius:38.sp,
+                                    onForegroundImageError: (exception, stackTrace) {
+                                      // handle error here
+                                      print('Error loading image: $exception');
+                                    },
 
                                     backgroundImage:_folow[index].imageProfile!=null?
 
                                     NetworkImage(
+
                                         _folow[index].imageProfile!
 
                                     ) :null
@@ -305,12 +320,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
                                   )
                           ),
-
-
-
                         );
-
-
                       },
                       child: Container(
                         margin: EdgeInsets.only(
@@ -319,14 +329,11 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                         height: 220.h,
                         width: 150.w,
                         decoration: BoxDecoration(
-                            color:   Color(0xff7B217E),
+                            color: Colors.grey[300]!,
                             borderRadius: BorderRadius.circular(5),
                             image: DecorationImage(
                                 fit: BoxFit.cover,
-
-                                image: NetworkImage(
-
-                                    _special_ads[index].image.toString())
+                                image: NetworkImage(_special_ads[index].image.toString())
                             )
                         ),
 
@@ -439,21 +446,13 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                               width: 130.w,
                               height: 190.h,
                               decoration: BoxDecoration(
-                                  color:   Color(0xff7B217E),
+                                  color: Colors.grey[300]!,
                                   borderRadius: BorderRadius.circular(5),
                                   image: DecorationImage(
                                       fit: BoxFit.cover,
                                       image: NetworkImage(_categories[index].image.toString())
                                   )
                               ),
-
-                              // child: Center(
-                              //   child:  Text(_categories[index].name.toString(),style: TextStyle(
-                              //       color:  Color(0xffFFFFFF),
-                              //       fontWeight: FontWeight.w600,
-                              //       fontSize: 18.sp
-                              //   ),) ,
-                              // )
                             ),
                             SizedBox(height: 10.h,),
                             Center(
@@ -533,7 +532,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                         width: 130.w,
                         //height: 190.h,
                         decoration: BoxDecoration(
-                            color:   Color(0xff7B217E),
+                            color:  Colors.grey[300]!,
                             borderRadius: BorderRadius.circular(5),
 
                             image: DecorationImage(
@@ -647,7 +646,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                                 width: 130.w,
                                 //height: 80.h,
                                 decoration: BoxDecoration(
-                                    color:   Color(0xff7B217E),
+                                    color:  Colors.grey[300]!,
                                     borderRadius: BorderRadius.circular(5),
                                     image: DecorationImage(
                                         fit: BoxFit.cover,

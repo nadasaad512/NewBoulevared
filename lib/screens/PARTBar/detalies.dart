@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../loed/loed.dart';
 import '../../story/OneStory.dart';
 import '../../api/User_Controller.dart';
 import '../../component/main_bac.dart';
@@ -102,7 +103,7 @@ class _DetailesScreenState extends State<DetailesScreen> {
 
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator(color: Colors.purple,));
+                  return LoedWidget();
                 }
                 else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                   _detalies = snapshot.data ?? [];
@@ -149,7 +150,7 @@ class _DetailesScreenState extends State<DetailesScreen> {
                           ),
                           width: 130.w,
                           decoration: BoxDecoration(
-                              color:   Color(0xff7B217E),
+                              color: Colors.grey[300]!,
                               borderRadius: BorderRadius.circular(5),
                               image: DecorationImage(
                                   fit: BoxFit.cover,

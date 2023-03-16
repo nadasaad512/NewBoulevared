@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../api/User_Controller.dart';
+import '../loed/loed.dart';
 import '../models/setting.dart';
 import '../models/user.dart';
 
@@ -82,10 +83,7 @@ class _Back_GroundState extends State<Back_Ground> {
             future: UserApiController().getProfile(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                    child: CircularProgressIndicator(
-                  color: Colors.purple,
-                ));
+                return LoedWidget();
               } else if (snapshot.hasData) {
                 return Drawer(
                   child: ListView(

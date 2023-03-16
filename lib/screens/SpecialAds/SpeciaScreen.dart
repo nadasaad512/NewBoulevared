@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../loed/loed.dart';
 import '../../models/special_ads.dart';
 
 class SpeciaScreen extends StatelessWidget{
@@ -19,7 +20,7 @@ class SpeciaScreen extends StatelessWidget{
           future: UserApiController().HSpecialAds(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator(color: Colors.purple,));
+              return LoedWidget();
             } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               _special_ads = snapshot.data ?? [];
               return GridView.builder(

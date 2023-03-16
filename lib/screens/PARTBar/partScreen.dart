@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../api/User_Controller.dart';
 import '../../component/main_bac.dart';
+import '../../loed/loed.dart';
 import '../../models/categories.dart';
 import 'detalies.dart';
 
@@ -24,7 +25,7 @@ class PartScreen extends StatelessWidget{
         future: UserApiController().getCategories(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator(color: Colors.purple,));
+            return LoedWidget();
           } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
             _categories = snapshot.data ?? [];
             return    GridView.builder(
@@ -60,7 +61,7 @@ class PartScreen extends StatelessWidget{
                           width: 165.w,
                           height: 250.h,
                           decoration: BoxDecoration(
-                              color:   Color(0xff7B217E),
+                              color: Colors.grey[300]!,
                               borderRadius: BorderRadius.circular(5),
                               image: DecorationImage(
                                   fit: BoxFit.cover,

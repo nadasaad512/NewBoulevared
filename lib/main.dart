@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           useInheritedMediaQuery: true,
           theme: ThemeData(
-           // fontFamily: "Cairo",
+
 
 
           ),

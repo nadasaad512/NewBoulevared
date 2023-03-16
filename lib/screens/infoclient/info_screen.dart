@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../api/User_Controller.dart';
+import '../../loed/loed.dart';
 import '../../models/setting.dart';
 
 class InfoScreen extends StatelessWidget{
@@ -40,10 +41,7 @@ class InfoScreen extends StatelessWidget{
                 future: UserApiController().Setting(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.purple,
-                        ));
+                    return LoedWidget();
                   } else if (snapshot.hasData) {
 
                     return Text(snapshot.data!.description.toString()
