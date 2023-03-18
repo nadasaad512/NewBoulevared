@@ -24,11 +24,10 @@ class ApiSettings {
   static const Profile = '${_API_URL}profile';
   static const Follow_One = '${_API_URL}followOne';
 
-////error
+///user
   static const MyFollower = '${_API_URL}getUserFollowings';
 
-  ///
-
+  ///admain
   static const CountMyFollower = '${_API_URL}getUserFollowings1';
 
   static String MyFollower_Advertiser({required idAdmain}) =>

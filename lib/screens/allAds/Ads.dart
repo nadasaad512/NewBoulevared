@@ -338,7 +338,7 @@ class _AdsScreenState extends State<AdsScreen> {
                     ),
                   );
                 }
-                else if(snapshot.data!.isEmpty){
+                else if(snapshot.data==null){
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,

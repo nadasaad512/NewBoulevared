@@ -25,6 +25,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> with Helpers {
   bool progss = false;
   bool progss1 = false;
+  bool loedUserFollow = true;
 
   List<AdvertiserADs> _ads = [];
   User? user;
@@ -36,6 +37,12 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
   void initState() {
     // TODO: implement initState
     super.initState();
+      UserApiController().CountFollowers_User().then((value) {
+      setState(() {
+        _folow=value;
+        loedUserFollow=false;
+      });
+    });
   }
 
   @override
@@ -199,13 +206,13 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                                     onTap: () {
                                                       print(
                                                           "snapshot.data!.mobile ${snapshot.data?.mobile}");
-                                                      //  launchUrl(Uri.parse(
-                                                      //        "whatsapp://send?phone=${snapshot.data?.mobile ?? ""}&text=${"Hi"}"));
+                                                       launchUrl(Uri.parse(
+                                                             "whatsapp://send?phone=${snapshot.data?.mobile ?? ""}&text=${"Hi"}"));
 
-                                                      _launchWhatsapp(
-                                                          context: context,
-                                                          number: snapshot
-                                                              .data?.mobile);
+                                                      // _launchWhatsapp(
+                                                      //     context: context,
+                                                      //     number: snapshot
+                                                      //         .data?.mobile);
                                                     },
                                                     child: Detatlies(
                                                         name: snapshot
@@ -1058,8 +1065,7 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                             ],
                                           ),
                                           FutureBuilder<List<AdvertiserADs>>(
-                                            future: UserApiController()
-                                                .ADS_Admain(
+                                            future: UserApiController().ADS_Admain(
                                                     userid: snapshot.data!.id),
                                             builder: (context, snapshot) {
                                               if (snapshot.connectionState ==
@@ -1069,8 +1075,8 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                                         CircularProgressIndicator(
                                                   color: Colors.purple,
                                                 ));
-                                              } else if (snapshot.hasData &&
-                                                  snapshot.data!.isNotEmpty) {
+                                              }
+                                              else if (snapshot.hasData ) {
                                                 _ads = snapshot.data ?? [];
 
                                                 return GridView.builder(
@@ -1697,9 +1703,9 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                                               ),
                                                             );
                                                     });
-                                              } else if (snapshot
-                                                      .data!.isEmpty ||
-                                                  snapshot.data == []) {
+                                              }
+                                              else if (snapshot
+                                                      .data==null) {
                                                 return Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
@@ -1822,195 +1828,179 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                   ],
                                 ),
                               ),
-                              FutureBuilder<List<MyFollowings>>(
-                                future:
-                                    UserApiController().CountFollowers_User(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return LoedWidget();
-                                  } else if (snapshot.hasData &&
-                                      snapshot.data!.isNotEmpty) {
-                                    _folow = snapshot.data ?? [];
-                                    return ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: _folow.length,
-                                      itemBuilder: (context, index) {
-                                        return InkWell(
-                                          onTap: () {
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      UserShowAdmain(
-                                                          id: _folow[index]
-                                                              .id!)),
-                                            );
-                                          },
-                                          child: Container(
-                                              width: 343.w,
-                                              margin: EdgeInsets.symmetric(
-                                                  horizontal: 10.w,
-                                                  vertical: 5.h),
-                                              decoration: BoxDecoration(
-                                                  color:
-                                                      const Color(0xffD1D1D6),
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                              child: Container(
-                                                margin: EdgeInsets.symmetric(
-                                                    vertical: 5.h,
-                                                    horizontal: 5.w),
-                                                child: Card(
-                                                  child: Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 12.w,
-                                                              vertical: 10.h),
-                                                      child: FutureBuilder<
-                                                              Advertiser>(
-                                                          future: UserApiController()
-                                                              .info_Admain(
-                                                                  userid: _folow[
-                                                                          index]
-                                                                      .id!),
-                                                          builder: (context,
-                                                              snapshot) {
-                                                            if (snapshot
-                                                                    .connectionState ==
-                                                                ConnectionState
-                                                                    .waiting) {
-                                                              return const Center(
+                              loedUserFollow?
+                              LoedWidget():
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: _folow.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                UserShowAdmain(
+                                                    id: int.parse(_folow[index].id!))),
+                                      );
+                                    },
+                                    child: Container(
+                                        width: 343.w,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 10.w,
+                                            vertical: 5.h),
+                                        decoration: BoxDecoration(
+                                            color:
+                                            const Color(0xffD1D1D6),
+                                            borderRadius:
+                                            BorderRadius.circular(5)),
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 5.h,
+                                              horizontal: 5.w),
+                                          child: Card(
+                                            child: Container(
+                                                margin:
+                                                EdgeInsets.symmetric(
+                                                    horizontal: 12.w,
+                                                    vertical: 10.h),
+                                                child: FutureBuilder<
+                                                    Advertiser>(
+                                                    future: UserApiController()
+                                                        .info_Admain(
+                                                        userid: int.parse(_folow[index].id!)),
+                                                    builder: (context,
+                                                        snapshot) {
+                                                      if (snapshot
+                                                          .connectionState ==
+                                                          ConnectionState
+                                                              .waiting) {
+                                                        return const Center(
+                                                            child:
+                                                            CircularProgressIndicator(
+                                                              color: Colors
+                                                                  .purple,
+                                                            ));
+                                                      } else if (snapshot
+                                                          .hasData) {
+                                                        return Row(
+                                                          children: [
+                                                            Container(
+                                                                width:
+                                                                70.w,
+                                                                height:
+                                                                71.h,
+                                                                decoration: BoxDecoration(
+                                                                    color: Colors.grey[300]!,
+                                                                    borderRadius: BorderRadius.circular(
+                                                                        5),
+                                                                    image: snapshot.data!.imageProfile != null
+                                                                        ? DecorationImage(fit: BoxFit.cover, image: NetworkImage(snapshot.data!.imageProfile!))
+                                                                        : null)),
+                                                            SizedBox(
+                                                              width: 15.w,
+                                                            ),
+                                                            Column(
+                                                              children: [
+                                                                Text(
+                                                                  snapshot
+                                                                      .data!
+                                                                      .name!,
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                      FontWeight.w400,
+                                                                      fontSize: 18.sp),
+                                                                ),
+                                                                SizedBox(
+                                                                  height:
+                                                                  10.h,
+                                                                ),
+                                                                Container(
+                                                                  height:
+                                                                  27.h,
+                                                                  width:
+                                                                  56.w,
+                                                                  decoration: BoxDecoration(
+                                                                      color:
+                                                                      const Color(0xff969696),
+                                                                      borderRadius: BorderRadius.circular(13)),
                                                                   child:
-                                                                      CircularProgressIndicator(
-                                                                color: Colors
-                                                                    .purple,
-                                                              ));
-                                                            } else if (snapshot
-                                                                .hasData) {
-                                                              return Row(
-                                                                children: [
-                                                                  Container(
-                                                                      width:
-                                                                          70.w,
-                                                                      height:
-                                                                          71.h,
-                                                                      decoration: BoxDecoration(
-                                                                        color: Colors.grey[300]!,
-                                                                          borderRadius: BorderRadius.circular(
-                                                                              5),
-                                                                          image: snapshot.data!.imageProfile != null
-                                                                              ? DecorationImage(fit: BoxFit.cover, image: NetworkImage(snapshot.data!.imageProfile!))
-                                                                              : null)),
-                                                                  SizedBox(
-                                                                    width: 15.w,
-                                                                  ),
-                                                                  Column(
-                                                                    children: [
-                                                                      Text(
-                                                                        snapshot
-                                                                            .data!
-                                                                            .name!,
-                                                                        style: TextStyle(
-                                                                            fontWeight:
-                                                                                FontWeight.w400,
-                                                                            fontSize: 18.sp),
-                                                                      ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            10.h,
-                                                                      ),
-                                                                      Container(
-                                                                        height:
-                                                                            27.h,
-                                                                        width:
-                                                                            56.w,
-                                                                        decoration: BoxDecoration(
-                                                                            color:
-                                                                                const Color(0xff969696),
-                                                                            borderRadius: BorderRadius.circular(13)),
-                                                                        child:
-                                                                            Center(
-                                                                          child:
-                                                                              Text(
-                                                                            "${snapshot.data!.followMeCount.toString()} متابع",
-                                                                            style: TextStyle(
-                                                                                fontSize: 10.sp,
-                                                                                color: Colors.white,
-                                                                                fontWeight: FontWeight.w500),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  const Spacer(),
-                                                                  InkWell(
-                                                                    onTap:
-                                                                        () async {
-                                                                      await UserApiController().Follow_One(
-                                                                          followed_id: _folow[index]
-                                                                              .id
-                                                                              .toString(),
-                                                                          action:
-                                                                              "unfollow");
-
-                                                                      setState(
-                                                                          () {});
-                                                                    },
+                                                                  Center(
                                                                     child:
-                                                                        Container(
-                                                                      height:
-                                                                          27.h,
-                                                                      width:
-                                                                          71.w,
-                                                                      decoration: BoxDecoration(
-                                                                          color: const Color(
-                                                                              0xff18499A),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(40)),
-                                                                      child:
-                                                                          Center(
-                                                                        child:
-                                                                            Text(
-                                                                          "إلغاء متابعة",
-                                                                          style: TextStyle(
-                                                                              fontSize: 10.sp,
-                                                                              color: Colors.white,
-                                                                              fontWeight: FontWeight.w500),
-                                                                        ),
-                                                                      ),
+                                                                    Text(
+                                                                      "${snapshot.data!.followMeCount.toString()} متابع",
+                                                                      style: TextStyle(
+                                                                          fontSize: 10.sp,
+                                                                          color: Colors.white,
+                                                                          fontWeight: FontWeight.w500),
                                                                     ),
                                                                   ),
-                                                                ],
-                                                              );
-                                                            }
-                                                            return Center(
-                                                              child: Column(
-                                                                children: const [
-                                                                  Icon(
-                                                                      Icons
-                                                                          .warning,
-                                                                      size: 80),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            const Spacer(),
+                                                            InkWell(
+                                                              onTap:
+                                                                  () async {
+                                                                await UserApiController().Follow_One(
+                                                                    followed_id: _folow[index]
+                                                                        .id
+                                                                        .toString(),
+                                                                    action:
+                                                                    "unfollow");
+
+                                                                setState(
+                                                                        () {});
+                                                              },
+                                                              child:
+                                                              Container(
+                                                                height:
+                                                                27.h,
+                                                                width:
+                                                                71.w,
+                                                                decoration: BoxDecoration(
+                                                                    color: const Color(
+                                                                        0xff18499A),
+                                                                    borderRadius:
+                                                                    BorderRadius.circular(40)),
+                                                                child:
+                                                                Center(
+                                                                  child:
                                                                   Text(
-                                                                    'NO DATA',
+                                                                    "إلغاء متابعة",
                                                                     style: TextStyle(
-                                                                        fontSize:
-                                                                            26),
+                                                                        fontSize: 10.sp,
+                                                                        color: Colors.white,
+                                                                        fontWeight: FontWeight.w500),
                                                                   ),
-                                                                ],
+                                                                ),
                                                               ),
-                                                            );
-                                                          })),
-                                                ),
-                                              )),
-                                        );
-                                      },
-                                    );
-                                  } else {
-                                    return const Center();
-                                  }
+                                                            ),
+                                                          ],
+                                                        );
+                                                      }
+                                                      return Center(
+                                                        child: Column(
+                                                          children: const [
+                                                            Icon(
+                                                                Icons
+                                                                    .warning,
+                                                                size: 80),
+                                                            Text(
+                                                              'NO DATA',
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                  26),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    })),
+                                          ),
+                                        )),
+                                  );
                                 },
-                              ),
+                              )
                             ],
                           ),
                         ));
@@ -2148,7 +2138,7 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                                                   ConnectionState.waiting) {
                                                 return const Center();
                                               } else if (snapshot.hasData) {
-                                                List<int?> f = snapshot.data!
+                                                List<String?> f = snapshot.data!
                                                     .map((e) => e.id)
                                                     .toList();
                                                 return f.contains(widget.id)
@@ -2355,12 +2345,12 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                                         children: [
                                           InkWell(
                                             onTap: () {
-                                              //    launch(
-                                              //          "whatsapp://send?phone=${snapshot.data!.mobile}&text=${"Hi"}");
-                                              _launchWhatsapp(
-                                                  context: context,
-                                                  number:
-                                                      snapshot.data?.mobile);
+                                                 launch(
+                                                       "whatsapp://send?phone=${snapshot.data!.mobile}&text=${"Hi"}");
+                                              // _launchWhatsapp(
+                                              //     context: context,
+                                              //     number:
+                                              //         snapshot.data?.mobile);
                                             },
                                             child: Detatlies(
                                                 name: snapshot.data!.mobile!

@@ -216,10 +216,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
                                 child: CircleAvatar(
                                     radius:38.sp,
-                                    onForegroundImageError: (exception, stackTrace) {
-                                      // handle error here
-                                      print('Error loading image: $exception');
-                                    },
+
 
                                     backgroundImage:_folow[index].imageProfile!=null?
 

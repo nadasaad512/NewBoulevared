@@ -402,11 +402,10 @@ class UserApiController with Helpers {
       return detalies;
     } else if (jsonDecode(response.body)['status'] == false) {
       print("Something went wrong, please try again!");
-      //showSnackBar(context, message: 'Something went wrong, please try again!', error: true);
+
     } else {
       print("Something went wrong, please try again!");
 
-      // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
     }
     return [];
   }
@@ -422,12 +421,10 @@ class UserApiController with Helpers {
           jsonArray.map((jsonObject) => Ads.fromJson(jsonObject)).toList();
       return detalies;
     } else if (jsonDecode(response.body)['status'] == false) {
-      print("Something went wrong, please try again!");
-      //showSnackBar(context, message: 'Something went wrong, please try again!', error: true);
-    } else {
-      print("Something went wrong, please try again!");
 
-      // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
+
+    } else {
+
     }
     return [];
   }
@@ -437,6 +434,8 @@ class UserApiController with Helpers {
     if (UserPreferences().token.isNotEmpty) {
       var response = await http.get(url, headers: {
         HttpHeaders.authorizationHeader: UserPreferences().token,
+        "Accept-Language":"ar"
+
       });
       if (jsonDecode(response.body)['status'] == true) {
         var json = jsonDecode(response.body);
@@ -494,17 +493,13 @@ class UserApiController with Helpers {
     var response = await multiPartRequest.send();
     response.stream.transform(utf8.decoder).listen((event) {
       if (response.statusCode < 400) {
-        var dataObject = jsonDecode(event)['user'];
-        showSnackBar(context,
-            message: jsonDecode(event)['message'], error: false);
+        showSnackBar(context, message: jsonDecode(event)['message'], error: false);
         uploadEvent(true, jsonDecode(event)['message']);
       } else if (response.statusCode != 500) {
-        showSnackBar(context,
-            message: jsonDecode(event)['message'], error: true);
+        showSnackBar(context, message: jsonDecode(event)['message'], error: true);
         uploadEvent(false, jsonDecode(event)['message']);
       } else {
-        showSnackBar(context,
-            message: 'Something went wrong, please try again!', error: true);
+        showSnackBar(context, message: 'Something went wrong, please try again!', error: true);
         uploadEvent(false, jsonDecode(event)['message']);
       }
     });
@@ -536,7 +531,7 @@ class UserApiController with Helpers {
     multiPartRequest.fields['mobile'] = mobile;
     multiPartRequest.fields['name'] = Name;
     multiPartRequest.fields['city_id'] = city_id;
-    multiPartRequest.fields['commercialActivities'] = commercialActivities;
+    multiPartRequest.fields['commercial_activity_id'] = commercialActivities;
     multiPartRequest.fields['facebook'] = facebook;
     multiPartRequest.fields['whatsapp'] = whatsapp;
     multiPartRequest.fields['instagram'] = instagram;
@@ -549,6 +544,7 @@ class UserApiController with Helpers {
     var response = await multiPartRequest.send();
     response.stream.transform(utf8.decoder).listen((event) {
       if (response.statusCode < 400) {
+        print(event);
         showSnackBar(context,
             message: jsonDecode(event)['message'], error: false);
         uploadEvent(true, jsonDecode(event)['message']);
@@ -568,20 +564,18 @@ class UserApiController with Helpers {
     var url = Uri.parse(ApiSettings.AwardsCanWin);
     var response = await http.get(
       url,
+      headers: {
+        HttpHeaders.authorizationHeader: UserPreferences().token,
+      },
     );
     if (jsonDecode(response.body)['status'] == true) {
       var json = jsonDecode(response.body);
       var jsonArray = json['awards'] as List;
-      List<Awards> awards =
-          jsonArray.map((jsonObject) => Awards.fromJson(jsonObject)).toList();
+      List<Awards> awards = jsonArray.map((jsonObject) => Awards.fromJson(jsonObject)).toList();
+      print(awards);
       return awards;
     } else if (jsonDecode(response.body)['status'] == false) {
-      print("Something went wrong, please try again!");
-      //showSnackBar(context, message: 'Something went wrong, please try again!', error: true);
     } else {
-      print("Something went wrong, please try again!");
-
-      // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
     }
     return [];
   }
@@ -646,10 +640,7 @@ class UserApiController with Helpers {
           .toList();
       return folow;
     } else if (jsonDecode(response.body)['status'] == false) {
-      print("Something went wrong, please try again!");
-      //showSnackBar(context, message: 'Something went wrong, please try again!', error: true);
     } else {
-      print("Something went wrong, please try again!");
 
       // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
     }

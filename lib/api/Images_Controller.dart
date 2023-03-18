@@ -77,10 +77,11 @@ class ImagesApiController with Helpers {
 
     response.stream.transform(utf8.decoder).listen((event) {
       if (response.statusCode < 400) {
-        var dataObject = jsonDecode(event)['ad'];
-        Ads ad = Ads.fromJson(dataObject);
 
-        //ad
+        print("response");
+        print(event);
+        var dataObject = jsonDecode(event)["ad"];
+        Ads ad = Ads.fromJson(dataObject);
         uploadEvent(true, jsonDecode(event)['message'], ad);
       } else if (response.statusCode != 500) {
         var dataObject = jsonDecode(event)['ad'];
@@ -186,6 +187,8 @@ class ImagesApiController with Helpers {
         UserPreferences().token;
     multiPartRequest.headers['X-Requested-With'] = 'XMLHttpRequest';
     var response = await multiPartRequest.send();
+    print("response");
+
 
     response.stream.transform(utf8.decoder).listen((event) {
       if (response.statusCode < 400) {

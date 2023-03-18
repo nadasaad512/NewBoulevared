@@ -114,7 +114,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
        whatsup.text=ad.whatsapp.toString();
        insta.text=ad.instagram.toString();
        link.text=ad.store_url.toString();
-       adType=ad.adTypeId!;
+       adType=int.parse(ad.adTypeId!);
        link.text=ad.twitter.toString();
        info.text=ad.details.toString();
        location=ad.latitude.toString()+ad.longitude.toString();
@@ -1169,7 +1169,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
                                           setState(() {
                                             type=Normal_Price[index].id;
-                                            price=Normal_Price[index].price!;
+                                            price=int.parse(Normal_Price[index].price!);
                                             if(specialindex==null){
                                               normallindex=index;
 
@@ -1271,7 +1271,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                         onTap: (){
                                           setState(() {
 
-                                            price=Special_Price[index].price!;
+                                            price=int.parse(Special_Price[index].price!);
                                             type=Special_Price[index].id!;
                                             if(normallindex==null){
                                               specialindex=index;
@@ -2281,6 +2281,9 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
     setState(() {
       progg=true;
     });
+    print(idActive.toString(),);
+    print(type.toString(),);
+    print(id.toString(),);
 
  await ImagesApiController().
       uploadImage(

@@ -16,6 +16,7 @@ class AwardScreen extends StatefulWidget {
 
 class _AwardScreenState extends State<AwardScreen> {
   List<Awards> award = [];
+  bool loed=true;
 
   TextEditingController emailTextController=TextEditingController();
   TextEditingController phoneTextController=TextEditingController();
@@ -25,6 +26,12 @@ class _AwardScreenState extends State<AwardScreen> {
     super.initState();
     emailTextController = TextEditingController();
     phoneTextController = TextEditingController();
+      UserApiController().Awards_CanWin().then((value) {
+      setState(() {
+        award=value;
+        loed=false;
+      });
+    });
   }
 
   @override
@@ -190,285 +197,265 @@ class _AwardScreenState extends State<AwardScreen> {
 
                     return  SizedBox.shrink();
                   }),
+              loed?
+              LoedWidget():
+              ListView.builder(
+                itemCount: award.length,
+                shrinkWrap: true,
+                physics:ScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return Container(
+                    height: 280.h,
+                    width: 343.w,
+                    margin: EdgeInsets.only(
+                        bottom: 14.h,
+                        right: 16.w,
+                        left: 16.w
+                    ),
+                    decoration: BoxDecoration(
+                        color: Colors.purple.shade50,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                              top: 10.h,
+                            ),
+                            height: 188.h,
+                            width: 323.w,
+                            decoration: BoxDecoration(
+                                color: Colors.grey[300]!,
+                                borderRadius: BorderRadius.circular(5),
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                        award[index].image.toString()))
 
-              FutureBuilder<List<Awards>>(
-                future: UserApiController().Awards_CanWin(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return LoedWidget();
-                  }
-                  else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                    award = snapshot.data ?? [];
-
-                    return
-
-                      ListView.builder(
-                      itemCount: award.length,
-                      shrinkWrap: true,
-                      physics:ScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return Container(
-                          height: 280.h,
-                          width: 343.w,
-                          margin: EdgeInsets.only(
-                            bottom: 14.h,
-                            right: 16.w,
-                            left: 16.w
-                          ),
-                          decoration: BoxDecoration(
-                              color: Colors.purple.shade50,
-                              borderRadius: BorderRadius.circular(5)),
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10.w),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(
-                                    top: 10.h,
-                                  ),
-                                  height: 188.h,
-                                  width: 323.w,
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey[300]!,
-                                      borderRadius: BorderRadius.circular(5),
-                                      image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                          image: NetworkImage(
-                                              award[index].image.toString()))
-
-                                  ),
-                                  child: Align(
-                                    alignment: Alignment.topRight,
-                                    child: Container(
-                                      margin:
-                                          EdgeInsets.only(top: 8.h, right: 8.w),
-                                      height: 27.h,
-                                      width: 58.w,
-                                      decoration: BoxDecoration(
-                                          color: Color(0xff18499A),
-                                          borderRadius:
-                                              BorderRadius.circular(14)),
-                                      child: Center(
-                                          child: Text(
-                                        "${award[index].pointsCount} نقطة",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 10.sp),
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                               Row(
-                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                 children: [
-                                   Text(
-                                     award[index].name.toString(),
-                                     style: TextStyle(
-                                         fontSize: 16.sp,
-                                         fontWeight: FontWeight.w600),
-                                   ),
-
-                                   FutureBuilder<User?>(
-                                       future: UserApiController().getProfile(),
-                                       builder: (context, snapshot) {
-                                         if (snapshot.connectionState == ConnectionState.waiting) {
-                                           return Center();
-                                         }
-                                         else if (snapshot.hasData) {
-
-                                           return   snapshot.data!.type =='user'?
-                                           InkWell(
-                                               onTap: (){
-                                                 showModalBottomSheet(
-
-                                                   context: context,
-
-                                                   shape:  RoundedRectangleBorder( // <-- SEE HERE
-                                                       borderRadius:  BorderRadius.only(
-                                                         topRight: Radius.circular(15),
-                                                         topLeft:  Radius.circular(15),
-                                                       )
-                                                   ),
-                                                   builder: (context) {
-                                                     return Container(
-
-                                                         margin: EdgeInsets.symmetric(horizontal: 16.w,vertical: 16.h),
-                                                         decoration: BoxDecoration(
-
-                                                             borderRadius: BorderRadius.only(
-                                                               topRight: Radius.circular(15),
-                                                               topLeft:  Radius.circular(15),
-                                                             )
-                                                         ),
-                                                         height: 520.h,
-                                                         width: double.infinity,
-
-                                                         alignment: Alignment.center,
-                                                         child: ListView(
-                                                           children: [
-                                                             Row(
-                                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                               children: [
-                                                                 SizedBox(width: 30.w,),
-
-                                                                 Text("الدخول في السحب",style: TextStyle(
-                                                                     color: Color(0xff7B217E),
-                                                                     fontSize: 18.sp,
-                                                                     fontWeight: FontWeight.w600
-                                                                 ),),
-
-                                                                 IconButton(onPressed: (){
-                                                                   Navigator.pop(context);
-                                                                 }, icon: SvgPicture.asset("images/close.svg"),),
-
-                                                               ],
-                                                             ),
-                                                             snapshot.data!.imageProfile!=null?
-                                                             CircleAvatar(
-                                                               radius: 66.sp,
-                                                               backgroundImage:
-
-                                                               NetworkImage(
-                                                                 snapshot.data!.imageProfile!
-                                                               )
-                                                             ):
-                                                             CircleAvatar(radius:66.sp,
-                                                                 backgroundColor: Color(0xff7B217E),
-                                                                 child: Icon(Icons.person_rounded,color: Colors.white,
-                                                                   size: 50.sp,)),
-                                                             SizedBox(height: 22.h,),
-                                                             FieldScreen(title: "اسم البريد الالكتروني",controller: emailTextController,),
-                                                             SizedBox(height: 16.h,),
-                                                             FieldScreen(title:"رقم الهاتف",controller: phoneTextController,),
-                                                             SizedBox(height: 28.h,),
-                                                             Container(
-                                                               height: 91.h,
-                                                               width: 343.w,
-                                                               margin: EdgeInsets.symmetric(horizontal: 16.w),
-                                                               decoration: BoxDecoration(
-                                                                   color: Colors.purple.shade50,
-                                                                   borderRadius: BorderRadius.circular(5)),
-                                                               child: Container(
-                                                                 margin: EdgeInsets.symmetric(horizontal: 10.w,vertical: 10.h),
-                                                                 child: Row(
-
-                                                                   children: [
-                                                                     Container(
-                                                                       height: 71.h,
-                                                                       width: 76.w,
-                                                                       decoration: BoxDecoration(
-                                                                           color: Colors.purple,
-                                                                           borderRadius: BorderRadius.circular(5),
-                                                                           image: DecorationImage(
-                                                                               fit: BoxFit.cover,
-                                                                               image: NetworkImage(
-                                                                                   award[index].image.toString()))),
-                                                                     ),
-                                                                     SizedBox(width: 16.w,),
-                                                                     Column(
-                                                                       children: [
-                                                                         Text(award[index].name.toString(),style: TextStyle(
-                                                                             fontSize: 16.sp,
-                                                                             fontWeight: FontWeight.w500
-                                                                         ),),
-                                                                         Container(
-                                                                           margin:
-                                                                           EdgeInsets.only(top: 8.h, right: 8.w),
-                                                                           height: 27.h,
-                                                                           width: 58.w,
-                                                                           decoration: BoxDecoration(
-                                                                               color: Color(0xff18499A),
-                                                                               borderRadius:
-                                                                               BorderRadius.circular(14)),
-                                                                           child: Center(
-                                                                               child: Text(
-                                                                                 "${award[index].pointsCount} نقطة",
-                                                                                 style: TextStyle(
-                                                                                     color: Colors.white,
-                                                                                     fontWeight: FontWeight.w600,
-                                                                                     fontSize: 10.sp),
-                                                                               )),
-                                                                         ),
-                                                                       ],
-                                                                     )
-                                                                   ],
-                                                                 ),
-                                                               ),
-                                                             ),
-                                                             SizedBox(height: 28.h,),
-                                                             ElevatedButton  (
-                                                               onPressed: () async {
-
-                                                                 await Award_Request(award_id: award[index].id.toString());
-
-                                                               },
-                                                               child:
-                                                               Text('تأكيد الدخول في السحب',style: TextStyle(
-                                                                   fontWeight: FontWeight.w700,
-                                                                   fontSize: 18.sp
-                                                               ),),
-                                                               style: ElevatedButton.styleFrom(
-                                                                 primary: Color(0xff7B217E),
-
-                                                                 minimumSize: Size(double.infinity, 50.h),
-                                                               ),
-                                                             ),
-                                                             SizedBox(height: 300.h,),
-                                                           ],
-                                                         )
-                                                     );
-                                                   },
-                                                 );
-                                               },
-                                               child:   award[index].isRequested==1||close?
-                                               SvgPicture.asset(
-                                                 "images/true_play.svg"
-
-                                                 ,fit: BoxFit.scaleDown,):
-
-                                               SvgPicture.asset(
-                                                 "images/play.svg"
-
-                                                 ,fit: BoxFit.scaleDown,)
-
-
-
-
-                                           ):
-                                          SizedBox.shrink();
-                                         }
-                                         return SizedBox.shrink();
-                                       }),
-
-
-
-                                 ],
-                               )
-
-
-                              ],
+                            ),
+                            child: Align(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                margin:
+                                EdgeInsets.only(top: 8.h, right: 8.w),
+                                height: 27.h,
+                                width: 58.w,
+                                decoration: BoxDecoration(
+                                    color: Color(0xff18499A),
+                                    borderRadius:
+                                    BorderRadius.circular(14)),
+                                child: Center(
+                                    child: Text(
+                                      "${award[index].pointsCount} نقطة",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 10.sp),
+                                    )),
+                              ),
                             ),
                           ),
-                        );
-                      },
-                    );
-                  }else if(snapshot.data==[]||snapshot.data!.isEmpty ){
-                    return SizedBox.shrink();
-                  }
-                  else {
-                    return Center(
-                      child: Icon(Icons.wifi_off_rounded, size: 80,color: Colors.purple,),
-                    );
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                award[index].name.toString(),
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600),
+                              ),
+
+                              FutureBuilder<User?>(
+                                  future: UserApiController().getProfile(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                      return Center();
+                                    }
+                                    else if (snapshot.hasData) {
+
+                                      return   snapshot.data!.type =='user'?
+                                      InkWell(
+                                          onTap: (){
+                                            showModalBottomSheet(
+
+                                              context: context,
+
+                                              shape:  RoundedRectangleBorder( // <-- SEE HERE
+                                                  borderRadius:  BorderRadius.only(
+                                                    topRight: Radius.circular(15),
+                                                    topLeft:  Radius.circular(15),
+                                                  )
+                                              ),
+                                              builder: (context) {
+                                                return Container(
+
+                                                    margin: EdgeInsets.symmetric(horizontal: 16.w,vertical: 16.h),
+                                                    decoration: BoxDecoration(
+
+                                                        borderRadius: BorderRadius.only(
+                                                          topRight: Radius.circular(15),
+                                                          topLeft:  Radius.circular(15),
+                                                        )
+                                                    ),
+                                                    height: 520.h,
+                                                    width: double.infinity,
+
+                                                    alignment: Alignment.center,
+                                                    child: ListView(
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: [
+                                                            SizedBox(width: 30.w,),
+
+                                                            Text("الدخول في السحب",style: TextStyle(
+                                                                color: Color(0xff7B217E),
+                                                                fontSize: 18.sp,
+                                                                fontWeight: FontWeight.w600
+                                                            ),),
+
+                                                            IconButton(onPressed: (){
+                                                              Navigator.pop(context);
+                                                            }, icon: SvgPicture.asset("images/close.svg"),),
+
+                                                          ],
+                                                        ),
+                                                        snapshot.data!.imageProfile!=null?
+                                                        CircleAvatar(
+                                                            radius: 66.sp,
+                                                            backgroundImage:
+
+                                                            NetworkImage(
+                                                                snapshot.data!.imageProfile!
+                                                            )
+                                                        ):
+                                                        CircleAvatar(radius:66.sp,
+                                                            backgroundColor: Color(0xff7B217E),
+                                                            child: Icon(Icons.person_rounded,color: Colors.white,
+                                                              size: 50.sp,)),
+                                                        SizedBox(height: 22.h,),
+                                                        FieldScreen(title: "اسم البريد الالكتروني",controller: emailTextController,),
+                                                        SizedBox(height: 16.h,),
+                                                        FieldScreen(title:"رقم الهاتف",controller: phoneTextController,),
+                                                        SizedBox(height: 28.h,),
+                                                        Container(
+                                                          height: 91.h,
+                                                          width: 343.w,
+                                                          margin: EdgeInsets.symmetric(horizontal: 16.w),
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.purple.shade50,
+                                                              borderRadius: BorderRadius.circular(5)),
+                                                          child: Container(
+                                                            margin: EdgeInsets.symmetric(horizontal: 10.w,vertical: 10.h),
+                                                            child: Row(
+
+                                                              children: [
+                                                                Container(
+                                                                  height: 71.h,
+                                                                  width: 76.w,
+                                                                  decoration: BoxDecoration(
+                                                                      color: Colors.purple,
+                                                                      borderRadius: BorderRadius.circular(5),
+                                                                      image: DecorationImage(
+                                                                          fit: BoxFit.cover,
+                                                                          image: NetworkImage(
+                                                                              award[index].image.toString()))),
+                                                                ),
+                                                                SizedBox(width: 16.w,),
+                                                                Column(
+                                                                  children: [
+                                                                    Text(award[index].name.toString(),style: TextStyle(
+                                                                        fontSize: 16.sp,
+                                                                        fontWeight: FontWeight.w500
+                                                                    ),),
+                                                                    Container(
+                                                                      margin:
+                                                                      EdgeInsets.only(top: 8.h, right: 8.w),
+                                                                      height: 27.h,
+                                                                      width: 58.w,
+                                                                      decoration: BoxDecoration(
+                                                                          color: Color(0xff18499A),
+                                                                          borderRadius:
+                                                                          BorderRadius.circular(14)),
+                                                                      child: Center(
+                                                                          child: Text(
+                                                                            "${award[index].pointsCount} نقطة",
+                                                                            style: TextStyle(
+                                                                                color: Colors.white,
+                                                                                fontWeight: FontWeight.w600,
+                                                                                fontSize: 10.sp),
+                                                                          )),
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 28.h,),
+                                                        ElevatedButton  (
+                                                          onPressed: () async {
+
+                                                            await Award_Request(award_id: award[index].id.toString());
+
+                                                          },
+                                                          child:
+                                                          Text('تأكيد الدخول في السحب',style: TextStyle(
+                                                              fontWeight: FontWeight.w700,
+                                                              fontSize: 18.sp
+                                                          ),),
+                                                          style: ElevatedButton.styleFrom(
+                                                            primary: Color(0xff7B217E),
+
+                                                            minimumSize: Size(double.infinity, 50.h),
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 300.h,),
+                                                      ],
+                                                    )
+                                                );
+                                              },
+                                            );
+                                          },
+                                          child:   award[index].isRequested==1||close?
+                                          SvgPicture.asset(
+                                            "images/true_play.svg"
+
+                                            ,fit: BoxFit.scaleDown,):
+
+                                          SvgPicture.asset(
+                                            "images/play.svg"
+
+                                            ,fit: BoxFit.scaleDown,)
 
 
-                  }
+
+
+                                      ):
+                                      SizedBox.shrink();
+                                    }
+                                    return SizedBox.shrink();
+                                  }),
+
+
+
+                            ],
+                          )
+
+
+                        ],
+                      ),
+                    ),
+                  );
                 },
               )
+
+
             ],
           ),
         )
