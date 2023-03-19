@@ -120,7 +120,7 @@ class _Followers_AdvertiserState extends State<Followers_Advertiser> {
         } else {
           return Center(
             child: Text(
-              'لا يوجد متابعين ',
+              'لا يوجد متابعين,,, ',
               style: TextStyle(fontSize: 26.sp,fontWeight: FontWeight.w600),
             ),
           );

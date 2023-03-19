@@ -2054,6 +2054,24 @@ class UserShowAdmain extends StatefulWidget {
 class _UserShowAdmainState extends State<UserShowAdmain> {
   @override
   List<AdvertiserADs> _ads = [];
+  List<MyFollowings> _folow = [];
+  bool loedUserFollow= true;
+  List<String?> f=[];
+  String name="";
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    UserApiController().CountFollowers_User().then((value) {
+      setState(() {
+        _folow=value;
+        loedUserFollow=false;
+        f = _folow.map((e) => e.id).toList();
+        name=f.contains(widget.id.toString())?"إلغاء متابعة":" متابعة";
+
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -2129,170 +2147,99 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                                     SizedBox(
                                       width: 35.w,
                                     ),
-                                    UserPreferences().user.type == "user"
-                                        ? FutureBuilder<List<MyFollowings>>(
-                                            future: UserApiController()
-                                                .CountFollowers_User(),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return const Center();
-                                              } else if (snapshot.hasData) {
-                                                List<String?> f = snapshot.data!
-                                                    .map((e) => e.id)
-                                                    .toList();
-                                                return f.contains(widget.id)
-                                                    ? InkWell(
-                                                        onTap: () async {
-                                                          await UserApiController()
-                                                              .Follow_One(
-                                                                  followed_id:
-                                                                      widget.id
-                                                                          .toString(),
-                                                                  action:
-                                                                      "unfollow");
-                                                          setState(() {});
-                                                        },
-                                                        child: Container(
-                                                          height: 38.h,
-                                                          width: 90.w,
-                                                          decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          37),
-                                                              color: const Color(
-                                                                  0xff18499A)),
-                                                          child: Container(
-                                                            margin: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        5.w),
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Text(
-                                                                  "إلغاء متابعة",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          14.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : InkWell(
-                                                        onTap: () async {
-                                                          await UserApiController()
-                                                              .Follow_One(
-                                                                  followed_id:
-                                                                      widget.id
-                                                                          .toString(),
-                                                                  action:
-                                                                      "follow");
-                                                          setState(() {});
-                                                        },
-                                                        child: Container(
-                                                          height: 38.h,
-                                                          width: 90.w,
-                                                          decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          37),
-                                                              color: const Color(
-                                                                  0xff18499A)),
-                                                          child: Container(
-                                                            margin: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        5.w),
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                const Icon(
-                                                                  Icons
-                                                                      .add_sharp,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  size: 20,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 10.w,
-                                                                ),
-                                                                Text(
-                                                                  "متابعة",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          14.sp,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      );
-                                              } else {
-                                                return InkWell(
-                                                  onTap: () async {
-                                                    await UserApiController()
-                                                        .Follow_One(
-                                                            followed_id: widget
-                                                                .id
-                                                                .toString(),
-                                                            action: "unfollow");
-                                                    setState(() {});
-                                                  },
-                                                  child: Container(
-                                                    height: 38.h,
-                                                    width: 90.w,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(37),
-                                                        color: const Color(
-                                                            0xff18499A)),
-                                                    child: Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 5.w),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                            "إلغاء متابعة",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 14.sp,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                            },
-                                          )
+                                    UserPreferences().user.type == "user"&&loedUserFollow==false
+
+                                        ? f.contains(widget.id.toString())
+                                        ? InkWell(
+                                      onTap: () async {
+                                        await UserApiController().Follow_One(followed_id: widget.id.toString(), action: "unfollow");
+                                        setState(() {
+                                          f.remove(widget.id);
+                                          name=" متابعة";
+                                        });
+
+                                      },
+                                      child: Container(
+                                        height: 38.h,
+                                        width: 90.w,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                            BorderRadius
+                                                .circular(
+                                                37),
+                                            color: const Color(
+                                                0xff18499A)),
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                               name,
+                                                style: TextStyle(
+                                                    color: Colors
+                                                        .white,
+                                                    fontSize:
+                                                    14.sp,
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .w600),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                        : InkWell(
+                                      onTap: () async {
+                                        await UserApiController()
+                                            .Follow_One(
+                                            followed_id:
+                                            widget.id
+                                                .toString(),
+                                            action:
+                                            "follow");
+                                        setState(() {
+                                          name="إلغاء متابعة";
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 38.h,
+                                        width: 90.w,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                            BorderRadius
+                                                .circular(
+                                                37),
+                                            color: const Color(
+                                                0xff18499A)),
+                                        child: Container(
+                                          margin: EdgeInsets
+                                              .symmetric(
+                                              horizontal:
+                                              5.w),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .center,
+                                            children: [
+
+                                              Text(
+                                               name,
+                                                style: TextStyle(
+                                                    color: Colors
+                                                        .white,
+                                                    fontSize:
+                                                    14.sp,
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .w600),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    )
                                         : const SizedBox.shrink()
                                   ],
                                 )),
@@ -2324,6 +2271,7 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                           ],
                         ),
                       ),
+
                       Expanded(
                           child: TabBarView(
                               //controller: tabController,

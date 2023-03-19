@@ -26,8 +26,7 @@ class AllFollower extends StatelessWidget{
          if (snapshot.connectionState ==
              ConnectionState.waiting) {
            return LoedWidget();
-         } else if (snapshot.hasData &&
-             snapshot.data!.isNotEmpty) {
+         } else if (snapshot.hasData ) {
            _folow = snapshot.data ?? [];
            return ListView.builder(
              shrinkWrap: true,
