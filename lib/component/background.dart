@@ -5,9 +5,6 @@ class BackGround extends StatelessWidget {
   final Widget child;
   bool back;
   String rout;
-
-
-
   BackGround({
     required this.child,
     this.back = false,

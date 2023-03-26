@@ -1,15 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
+import 'package:provider/provider.dart';
 import '../../loed/loed.dart';
+import '../../provider/app_provider.dart';
 import '../../story/OneStory.dart';
-import '../../api/User_Controller.dart';
 import '../../component/main_bac.dart';
-
 import '../../models/city.dart';
-import '../../models/detalies.dart';
+
 
 class DetailesScreen extends StatefulWidget{
   int  idcat;
@@ -22,20 +20,22 @@ class DetailesScreen extends StatefulWidget{
 }
 
 class _DetailesScreenState extends State<DetailesScreen> {
-  List<Ads> _detalies = [];
-  int ? id;
-  bool filt=false;
-  List<Cities> cit = [];
-  var _selected;
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<AppProvider>(context, listen: false).getAllcity();
+    Provider.of<AppProvider>(context, listen: false).getPartAds(idcat:widget.idcat );
+    Provider.of<AppProvider>(context, listen: false).PartAdLoed=false;
     return Back_Ground(
       back: true,
       eror: true,
       backRout: '/PartScreen',
       childTab: ' ${widget.name}',
-      child: Container(
+      child:  Consumer<AppProvider>(builder: (context, provider, _) {
+      return
+      provider.PartAd==null?
+        LoedWidget():
+        Container(
         margin: EdgeInsets.symmetric(horizontal: 12.w),
         child: ListView(
           children: [
@@ -45,270 +45,218 @@ class _DetailesScreenState extends State<DetailesScreen> {
 
                 IconButton(onPressed: (){}, icon: Icon(Icons.location_on,color: Color(0xff7B217E),size: 30.sp,)),
                 SizedBox(width: 10.w,),
-
                 Text("كل المدن",style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600
                 ),),
-                FutureBuilder<List<Cities>>(
-                  future: UserApiController().getCity(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center();
-                    } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                      cit = snapshot.data ?? [];
-                      return  DropdownButton(
+                DropdownButton(
 
-                        underline: Container(),
-                        //value: _selected,
-                        icon: Icon(Icons.keyboard_arrow_down_outlined),
-                        onChanged: (newValue) {
-                          setState(() {
-                            _selected=newValue;
-                            filt=true;
-                          });
-                          },
-                        items: snapshot.data!.map<DropdownMenuItem<String>>((Cities value) {
-
-                          return DropdownMenuItem<String>(
-                            onTap: (){
-                              setState(() {
-                                id=value.id;
-                              });
-
-                            },
-                            value: value.name,
-                            child: Text(value.name),
-                          );
-                        }).toList(),
-                      );
-                    } else {
-                      return Center(
-
-                      );
-                    }
+                  underline: Container(),
+                  icon: Icon(Icons.keyboard_arrow_down_outlined),
+                  onChanged: (newValue) {
+                    provider.selectedPart=newValue;
+                    provider.filtterPart=true;
+                    provider.notifyListeners();
                   },
-                ),
+                  items: provider.cit.map<DropdownMenuItem<String>>((Cities value) {
+
+                    return DropdownMenuItem<String>(
+                      onTap: (){
+                        provider.idpartcity=value.id;
+                        provider.notifyListeners();
+                        provider.getPartAds(idcat:widget.idcat );
+
+                      },
+                      value: value.name,
+                      child: Text(value.name),
+                    );
+                  }).toList(),
+                )
 
 
               ],
             ),
             SizedBox(height: 10.h,),
-            FutureBuilder<List<Ads>>(
-              future:
-              filt==false?
-             UserApiController().getDetailes(idcat: widget.idcat):
-              UserApiController().FiltterCity(catId: widget.idcat, cityid: id!),
+            provider.PartAd!.isNotEmpty?
+            GridView.builder(
+              scrollDirection: Axis.vertical,
+
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 165.w / 170.h,
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 5.w,
+                  mainAxisSpacing: 14.h
+
+              ),
+              shrinkWrap: true,
+              physics: ScrollPhysics(),
+              itemCount: provider.PartAd!.length,
+              itemBuilder: (BuildContext, index){
+                return    provider.PartAd![index].adType!.type=="special"?
+                InkWell(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              StoryPage(
+                                  AdId:provider.PartAd![index].id!
+                              )
+
+                      ),
+                    );
 
 
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return LoedWidget();
-                }
-                else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                  _detalies = snapshot.data ?? [];
-                  return  GridView.builder(
-                    scrollDirection: Axis.vertical,
+                  },
 
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 165.w / 170.h,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 5.w,
-                        mainAxisSpacing: 14.h
-
+                  child: Container(
+                    margin: EdgeInsets.only(
+                        right: 5.w,
+                        left: 5.w
                     ),
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    itemCount: _detalies.length,
-                    itemBuilder: (BuildContext, index){
-                      return    _detalies[index].adType!.type=="special"?
-                      InkWell(
-                        onTap: (){
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           StoryPage1(
-                          //             data:_detalies[index].id!=null?
-                          //             _detalies[index].id!:
-                          //             2,
-                          //
-                          //           )
-                          //   ),
-                          //
-                          //
-                          //
-                          // );
+                    width: 130.w,
+                    decoration: BoxDecoration(
+                        color: Colors.grey[300]!,
+                        borderRadius: BorderRadius.circular(5),
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(provider.PartAd![index].image.toString())
+                        )
+                    ),
 
-
-                        },
-
-                        child: Container(
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: IconButton(onPressed: (){}, icon:  Icon(Icons.star_rounded,color: Color(0xffFFCC46),size: 25.sp,),),
+                        ),
+                        Container(
                           margin: EdgeInsets.only(
-                              right: 5.w,
-                              left: 5.w
+                              bottom: 10.h,
+                              right: 5.w
                           ),
-                          width: 130.w,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300]!,
-                              borderRadius: BorderRadius.circular(5),
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(_detalies[index].image.toString())
-                              )
-                          ),
+                          alignment: Alignment.bottomRight,
+                          child:Row(
 
-                          child: Stack(
                             children: [
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: IconButton(onPressed: (){}, icon:  Icon(Icons.star_rounded,color: Color(0xffFFCC46),size: 25.sp,),),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                    bottom: 10.h,
-                                    right: 5.w
-                                ),
-                                alignment: Alignment.bottomRight,
-                                child:Row(
 
-                                  children: [
+                              CircleAvatar(radius: 14,
+                                backgroundImage:
+                                provider.PartAd![index].advertiser!.imageProfile!=null?
 
-                                    CircleAvatar(radius: 14,
-                                      backgroundImage:
-                                      _detalies[index].advertiser!.imageProfile!=null?
-
-                                      NetworkImage(_detalies[index].advertiser!.imageProfile!):
-                                      null,),
-                                    SizedBox(width: 10.w,),
-                                    Text(
+                                NetworkImage(provider.PartAd![index].advertiser!.imageProfile.toString()):
+                                null,),
+                              SizedBox(width: 10.w,),
+                              Text(
 
 
 
-                                      _detalies[index].advertiser!.name!,style: TextStyle(
-                                        color:  Color(0xffFFFFFF),
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 10.sp
-                                    ),),
+                                provider.PartAd![index].advertiser!.name.toString(),style: TextStyle(
+                                  color:  Color(0xffFFFFFF),
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 10.sp
+                              ),),
 
 
-                                  ],
-                                ),
-                              )
                             ],
                           ),
+                        )
+                      ],
+                    ),
+                  ),
+                ):
+                InkWell(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              StoryPage(
+                                  AdId:provider.PartAd![index].id!
+                              )
+
+                      ),
+                    );
+
+                  },
+                  child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10.w),
+                      width: 165.w,
+                      height: 98.h,
+                      decoration: BoxDecoration(
+                          color:   Color(0xff7B217E),
+                          borderRadius: BorderRadius.circular(5),
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(provider.PartAd![index].image.toString())
+                          )
+                      ),
+                      child:  Container(
+                        margin: EdgeInsets.only(
+                            bottom: 10.h,
+                            right: 5.w
                         ),
-                      ):
+                        alignment: Alignment.bottomRight,
+                        child:Row(
 
+                          children: [
 
-                      InkWell(
-                        onTap: (){
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           StoryPage1(
-                          //             data:_detalies[index].id!=null?
-                          //             _detalies[index].id!:
-                          //             2,
-                          //
-                          //           )
-                          //   ),
-                          //
-                          //
-                          //
-                          // );
-                          //
+                            CircleAvatar(radius: 14,
+                                backgroundImage:provider.PartAd![index].advertiser!.imageProfile!=null?
 
-                        },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10.w),
-                            width: 165.w,
-                            height: 98.h,
-                            decoration: BoxDecoration(
-                                color:   Color(0xff7B217E),
-                                borderRadius: BorderRadius.circular(5),
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(_detalies[index].image!)
-                                )
+                                NetworkImage(provider.PartAd![index].advertiser!.imageProfile.toString()):
+                                null
                             ),
-                            child:  Container(
-                              margin: EdgeInsets.only(
-                                  bottom: 10.h,
-                                  right: 5.w
-                              ),
-                              alignment: Alignment.bottomRight,
-                              child:Row(
-
-                                children: [
-
-                                  CircleAvatar(radius: 14,
-                                    backgroundImage:_detalies[index].advertiser!.imageProfile!=null?
-
-                                    NetworkImage(_detalies[index].advertiser!.imageProfile!):
-                                  null
-                                  ),
-                                  SizedBox(width: 10.w,),
-                                  Text(
+                            SizedBox(width: 10.w,),
+                            Text(
 
 
 
-                                    _detalies[index].advertiser!.name!,style: TextStyle(
-                                      color:  Color(0xffFFFFFF),
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 10.sp
-                                  ),),
+                              provider.PartAd![index].advertiser!.name.toString(),style: TextStyle(
+                                color:  Color(0xffFFFFFF),
+                                fontWeight: FontWeight.w900,
+                                fontSize: 10.sp
+                            ),),
 
 
-                                ],
-                              ),
-                            )
-                      ),
-                        );
-                    },
-
-
-
-                  );
-                }
-
-                else if(snapshot.data!.isEmpty){
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 80.h,),
-
-
-                      SvgPicture.asset("images/ads.svg"),
-                      SizedBox(height: 30.h,),
-                      Text('لا يوجد اعلانات في الوقت الحالي ',
-
-
-                        style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            color:  Color(0xff7B217E)
+                          ],
                         ),
-                      ),
-
-
-                    ],
-                  );
-                }
-
-
-                else {
-                  return Center(
-                    child: Icon(Icons.wifi_off_rounded, size: 80,color: Colors.purple,),
-                  );
-                }
+                      )
+                  ),
+                );
               },
-            ),
+
+
+
+            ):
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 80.h,),
+
+
+                SvgPicture.asset("images/ads.svg"),
+                SizedBox(height: 30.h,),
+                Text('لا يوجد اعلانات في الوقت الحالي ',
+
+
+                  style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color:  Color(0xff7B217E)
+                  ),
+                ),
+
+
+              ],
+            )
           ],
         ),
-      )
+      );
+
+      })
+
     );
   }
 }

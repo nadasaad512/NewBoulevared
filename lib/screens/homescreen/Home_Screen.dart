@@ -5,20 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_boulevard/screens/homescreen/widget/ImageRotater.dart';
 import 'package:new_boulevard/utils/helpers.dart';
+import 'package:provider/provider.dart';
+import '../../Shared_Preferences/User_Preferences.dart';
 import '../../loed/loed.dart';
-import '../../models/BestOffers.dart';
-import '../../models/notification.dart';
-import '../../models/setting.dart';
+import '../../models/detalies.dart';
+import '../../provider/app_provider.dart';
 import '../../story/ListStory.dart';
 import '../../story/OneStory.dart';
-import '../../Shared_Preferences/User_Preferences.dart';
-import '../../api/User_Controller.dart';
 import '../../component/main_bac.dart';
-import '../../models/Follower_user.dart';
-import '../../models/categories.dart';
-import '../../models/detalies.dart';
-import '../../models/special_ads.dart';
-
 import '../PARTBar/detalies.dart';
 
 
@@ -28,92 +22,47 @@ class HomeScreen extends StatefulWidget{
 }
 
 class _HomeScreenState extends State<HomeScreen> with Helpers{
-  List<MyFollowings> _folow = [];
-  List<MyFollowings> test = [];
-  List<SpecialAds> _special_ads = [];
-  List<Categories> _categories = [];
-  List<Ads> BestAds = [];
   List<Ads> offerad = [];
-    List<Banners> banners= [];
-    List<notification> massages= [];
-    List<Offers> offer= [];
    bool isDone=false;
 
-  @override
-  void initState() {
-    // TODO: implement initState
- UserApiController().HSpecialAds().then((value) {
-   setState(() {
-     _special_ads=value;
-   });
- });
- UserApiController().getCategories().then((value) {
 
-   setState(() {
-     _categories=value;
-   });
-
- });
- UserApiController().getBestTenAds().then((value) {
-   setState(() {
-     BestAds=value;
-   });
- });
- UserApiController().getBestAds().then((value) {
-   setState(() {
-     offer=value;
-   });
- });
- UserApiController().getbaner().then((value) {
-   setState(() {
-     banners=value;
-     isDone=true;
-   });
- });
- UserPreferences().user.type=="user"?
- UserApiController().Followers_User().then((value) {
-   setState(() {
-     _folow=value;
-
-   });
- }):
- null;
-
-
-
-
-
-
+  loed(AppProvider provider)async{
+    await provider.getAllBanner();
+    await provider.getAllCategory();
+    await provider.getAllSpecialAds();
+    await provider.getAllBestTenAds();
+    await provider.getAllOffer();
+    await provider.getAllListStory();
+     provider.notifyListeners();
   }
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<AppProvider>(context, listen: false).getAllBanner();
+    Provider.of<AppProvider>(context, listen: false).getAllCategory();
+    Provider.of<AppProvider>(context, listen: false).getAllSpecialAds();
+    Provider.of<AppProvider>(context, listen: false).getAllBestTenAds();
+    Provider.of<AppProvider>(context, listen: false).getAllOffer();
+    UserPreferences().token!=''?Provider.of<AppProvider>(context, listen: false).getAllNotification():null;
+    UserPreferences().token!=''?  Provider.of<AppProvider>(context, listen: false).getAllListStory():null;
+    Provider.of<AppProvider>(context, listen: false). HomeLoed=false;
     return Back_Ground(
      childTab: "الرئيسية",
       ad: true,
-      child:
-      isDone==false?
-      LoedWidget():
-
+      child:   Consumer<AppProvider>(builder: (context, provider, _) {
+         return
       RefreshIndicator(
         color: Colors.purple,
         onRefresh: () async {
-          loeddata();
-          setState(() {
+        await  loed(provider);
 
-          });
           await Future.delayed(Duration(milliseconds: 1500));
-          await UserApiController().Notifications().then((value) {
-            setState(() {
-              massages=value;
-            });
-          });
-
-          if(massages.isNotEmpty){
-            for(int i=0;i<massages.length;i++){
+        await provider.getAllNotification();
+          if( provider.massages.isNotEmpty){
+            for(int i=0;i< provider.massages.length;i++){
               Flushbar(
 
-                messageText: Text(massages[i].message.toString(),style: TextStyle(
+                messageText: Text( provider.massages[i].message.toString(),style: TextStyle(
                     color: Colors.white
                 ),),
                 padding: EdgeInsets.all(20),
@@ -152,28 +101,31 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
 
         },
-        child:     Container(
-
+        child: Container(
           margin: EdgeInsets.symmetric(horizontal: 12.w),
-          child: ListView(
+          child:
+          provider.categories==[]?
+          LoedWidget():
+
+          ListView(
             children: [
 
 
-              banners.isNotEmpty?
+             provider.banners.isNotEmpty?
               SizedBox(
                   height: 150.h,
-                  child: CasualImageSlider( imageUrls: banners)):
+                  child: CasualImageSlider( imageUrls:  provider.banners)):
               SizedBox.shrink(),
 
 
 
               SizedBox(height: 16.h,),
-              _folow.isNotEmpty?
+              provider. folow.isNotEmpty?
               SizedBox(
                   height: 110.h,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: _folow.length,
+                    itemCount:  provider.folow.length,
                     itemBuilder: (context, index) {
 
                       return    InkWell(
@@ -183,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ListStoryScreen(PageFollowing:_folow,initialindex: index,)
+                                      ListStoryScreen(PageFollowing: provider.folow,initialindex: index,)
                               )
 
                           );
@@ -216,13 +168,14 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
                                 child: CircleAvatar(
                                     radius:38.sp,
+                                    backgroundColor: Colors.grey[300]!,
 
 
-                                    backgroundImage:_folow[index].imageProfile!=null?
+                                    backgroundImage: provider.folow[index].imageProfile!=null?
 
                                     NetworkImage(
 
-                                        _folow[index].imageProfile!
+                                        provider.folow[index].imageProfile!
 
                                     ) :null
 
@@ -235,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                               margin: EdgeInsets.only(
                                   left: 12.w
                               ),
-                              child: Text(_folow[index].name.toString(),style: TextStyle(
+                              child: Text( provider.folow[index].name.toString(),style: TextStyle(
                                   fontSize: 10.sp,
                                   fontWeight: FontWeight.w600
                               ),),
@@ -263,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
 
 
-              _special_ads.isNotEmpty?
+              provider.special_ads.isNotEmpty?
               Row(
 
                 children: [
@@ -295,27 +248,28 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
               ):
               SizedBox.shrink(),
 
-            SizedBox(height: 16.h,),
+              SizedBox(height: 16.h,),
 
-              _special_ads.isNotEmpty?
+              provider.special_ads.isNotEmpty?
               SizedBox(
                 height: 220.h,
                 width: 300.w,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: _special_ads.length,
+                  itemCount:  provider.special_ads.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: (){
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
                                   StoryPage(
-                                    AdId:_special_ads[index].id!,
-
+                                    AdId: provider.special_ads[index].id!,
                                   )
+
                           ),
                         );
                       },
@@ -330,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                             borderRadius: BorderRadius.circular(5),
                             image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(_special_ads[index].image.toString())
+                                image: NetworkImage( provider.special_ads[index].image.toString())
                             )
                         ),
 
@@ -349,20 +303,19 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                               child:Row(
 
                                 children: [
-                                  _special_ads[index].advertiser!.imageProfile!=null?
-                                  CircleAvatar(radius: 14, backgroundImage: NetworkImage(
-
-                                      _special_ads[index].advertiser!.imageProfile.toString()),):
+                                  provider.special_ads[index].advertiser!.imageProfile!=null?
+                                  CircleAvatar(
+                                    backgroundColor: Colors.grey[300]!,
+                                    radius: 14, backgroundImage: NetworkImage(
+                                      provider.special_ads[index].advertiser!.imageProfile.toString()),)
+                                      :
                                   CircleAvatar(radius: 12.sp,
                                       backgroundColor: Color(0xff7B217E),
                                       child: Icon(Icons.person_rounded,color: Colors.white,
                                         size: 15.sp,)),
                                   SizedBox(width: 10.w,),
                                   Text(
-
-
-
-                                    _special_ads[index].advertiser!.name!,style: TextStyle(
+                                    provider.special_ads[index].advertiser!.name.toString(),style: TextStyle(
                                       color:  Color(0xffFFFFFF),
                                       fontWeight: FontWeight.w900,
                                       fontSize: 10.sp
@@ -385,7 +338,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
 
 
-              _categories.isNotEmpty?
+              provider.categories.isNotEmpty?
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -417,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
               ):
               SizedBox.shrink(),
               SizedBox(height: 16.h,),
-              _categories.isNotEmpty?
+              provider.categories.isNotEmpty?
               SizedBox(
                 height: 230.h,
                 child: ListView.separated(
@@ -430,7 +383,9 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                             context,
                             MaterialPageRoute(
 
-                                builder: (context) => DetailesScreen(name:_categories[index].name.toString(),idcat:_categories[index].id! ,)
+                                builder: (context) => DetailesScreen(name: provider.categories[index].name.toString(),
+                                  idcat:int.parse( provider.categories[index].id.toString()) ,)
+
                             ),
 
 
@@ -447,13 +402,13 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                                   borderRadius: BorderRadius.circular(5),
                                   image: DecorationImage(
                                       fit: BoxFit.cover,
-                                      image: NetworkImage(_categories[index].image.toString())
+                                      image: NetworkImage( provider.categories[index].image.toString())
                                   )
                               ),
                             ),
                             SizedBox(height: 10.h,),
                             Center(
-                              child:  Text(_categories[index].name.toString(),style: TextStyle(
+                              child:  Text( provider.categories[index].name.toString(),style: TextStyle(
                                 color:  Color(0xff7B217E),
                                 fontWeight: FontWeight.normal,
 
@@ -470,9 +425,9 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                   },
                 ),
               ):
-                  SizedBox.shrink(),
+              SizedBox.shrink(),
 
-              BestAds.isNotEmpty?
+              provider. BestAds.isNotEmpty?
 
               Container(
                 margin: EdgeInsets.symmetric(vertical: 16.h),
@@ -497,12 +452,12 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
               SizedBox.shrink(),
 
 
-              BestAds.isNotEmpty?
+              provider.BestAds.isNotEmpty?
               SizedBox(
                 height: 200.h,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: BestAds.length,
+                  itemCount:  provider.BestAds.length,
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: (){
@@ -512,7 +467,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                           MaterialPageRoute(
                               builder: (context) =>
                                   StoryPage(
-                                    AdId:BestAds[index].id!,
+                                    AdId: provider.BestAds[index].id!,
 
                                   )
                           ),
@@ -535,7 +490,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                             image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: NetworkImage(
-                                    BestAds[index].image.toString())
+                                    provider.BestAds[index].image.toString())
                             )
                         ),
 
@@ -551,12 +506,12 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                               child:Row(
 
                                 children: [
-                                  BestAds[index].advertiser!.imageProfile!=null?
+                                  provider.BestAds[index].advertiser!.imageProfile!=null?
 
                                   CircleAvatar(radius: 14,
                                     backgroundImage: NetworkImage(
 
-                                        BestAds[index].advertiser!.imageProfile!.toString()),):
+                                        provider.BestAds[index].advertiser!.imageProfile!.toString()),):
                                   CircleAvatar(radius: 12.sp,
                                       backgroundColor: Color(0xff7B217E),
                                       child: Icon(Icons.person_rounded,color: Colors.white,
@@ -566,7 +521,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
 
 
-                                    BestAds[index].advertiser!.name!,style: TextStyle(
+                                    provider.BestAds[index].advertiser!.name.toString(),style: TextStyle(
                                       color:  Color(0xffFFFFFF),
                                       fontWeight: FontWeight.w900,
                                       fontSize: 10.sp
@@ -590,18 +545,18 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
               SizedBox(height: 16.h,),
 
-              offer.isNotEmpty?
+              provider.offer.isNotEmpty?
               ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
 
-                itemCount: offer.length,
+                itemCount:  provider.offer.length,
                 itemBuilder: (context, index) {
                   return Column(
                     children: [
                       Row(
                         children: [
-                          Text(offer[index].name.toString(),style: TextStyle(
+                          Text( provider.offer[index].name.toString(),style: TextStyle(
                               color:  Color(0xff7B217E),
                               fontWeight: FontWeight.w600,
                               fontSize: 16.sp
@@ -615,9 +570,9 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: offer[index].ads!.length,
+                          itemCount:  provider.offer[index].ads!.length,
                           itemBuilder: (context, index) {
-                            offerad=offer[index].ads!;
+                            offerad= provider.offer[index].ads!;
                             return InkWell(
                               onTap: (){
                                 Navigator.push(
@@ -648,7 +603,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                                     image: DecorationImage(
                                         fit: BoxFit.cover,
                                         image: NetworkImage(
-                                            offerad[index].image.toString())
+                                           offerad[index].image.toString())
                                     )
                                 ),
 
@@ -680,7 +635,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
 
 
-                                            offerad[index].advertiser!.name!,style: TextStyle(
+                                            offerad[index].advertiser!.name.toString(),style: TextStyle(
                                               color:  Color(0xffFFFFFF),
                                               fontWeight: FontWeight.w900,
                                               fontSize: 10.sp
@@ -705,7 +660,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
                 },
               ):
-                  SizedBox.shrink()
+              SizedBox.shrink()
 
 
 
@@ -720,7 +675,10 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
           ),
         ),
 
-      )
+      );
+      })
+
+
 
 
 
@@ -730,44 +688,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
     );
   }
 
-  loeddata ()async{
-  await  UserApiController().HSpecialAds().then((value) {
-      setState(() {
-        _special_ads=value;
-      });
-    });
-  await UserApiController().getCategories().then((value) {
 
-      setState(() {
-        _categories=value;
-      });
-
-    });
-  await UserApiController().getBestTenAds().then((value) {
-      BestAds=value;
-      setState(() {
-        BestAds=value;
-      });
-    });
-  await UserApiController().getBestAds().then((value) {
-      offer=value;
-      setState(() {
-        offer=value;
-      });
-    });
-  await UserApiController().getbaner().then((value) {
-    setState(() {
-      banners=value;
-    });
-  });
-  UserPreferences().user.type=="user"?
-  await UserApiController().Followers_User().then((value) {
-    setState(() {
-      _folow=value;
-    });
-  }):
-  null;
-  }
 
 
 }

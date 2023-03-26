@@ -8,6 +8,7 @@ import '../models/ads.dart';
 import '../models/detalies.dart';
 import '../screens/Details/ad_story_screen.dart';
 import '../screens/Profile/ProfileWidgt/profileScreen.dart';
+import '../screens/Profile/widget/AdaminAsUserShow.dart';
 import '../screens/maps/location.dart';
 
 class ImageStoryScreen extends StatefulWidget {
@@ -95,22 +96,27 @@ class _ImageStoryScreenState extends State<ImageStoryScreen>
                   },
                   child: Row(
                     children: [
-                  widget.ad.advertiser!.imageProfile != null?
+                      widget.ad.advertiser==null?
+                          SizedBox.shrink():
+                  widget.ad.advertiser!.imageProfile == null?
+                  CircleAvatar(radius: 21.sp,
+                      backgroundColor: Color(0xff7B217E),
+                      child: Icon(Icons.person_rounded,color: Colors.white,
+                        size: 15.sp,)):
                       CircleAvatar(
                           radius: 21.sp,
                           backgroundImage:
                               NetworkImage(
-                                      widget.ad.advertiser!.imageProfile!)
-                                  ):
-                      CircleAvatar(radius: 21.sp,
-                          backgroundColor: Color(0xff7B217E),
-                          child: Icon(Icons.person_rounded,color: Colors.white,
-                            size: 15.sp,)),
+                                      widget.ad.advertiser!.imageProfile.toString())
+                                  ),
+
                       SizedBox(
                         width: 10.w,
                       ),
+                      widget.ad.advertiser==null?
+                          SizedBox.shrink():
                       Text(
-                        widget.ad.advertiser!.name!,
+                        widget.ad.advertiser!.name.toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: Colors.white,

@@ -25,7 +25,7 @@ class _CasualImageSliderState extends State<CasualImageSlider> {
   void initState() {
     super.initState();
     Timer.periodic(Duration(seconds: 5), (timer) {
-      setState(() {
+
         if (_currentIndex == widget.imageUrls.length - 1) {
           _currentIndex = 0;
         } else {
@@ -36,8 +36,14 @@ class _CasualImageSliderState extends State<CasualImageSlider> {
           duration: Duration(seconds: 2),
           curve: Curves.easeInOut,
         );
-      });
+
     });
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
   }
 
 

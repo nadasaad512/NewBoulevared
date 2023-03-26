@@ -204,7 +204,6 @@ class ListStory {
 
 class story1 {
   int? id;
-  String? adId;
   String? type;
   String? file;
   String? createdAt;
@@ -216,7 +215,6 @@ class story1 {
 
   story1.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    adId = json['ad_id'];
     type = json['type'];
     file = json['file'];
     createdAt = json['created_at'];
@@ -228,7 +226,6 @@ class story1 {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['ad_id'] = adId;
     data['type'] = type;
     data['file'] = file;
     data['created_at'] = createdAt;

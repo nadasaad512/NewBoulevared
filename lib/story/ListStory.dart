@@ -1,18 +1,13 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_boulevard/screens/Details/ad_story_screen.dart';
-import 'package:new_boulevard/screens/Profile/ProfileWidgt/profileScreen.dart';
-
-import 'package:new_boulevard/story/imageitem.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 import '../api/User_Controller.dart';
 import '../models/Follower_user.dart';
 import '../models/ads.dart';
-import '../models/detalies.dart';
+import '../screens/Profile/widget/AdaminAsUserShow.dart';
 
 class ListStoryScreen extends StatefulWidget {
   List<MyFollowings> PageFollowing;
@@ -24,8 +19,7 @@ class ListStoryScreen extends StatefulWidget {
   _ListStoryScreenState createState() => _ListStoryScreenState();
 }
 
-class _ListStoryScreenState extends State<ListStoryScreen>
-    with SingleTickerProviderStateMixin {
+class _ListStoryScreenState extends State<ListStoryScreen> with SingleTickerProviderStateMixin {
   int CurrentStory = 0;
   int PageCurrent = 0;
   int PageDetal = 0;
@@ -46,7 +40,6 @@ class _ListStoryScreenState extends State<ListStoryScreen>
   @override
   void initState() {
     super.initState();
-    log("init");
     Wakelock.enable();
     PageCurrent=widget.initialindex;
     pageController = PageController();
@@ -57,11 +50,7 @@ class _ListStoryScreenState extends State<ListStoryScreen>
     controller.initialize();
     old = controller;
     for (var y = 0; y < widget.PageFollowing.length; y++) {
-      log('y.toString()${y.toString()}');
-      log('ad.toString()${widget.PageFollowing[y].ads!.length.toString()}');
       for (var i = 0; i < widget.PageFollowing[y].ads!.length; i++) {
-        log('i.toString()${i.toString()}');
-
        img.addAll(widget.PageFollowing[y].ads![i].adImages!);
        vido.addAll(widget.PageFollowing[y].ads![i].adVideos!);
       }
@@ -97,7 +86,6 @@ class _ListStoryScreenState extends State<ListStoryScreen>
               itemCount: widget.PageFollowing.length,
               controller: pageController,
               onPageChanged: (int onPageChanged)async {
-
                 controller.dispose();
                 old.dispose();
                 setState(() {
@@ -179,7 +167,8 @@ class _ListStoryScreenState extends State<ListStoryScreen>
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    UserShowAdmain(id: widget.PageFollowing[PageCurrent].ads![0].advertiser!.id!)
+                                                    UserShowAdmain(id:int.parse(widget.PageFollowing[PageCurrent].id!))
+
                                             )
 
 
@@ -189,13 +178,13 @@ class _ListStoryScreenState extends State<ListStoryScreen>
                                       },
                                       child: Row(
                                         children: [
-                                          widget.PageFollowing[PageCurrent].ads![0].advertiser!.imageProfile!=null?
+                                          widget.PageFollowing[PageCurrent].imageProfile!=null?
 
                                           CircleAvatar(
                                               radius: 21.sp,
 
                                               backgroundImage:
-                                              NetworkImage(widget.PageFollowing[PageCurrent].ads![0].advertiser!.imageProfile!)
+                                              NetworkImage(widget.PageFollowing[PageCurrent].imageProfile.toString())
                                           ):
                                           CircleAvatar(radius: 21.sp,
                                               backgroundColor: Color(0xff7B217E),
@@ -204,7 +193,7 @@ class _ListStoryScreenState extends State<ListStoryScreen>
                                           SizedBox(width: 10.w,),
 
 
-                                          Text(widget.PageFollowing[PageCurrent].ads![0].advertiser!.name!,style: TextStyle(
+                                          Text(widget.PageFollowing[PageCurrent].name.toString(),style: TextStyle(
                                               fontWeight: FontWeight.w600,
                                               color: Colors.white,
                                               fontSize: 16.sp
@@ -313,7 +302,7 @@ class _ListStoryScreenState extends State<ListStoryScreen>
                                             radius: 21.sp,
 
                                             backgroundImage:
-                                            NetworkImage(widget.PageFollowing[PageCurrent].ads![0].advertiser!.imageProfile!)
+                                            NetworkImage(widget.PageFollowing[PageCurrent].ads![0].advertiser!.imageProfile!.toString())
                                         ):
                                         CircleAvatar(radius: 21.sp,
                                             backgroundColor: Color(0xff7B217E),
@@ -322,7 +311,7 @@ class _ListStoryScreenState extends State<ListStoryScreen>
                                         SizedBox(width: 10.w,),
 
 
-                                        Text(widget.PageFollowing[PageCurrent].ads![0].advertiser!.name!,style: TextStyle(
+                                        Text(widget.PageFollowing[PageCurrent].ads![0].advertiser!.name!.toString(),style: TextStyle(
                                             fontWeight: FontWeight.w600,
                                             color: Colors.white,
                                             fontSize: 16.sp
@@ -406,7 +395,6 @@ class _ListStoryScreenState extends State<ListStoryScreen>
 
 
   }
-
   Size _calculateImageDimension({required String image1}) {
     Completer<Size> completer = Completer();
     Image image = Image.network(image1);
@@ -424,8 +412,6 @@ class _ListStoryScreenState extends State<ListStoryScreen>
     );
     return size1;
   }
-
-
   void _onTapDown(TapDownDetails details) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double dx = details.globalPosition.dx;
@@ -679,7 +665,6 @@ class _ListStoryScreenState extends State<ListStoryScreen>
       }
     }
   }
-
    _loadVideo() async {
     old.dispose();
     animController.stop();
@@ -723,8 +708,6 @@ class _ListStoryScreenState extends State<ListStoryScreen>
 
 
   }
-
-
   Future forward5Seconds() async => goToPosition((currentPosition) => currentPosition + Duration(seconds: 10));
   Future rewind5Seconds() async => goToPosition((currentPosition) => currentPosition - Duration(seconds: 10));
   Future goToPosition(Duration Function(Duration currentPosition) builder,) async {

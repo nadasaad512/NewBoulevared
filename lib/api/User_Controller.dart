@@ -314,25 +314,7 @@ class UserApiController with Helpers {
     return [];
   }
 
-  Future<List<Stores>> Stories() async {
-    var url = Uri.parse(ApiSettings.Home);
-    var response = await http.get(url);
-    if (jsonDecode(response.body)['status'] == true) {
-      var json = jsonDecode(response.body);
-      var jsonArray = json['stores'] as List;
-      List<Stores> story =
-          jsonArray.map((jsonObject) => Stores.fromJson(jsonObject)).toList();
-      return story;
-    } else if (jsonDecode(response.body)['status'] == false) {
-      print("Something went wrong, please try again!");
-      //showSnackBar(context, message: 'Something went wrong, please try again!', error: true);
-    } else {
-      print("Something went wrong, please try again!");
 
-      // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
-    }
-    return [];
-  }
 
   Future<terms> ConditionLink() async {
     var url = Uri.parse(ApiSettings.Condition);
@@ -572,7 +554,6 @@ class UserApiController with Helpers {
       var json = jsonDecode(response.body);
       var jsonArray = json['awards'] as List;
       List<Awards> awards = jsonArray.map((jsonObject) => Awards.fromJson(jsonObject)).toList();
-      print(awards);
       return awards;
     } else if (jsonDecode(response.body)['status'] == false) {
     } else {
@@ -739,12 +720,7 @@ class UserApiController with Helpers {
       Advertiser ads = Advertiser.fromJson(jsonArray);
       return ads;
     } else if (jsonDecode(response.body)['status'] == false) {
-      print("Something went wrong, please try again!");
-      //showSnackBar(context, message: 'Something went wrong, please try again!', error: true);
     } else {
-      print("Something went wrong, please try again!");
-
-      // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
     }
     Advertiser ads = Advertiser();
     return ads;
@@ -792,9 +768,8 @@ class UserApiController with Helpers {
       print("Something went wrong, please try again!");
       //showSnackBar(context, message: 'Something went wrong, please try again!', error: true);
     } else {
-      print("Something went wrong, please try again!");
 
-      // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
+
     }
     return [];
   }

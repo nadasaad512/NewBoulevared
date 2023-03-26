@@ -9,7 +9,6 @@ class ApiSettings {
   static const REGISTER = '${_API_URL}signUpUsers';
   static const FORGET_PASSWORD = '${_API_URL}forgotPassword';
   static const createNewPassword = '${_API_URL}createNewPassword';
-  static const Home = '${_API_URL}homeScreen';
   static const Categories = '${_API_URL}getCategories';
   static String Detaile_mod({required int catId}) =>
       '${_API_URL}getAdsByCategory?category_id=$catId';

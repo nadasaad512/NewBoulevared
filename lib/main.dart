@@ -1,4 +1,5 @@
 
+import 'package:new_boulevard/provider/app_provider.dart';
 import 'package:new_boulevard/screens/Details/ad_story_screen.dart';
 import 'package:new_boulevard/screens/homescreen/Home_Screen.dart';
 import 'package:new_boulevard/screens/PARTBar/partScreen.dart';
@@ -19,6 +20,7 @@ import 'package:new_boulevard/screens/maps/mapscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'screens/mainscreen/MainScreen.dart';
 import 'Shared_Preferences/User_Preferences.dart';
 import 'screens/Splash/Splash.dart';
@@ -27,7 +29,9 @@ import 'screens/infoclient/conditinScreen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await UserPreferences().initPreferences();
-  runApp( MyApp());
+  runApp( ChangeNotifierProvider<AppProvider>(
+      create: (context) => AppProvider(),
+      child: MyApp()),);
 }
 
 class MyApp extends StatelessWidget {
@@ -35,14 +39,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return  ScreenUtilInit(
       designSize: Size(375,812),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) {
         return  MaterialApp(
-
           localizationsDelegates: [
             GlobalCupertinoLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -52,15 +54,8 @@ class MyApp extends StatelessWidget {
             Locale('ar', 'AE'),
           ],
          locale: Locale('ar', 'AE'),
-
-
           debugShowCheckedModeBanner: false,
           useInheritedMediaQuery: true,
-          theme: ThemeData(
-
-
-
-          ),
           initialRoute: '/launch_screen',
           routes: {
             '/launch_screen': (context) => SplashScreen(),
