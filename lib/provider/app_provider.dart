@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../Shared_Preferences/User_Preferences.dart';
 import '../api/User_Controller.dart';
 import '../models/BestOffers.dart';
 import '../models/Follower_user.dart';
+import '../models/activity.dart';
 import '../models/ads.dart';
 import '../models/award.dart';
 import '../models/categories.dart';
@@ -33,6 +35,7 @@ class AppProvider extends ChangeNotifier{
   bool ProfileLoed=true;
   bool ProfileAsShownUserLoed=true;
   List<Cities> cit = [];
+  List<Activity> ActiveList = [];
   List<Ads>? detalies ;
   List<Ads>? PartAd ;
   List<MyFollowings> userfollow = [];
@@ -45,8 +48,7 @@ class AppProvider extends ChangeNotifier{
   List<Awards>? award;
   bool AwardsLoed=true;
   bool close =false;
-  TextEditingController emailTextController=TextEditingController();
-  TextEditingController phoneTextController=TextEditingController();
+
   bool progss = false;
   List<String?> userFollowFound=[];
   String statusFollow="";
@@ -59,12 +61,135 @@ class AppProvider extends ChangeNotifier{
    List<AdType>? Special_Price ;
   List<AdType>? Normal_Price;
 
-
-
-
   Ads? editAd;
 
+     bool isLogin=false;
+   TextEditingController emailTextControllerl=TextEditingController();
+   TextEditingController passwordTextController=TextEditingController();
 
+  TextEditingController ANameTextController = TextEditingController();
+  TextEditingController AemailTextController = TextEditingController();
+  TextEditingController ApasswordTextController = TextEditingController();
+  TextEditingController ASurepasswordTextController = TextEditingController();
+  TextEditingController AphoneTextController = TextEditingController();
+  TextEditingController NameTextController = TextEditingController();
+  TextEditingController emailTextController = TextEditingController();
+  TextEditingController LpasswordTextController = TextEditingController();
+  TextEditingController phoneTextController = TextEditingController();
+  TextEditingController SurepasswordTextController = TextEditingController();
+  bool Uprogss = false;
+  bool Aprogss = false;
+  String gender = "user";
+  ImagePicker imagePicker = ImagePicker();
+  PickedFile? pickedFile;
+  User get userdata {
+    User user = User();
+    user.name = NameTextController.text;
+    user.email = emailTextController.text;
+    user.password = LpasswordTextController.text;
+    user.mobile = phoneTextController.text;
+    user.type = gender;
+    user.rememberToken = SurepasswordTextController.text;
+    notifyListeners();
+
+    return user;
+  }
+  var selectedActivity;
+  var selectedCity;
+  String ? id;
+  String ? idActive;
+  bool check = false;
+
+  Future register_Advertiser(BuildContext context) async {
+
+
+    await UserApiController().register_As_Advertiser(
+        context,
+        name: ANameTextController.text,
+        email :AemailTextController.text,
+        password : ApasswordTextController.text,
+        mobile : AphoneTextController.text,
+        type : gender,
+        commercialActivities:idActive!,
+        cityId: id!,
+        image:pickedFile!.path,
+        surpassword: ASurepasswordTextController.text,
+        uploadEvent: (status,massege){
+          if(status){
+            Navigator.pushNamed(context, '/logain_screen');
+            ANameTextController.clear();
+            AemailTextController.clear();
+            ApasswordTextController.clear();
+            AphoneTextController.clear();
+            ANameTextController.clear();
+            ASurepasswordTextController.clear();
+              Aprogss=false;
+            check=false;
+              notifyListeners();
+          }else{
+            Aprogss=false;
+            check=false;
+            notifyListeners();
+
+          }
+
+        }
+
+
+
+    );
+
+
+  }
+  Future pickImage() async {
+    pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+     notifyListeners();
+
+    }
+  }
+
+
+   register_AsUser(BuildContext context) async {
+    bool loggedIn = await UserApiController().register_AsUser(context, userdata);
+    if (loggedIn) {
+      Navigator.pushNamed(context, '/logain_screen');
+      NameTextController.clear();
+      emailTextController.clear();
+      LpasswordTextController.clear();
+      phoneTextController.clear();
+      NameTextController.clear();
+      SurepasswordTextController.clear();
+      Uprogss = false;
+      check=false;
+      notifyListeners();
+    } else {
+        Uprogss = false;
+        check=false;
+        notifyListeners();
+
+    }
+
+    return loggedIn;
+  }
+
+
+login(BuildContext context) async {
+    bool loggedIn = await UserApiController().login(context,
+        email: emailTextControllerl.text,
+        password: passwordTextController.text);
+
+    if (loggedIn) {
+      Navigator.pushReplacementNamed(context, '/MainScreen');
+      emailTextControllerl.clear();
+      passwordTextController.clear();
+      isLogin = false;
+      notifyListeners();
+    } else {
+        isLogin = false;
+        notifyListeners();
+    }
+  }
 
 
   getAllSpecialAds() async{
@@ -103,6 +228,10 @@ class AppProvider extends ChangeNotifier{
   }
   getAllcity() async{
     cit= await UserApiController().getCity();
+    notifyListeners();
+  }
+  getAllActivey() async{
+    ActiveList= await UserApiController().Commercial_Activities();
     notifyListeners();
   }
   getAllAdd() async{

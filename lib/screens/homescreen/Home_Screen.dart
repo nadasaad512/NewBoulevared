@@ -549,9 +549,9 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
               ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-
                 itemCount:  provider.offer.length,
                 itemBuilder: (context, index) {
+                  offerad= provider.offer[index].ads!;
                   return Column(
                     children: [
                       Row(
@@ -572,7 +572,6 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                           scrollDirection: Axis.horizontal,
                           itemCount:  provider.offer[index].ads!.length,
                           itemBuilder: (context, index) {
-                            offerad= provider.offer[index].ads!;
                             return InkWell(
                               onTap: (){
                                 Navigator.push(
@@ -584,7 +583,6 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
                                           )
                                   ),
-
 
 
                                 );

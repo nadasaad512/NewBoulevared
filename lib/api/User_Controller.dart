@@ -124,8 +124,11 @@ class UserApiController with Helpers {
     multiPartRequest.headers['X-Requested-With'] = 'XMLHttpRequest';
     var response = await multiPartRequest.send();
     response.stream.transform(utf8.decoder).listen((event) {
+      print("event");
+      print(jsonDecode(event)['code']);
       if (jsonDecode(event)['code'] ==200) {
         var dataObject = jsonDecode(event)['user'];
+
         showSnackBar(context, message: jsonDecode(event)['message'], error: false);
         uploadEvent(true, jsonDecode(event)['message']);
       } else  {
@@ -303,13 +306,7 @@ class UserApiController with Helpers {
           jsonArray.map((jsonObject) => Activity.fromJson(jsonObject)).toList();
       return activity;
     } else if (jsonDecode(response.body)['status'] == false) {
-      print("Something went wrong, please try again!");
-
-      //showSnackBar(context, message: 'Something went wrong, please try again!', error: true);
     } else {
-      print("Something went wrong, please try again!");
-
-      // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
     }
     return [];
   }

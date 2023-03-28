@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:new_boulevard/utils/helpers.dart';
+import 'package:provider/provider.dart';
 import '../../api/User_Controller.dart';
 import '../../component/TextField.dart';
 import '../../component/background.dart';
+import '../../loed/loed.dart';
 import '../../models/city.dart';
+import '../../provider/app_provider.dart';
 
 
 class RegisterScreen extends StatefulWidget {
@@ -17,86 +20,30 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> with Helpers{
-  bool progss = false;
-  bool Aprogss = false;
-  String gender = "user";
 
 
 
-  GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
-  GlobalKey<FormState> AregisterFormKey = GlobalKey<FormState>();
-
-  TextEditingController ANameTextController = TextEditingController();
-  TextEditingController AemailTextController = TextEditingController();
-  TextEditingController ApasswordTextController = TextEditingController();
-  TextEditingController ASurepasswordTextController = TextEditingController();
-  TextEditingController AphoneTextController = TextEditingController();
 
 
-  TextEditingController NameTextController = TextEditingController();
-  TextEditingController emailTextController = TextEditingController();
-  TextEditingController passwordTextController = TextEditingController();
-  TextEditingController phoneTextController = TextEditingController();
-  TextEditingController SurepasswordTextController = TextEditingController();
-
-  var _selected;
-  String ? id;
-  List<Cities> cit = [];
-  var _selected1;
-  String ? idActive;
-  List<Activity> ActiveList = [];
-  bool check = false;
-
-  @override
-  void initState() {
-    super.initState();
-    ANameTextController = TextEditingController();
-    AemailTextController = TextEditingController();
-    ApasswordTextController = TextEditingController();
-    ASurepasswordTextController = TextEditingController();
-    AphoneTextController = TextEditingController();
 
 
-    NameTextController = TextEditingController();
-    emailTextController = TextEditingController();
-    passwordTextController = TextEditingController();
-    phoneTextController = TextEditingController();
-    SurepasswordTextController = TextEditingController();
-    UserApiController().Commercial_Activities().then((value) {
-      setState(() {
-        ActiveList=value;
-      });
-    });
-    UserApiController().getCity().then((value) {
-      setState(() {
-        cit=value;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    ANameTextController.dispose();
-    AemailTextController.dispose();
-    ApasswordTextController.dispose();
-    ASurepasswordTextController.dispose();
-    AphoneTextController.dispose();
 
 
-    NameTextController.dispose();
-    emailTextController.dispose();
-    passwordTextController.dispose();
-    phoneTextController.dispose();
-    SurepasswordTextController.dispose();
-    super.dispose();
-  }
 
-  ImagePicker _imagePicker = ImagePicker();
-  PickedFile? _pickedFile;
+
+
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
-    return BackGround(
+    return Consumer<AppProvider>(builder: (context, provider, _) {
+      Provider.of<AppProvider>(context, listen: false).getAllcity();
+      Provider.of<AppProvider>(context, listen: false).getAllActivey();
+   return   BackGround(
       back: true,
       rout: '/logain_screen',
       child: Container(
@@ -129,13 +76,14 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                   Radio(
                     activeColor: Colors.purple.shade800,
                     value: "user",
-                    groupValue: gender,
+                    groupValue: provider.gender,
                     onChanged: (String? value) {
                       if (value != null)
-                        setState(() {
-                          gender = value;
-                        });
-                      print(gender);
+
+                        provider.gender = value;
+                      provider.notifyListeners();
+
+
                     },),
 
                   Text("مستخدم", style: TextStyle(
@@ -148,14 +96,15 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                     activeColor: Colors.purple.shade800,
 
                     value: "advertiser",
-                    groupValue: gender,
+                    groupValue: provider.gender,
                     onChanged: (String? value) {
                       if (value != null)
-                        setState(() {
-                          gender = value;
-                        });
 
-                      print(gender);
+                          provider.gender = value;
+                          provider.notifyListeners();
+
+
+
                     },),
 
                   Text("معلن", style: TextStyle(
@@ -167,12 +116,15 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                 ],
               ),
 
-              gender == "advertiser" ?
-              Column(
+             provider. gender == "advertiser" ?
+            provider. ActiveList==[]|| provider.cit==[]?
+            LoedWidget():
+
+            Column(
                 children: [
                   SizedBox(height: 16.h,),
                   FieldScreen(
-                      title: "الاسم التجاري", controller: ANameTextController),
+                      title: "الاسم التجاري", controller: provider.ANameTextController),
                   SizedBox(height: 16.h,),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -203,7 +155,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
 
                       iconEnabledColor: Colors.white,
 
-                      value: _selected1,
+                      value: provider.selectedActivity,
                       icon: Icon(Icons.arrow_forward_ios_rounded,
                         color: Colors.grey.shade500, size: 18,),
                       iconSize: 30,
@@ -213,18 +165,20 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                           fontWeight: FontWeight.w400
                       ),
                       onChanged: (newValue) {
-                        setState(() {
-                          _selected1 = newValue;
-                        });
+
+                          provider.selectedActivity = newValue;
+                          provider.notifyListeners();
+
                       },
-                      items: ActiveList.map<
+                      items: provider.ActiveList.map<
                           DropdownMenuItem<String>>((Activity value) {
                         return DropdownMenuItem<String>(
 
                           onTap: () {
-                            setState(() {
-                              idActive = value.id.toString();
-                            });
+
+                              provider.idActive = value.id.toString();
+                              provider.notifyListeners();
+
                           },
                           value: value.name,
                           child: Text(value.name!),
@@ -234,19 +188,19 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                   ),
                   SizedBox(height: 16.h,),
                   FieldScreen(title: "البريد الالكتروني",
-                      controller: AemailTextController),
+                      controller:provider. AemailTextController),
                   SizedBox(height: 16.h,),
                   FieldScreen(title: "رقم الجوال",
-                    controller: AphoneTextController,
+                    controller: provider.AphoneTextController,
                     type: TextInputType.phone,),
                   SizedBox(height: 16.h,),
                   FieldScreen(title: "كلمة المرور",
                     security: true,
-                    controller: ApasswordTextController,),
+                    controller: provider.ApasswordTextController,),
                   SizedBox(height: 16.h,),
                   FieldScreen(title: "تأكيد كلمة المرور",
                     security: true,
-                    controller: ASurepasswordTextController,),
+                    controller: provider.ASurepasswordTextController,),
                   SizedBox(height: 16.h,),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -277,7 +231,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
 
                       iconEnabledColor: Colors.white,
 
-                      value: _selected,
+                      value: provider.selectedCity,
                       icon: Icon(Icons.arrow_forward_ios_rounded,
                         color: Colors.grey.shade500, size: 18,),
                       iconSize: 30,
@@ -287,18 +241,20 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                           fontWeight: FontWeight.w400
                       ),
                       onChanged: (newValue) {
-                        setState(() {
-                          _selected = newValue;
-                        });
+
+                          provider.selectedCity = newValue;
+                          provider.notifyListeners();
+
                       },
-                      items: cit.map<
+                      items: provider.cit.map<
                           DropdownMenuItem<String>>((Cities value) {
                         return DropdownMenuItem<String>(
 
                           onTap: () {
-                            setState(() {
-                              id = value.id.toString();
-                            });
+
+                              provider.id = value.id.toString();
+                              provider.notifyListeners();
+
                           },
                           value: value.name,
                           child: Text(value.name),
@@ -321,7 +277,8 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                   Center(
                     child: InkWell(
                       onTap: () async {
-                        await pickImage();
+                        await provider.pickImage();
+                        provider.notifyListeners();
                       },
                       child: Container(
                         height: 95.h,
@@ -330,15 +287,10 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                             color: Colors.purple,
                             borderRadius: BorderRadius.circular(9),
 
-                            image: _pickedFile != null ?
-
-
+                            image: provider.pickedFile != null ?
                             DecorationImage(
                                 fit: BoxFit.cover,
-                                image:
-
-                                FileImage(
-                                  File(_pickedFile!.path),
+                                image: FileImage(File(provider.pickedFile!.path),
 
 
                                 )
@@ -368,13 +320,14 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                         height: 10.h,
                         width: 20.w,
                         child: Checkbox(
-                          value: check,
+                          value: provider.check,
                           activeColor: Color(0xff7B217E),
 
                           onChanged: (bool? value) {
-                            setState(() {
-                              check = value!;
-                            });
+
+                              provider.check = value!;
+                              provider.notifyListeners();
+
                           },
 
                         ),
@@ -431,30 +384,25 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                   SizedBox(height: 20.h,),
                   ElevatedButton(
                     onPressed: () async {
-                      setState(() {
-                        Aprogss = true;
-                      });
-                      check&&
-                          ANameTextController.text.isNotEmpty&&
-                      AemailTextController.text.isNotEmpty&&
-                      AphoneTextController.text.isNotEmpty&&
-                          ApasswordTextController.text.isNotEmpty&&
-                          _pickedFile!=null&&
-                          _selected!=null&&
-                          _selected1!=null
 
+                      provider.Aprogss = true;
+                      provider.notifyListeners();
 
-
-
-
-                          ?
-                      await register_Advertiser():
+                      provider.check&&
+                          provider.ANameTextController.text.isNotEmpty&&
+                          provider.AemailTextController.text.isNotEmpty&&
+                          provider. AphoneTextController.text.isNotEmpty&&
+                          provider. ApasswordTextController.text.isNotEmpty&&
+                          provider.pickedFile!=null&&
+                          provider.selectedCity!=null&&
+                          provider.selectedActivity!=null ?
+                      await provider.register_Advertiser(context):
                       showSnackBar( context,message: "أدخل البيانات المطلوبة  ",error: true) ;
-                      setState(() {
-                        Aprogss = false;
-                      });
+                        provider.Aprogss = false;
+                        provider.notifyListeners();
+
                     },
-                    child: Aprogss ? CircularProgressIndicator(
+                    child: provider.Aprogss ? CircularProgressIndicator(
                       color: Colors.white,) : Text(
                       'تسجيل جديد', style: TextStyle(
                         fontWeight: FontWeight.w700,
@@ -492,23 +440,23 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                 children: [
                   SizedBox(height: 16.h,),
                   FieldScreen(title: "اسم المستخدم",
-                    controller: NameTextController,
+                    controller: provider.NameTextController,
                    ),
                   SizedBox(height: 16.h,),
                   FieldScreen(title: "البريد الالكتروني",
-                    controller: emailTextController,),
+                    controller: provider.emailTextController,),
                   SizedBox(height: 16.h,),
                   FieldScreen(title: "رقم الجوال",
-                    controller: phoneTextController,
+                    controller: provider.phoneTextController,
                     type: TextInputType.phone,),
                   SizedBox(height: 16.h,),
                   FieldScreen(title: "كلمة المرور",
                     security: true,
-                    controller: passwordTextController,),
+                    controller: provider.LpasswordTextController,),
                   SizedBox(height: 16.h,),
                   FieldScreen(title: "تأكيد كلمة المرور",
                     security: true,
-                    controller: SurepasswordTextController,),
+                    controller: provider.SurepasswordTextController,),
                   SizedBox(height: 16.h,),
                   Row(
 
@@ -518,13 +466,14 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                         height: 10.h,
                         width: 20.w,
                         child: Checkbox(
-                          value: check,
+                          value: provider.check,
                           activeColor: Color(0xff7B217E),
 
                           onChanged: (bool? value) {
-                            setState(() {
-                              check = value!;
-                            });
+
+                              provider.check = value!;
+                              provider.notifyListeners();
+
                           },
 
                         ),
@@ -579,21 +528,20 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
 
                   ElevatedButton(
                     onPressed: () async {
-                      setState(() {
-                        progss = true;
-                      });
-                      check&&
-                          NameTextController.text.isNotEmpty&&
-                      emailTextController.text.isNotEmpty&&
-                      phoneTextController.text.isNotEmpty
+                        provider.Uprogss = true;
+                        provider.notifyListeners();
+
+                        provider.check&&
+                          provider.NameTextController.text.isNotEmpty&&
+                          provider. emailTextController.text.isNotEmpty&&
+                          provider.phoneTextController.text.isNotEmpty
                           ?
-                      await register_AsUser():
+                      await provider.register_AsUser(context):
                       showSnackBar( context,message: "أدخل البيانات المطلوبة ",error: true) ;
-                      setState(() {
-                        progss = false;
-                      });
+                        provider.Uprogss = false;
+                        provider.notifyListeners();
                     },
-                    child: progss ? CircularProgressIndicator(
+                    child: provider.Uprogss  ? CircularProgressIndicator(
                       color: Colors.white,) : Text(
                       'تسجيل جديد', style: TextStyle(
                         fontWeight: FontWeight.w700,
@@ -640,94 +588,18 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
 
       ),
     );
-  }
-
-
-  User get user {
-    User user = User();
-    user.name = NameTextController.text;
-    user.email = emailTextController.text;
-    user.password = passwordTextController.text;
-    user.mobile = phoneTextController.text;
-    user.type = gender;
-    user.rememberToken = SurepasswordTextController.text;
-
-    return user;
-  }
-
-  Future register_AsUser() async {
-    bool loggedIn = await UserApiController().register_AsUser(context, user);
-    if (loggedIn) {
-      Navigator.pushNamed(context, '/logain_screen');
-      NameTextController.clear();
-      emailTextController.clear();
-      passwordTextController.clear();
-      phoneTextController.clear();
-      NameTextController.clear();
-      SurepasswordTextController.clear();
-    } else {
-      setState(() {
-        progss = false;
-      });
-    }
-
-    return loggedIn;
+    });
   }
 
 
 
 
-  Future register_Advertiser() async {
-
-
-    await UserApiController().register_As_Advertiser(
-        context,
-        name: ANameTextController.text,
-        email :AemailTextController.text,
-        password : ApasswordTextController.text,
-        mobile : AphoneTextController.text,
-         type : gender,
-       commercialActivities:idActive!,
-        cityId: id!,
-       image:_pickedFile!.path,
-      surpassword: ASurepasswordTextController.text,
-      uploadEvent: (status,massege){
-          if(status){
-            Navigator.pushNamed(context, '/logain_screen');
-            ANameTextController.clear();
-            AemailTextController.clear();
-            ApasswordTextController.clear();
-            AphoneTextController.clear();
-            ANameTextController.clear();
-            ASurepasswordTextController.clear();
-            setState(() {
-              Aprogss=false;
-            });
-
-
-          }else{
-
-            setState(() {
-              Aprogss=false;
-            });
-
-          }
-
-      }
 
 
 
-    );
 
 
-  }
-  Future pickImage() async {
-    _pickedFile = await _imagePicker.getImage(source: ImageSource.gallery);
-    if (_pickedFile != null) {
-      setState(() {});
-      print(_pickedFile);
-    }
-  }
+
 
 
 }
