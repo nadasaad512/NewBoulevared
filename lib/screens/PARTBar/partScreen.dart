@@ -17,15 +17,13 @@ class PartScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     Provider.of<AppProvider>(context, listen: false).getAllPartCategory();
-
-
     return Back_Ground(
       back: true,
       Bar: true,
      eror: fromnav,
       childTab: "الأقسام",
       child:  Consumer<AppProvider>(builder: (context, provider, _) {
-     return
+         return
        provider.partCategories==null?
        LoedWidget():
        GridView.builder(

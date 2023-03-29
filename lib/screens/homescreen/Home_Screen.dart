@@ -14,6 +14,7 @@ import '../../story/ListStory.dart';
 import '../../story/OneStory.dart';
 import '../../component/main_bac.dart';
 import '../PARTBar/detalies.dart';
+import '../offer/offerscreen.dart';
 
 
 class HomeScreen extends StatefulWidget{
@@ -427,7 +428,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
               ):
               SizedBox.shrink(),
 
-              provider. BestAds.isNotEmpty?
+              provider.BestAds!=null?
 
               Container(
                 margin: EdgeInsets.symmetric(vertical: 16.h),
@@ -439,6 +440,18 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                         fontWeight: FontWeight.w600,
                         fontSize: 16.sp
                     ),),
+                    Spacer(),
+                    InkWell(
+                      onTap: (){
+                        Navigator.pushNamed(context, '/BestTenScreen');
+                      },
+
+                      child: Text("عرض الجميع",style: TextStyle(
+                          color:  Color(0xffC4C4C4),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12.sp
+                      ),),
+                    ),
 
 
 
@@ -452,12 +465,12 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
               SizedBox.shrink(),
 
 
-              provider.BestAds.isNotEmpty?
+            provider.BestAds!=null?
               SizedBox(
                 height: 200.h,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount:  provider.BestAds.length,
+                  itemCount:  provider.BestAds!.length,
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: (){
@@ -467,7 +480,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                           MaterialPageRoute(
                               builder: (context) =>
                                   StoryPage(
-                                    AdId: provider.BestAds[index].id!,
+                                    AdId: provider.BestAds![index].id!,
 
                                   )
                           ),
@@ -490,12 +503,13 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                             image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: NetworkImage(
-                                    provider.BestAds[index].image.toString())
+                                    provider.BestAds![index].image.toString())
                             )
                         ),
 
                         child: Stack(
                           children: [
+
 
                             Container(
                               margin: EdgeInsets.only(
@@ -506,12 +520,12 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                               child:Row(
 
                                 children: [
-                                  provider.BestAds[index].advertiser!.imageProfile!=null?
+                                  provider.BestAds![index].advertiser!.imageProfile!=null?
 
                                   CircleAvatar(radius: 14,
                                     backgroundImage: NetworkImage(
 
-                                        provider.BestAds[index].advertiser!.imageProfile!.toString()),):
+                                        provider.BestAds![index].advertiser!.imageProfile!.toString()),):
                                   CircleAvatar(radius: 12.sp,
                                       backgroundColor: Color(0xff7B217E),
                                       child: Icon(Icons.person_rounded,color: Colors.white,
@@ -521,7 +535,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
 
 
-                                    provider.BestAds[index].advertiser!.name.toString(),style: TextStyle(
+                                    provider.BestAds![index].advertiser!.name.toString(),style: TextStyle(
                                       color:  Color(0xffFFFFFF),
                                       fontWeight: FontWeight.w900,
                                       fontSize: 10.sp
@@ -545,22 +559,42 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
               SizedBox(height: 16.h,),
 
-              provider.offer.isNotEmpty?
+              provider.offer!=null?
               ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemCount:  provider.offer.length,
+                itemCount:  provider.offer!.length,
                 itemBuilder: (context, index) {
-                  offerad= provider.offer[index].ads!;
+                  offerad= provider.offer![index].ads!;
                   return Column(
                     children: [
                       Row(
                         children: [
-                          Text( provider.offer[index].name.toString(),style: TextStyle(
+                          Text( provider.offer![index].name.toString(),style: TextStyle(
                               color:  Color(0xff7B217E),
                               fontWeight: FontWeight.w600,
                               fontSize: 16.sp
                           ),),
+                          Spacer(),
+                          InkWell(
+                            onTap: (){
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => OfferScreen(
+                                    nameoffer:provider.offer![index].name.toString(),
+                                    offerad: offerad,
+                                  )
+                                ),
+                              );
+                            },
+
+                            child: Text("عرض الجميع",style: TextStyle(
+                                color:  Color(0xffC4C4C4),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12.sp
+                            ),),
+                          ),
                         ],
                       ),
                       SizedBox(height: 16.h,),
@@ -570,7 +604,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount:  provider.offer[index].ads!.length,
+                          itemCount:  provider.offer![index].ads!.length,
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: (){
@@ -621,11 +655,13 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
 
                                         children: [
                                           offerad[index].advertiser!.imageProfile!=null?
-                                          CircleAvatar(radius: 14, backgroundImage: NetworkImage(
+                                          CircleAvatar(radius: 14,
+                                            backgroundColor: Colors.grey[300]!,
+                                            backgroundImage: NetworkImage(
 
                                               offerad[index].advertiser!.imageProfile.toString()),):
                                           CircleAvatar(radius: 12.sp,
-                                              backgroundColor: Color(0xff7B217E),
+                                              backgroundColor: Colors.grey[300]!,
                                               child: Icon(Icons.person_rounded,color: Colors.white,
                                                 size: 15.sp,)),
                                           SizedBox(width: 10.w,),

@@ -124,16 +124,12 @@ class UserApiController with Helpers {
     multiPartRequest.headers['X-Requested-With'] = 'XMLHttpRequest';
     var response = await multiPartRequest.send();
     response.stream.transform(utf8.decoder).listen((event) {
-      print("event");
-      print(jsonDecode(event)['code']);
       if (jsonDecode(event)['code'] ==200) {
-        var dataObject = jsonDecode(event)['user'];
-
+        print("event");
         showSnackBar(context, message: jsonDecode(event)['message'], error: false);
         uploadEvent(true, jsonDecode(event)['message']);
       } else  {
-        showSnackBar(context,
-            message: jsonDecode(event)['message'], error: true);
+        showSnackBar(context, message: jsonDecode(event)['message'], error: true);
         uploadEvent(false, jsonDecode(event)['message']);
       }
     });
@@ -298,7 +294,6 @@ class UserApiController with Helpers {
   Future<List<Activity>> Commercial_Activities() async {
     var url = Uri.parse(ApiSettings.CommercialActivities);
     var response = await http.get(url);
-
     if (jsonDecode(response.body)['status'] == true) {
       var json = jsonDecode(response.body);
       var jsonArray = json['cities'] as List;

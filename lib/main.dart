@@ -1,5 +1,6 @@
 
 import 'package:new_boulevard/provider/app_provider.dart';
+import 'package:new_boulevard/screens/BestTen/BestTenScreen.dart';
 import 'package:new_boulevard/screens/Details/ad_story_screen.dart';
 import 'package:new_boulevard/screens/homescreen/Home_Screen.dart';
 import 'package:new_boulevard/screens/PARTBar/partScreen.dart';
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/launch_screen',
           routes: {
             '/launch_screen': (context) => SplashScreen(),
+            '/BestTenScreen': (context) => BestTenScreen(),
             '/LOGAIN_SCREEN': (context) => RegisterScreen(),
             '/StoryAdsScreen': (context) => StoryAdsScreen(),
             '/NewAdsScreen': (context) => NewAdsScreen(edit: false,indexAd: 2),

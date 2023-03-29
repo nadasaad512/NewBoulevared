@@ -3,10 +3,8 @@ import 'package:new_boulevard/models/activity.dart';
 import 'package:new_boulevard/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:new_boulevard/utils/helpers.dart';
 import 'package:provider/provider.dart';
-import '../../api/User_Controller.dart';
 import '../../component/TextField.dart';
 import '../../component/background.dart';
 import '../../loed/loed.dart';
@@ -20,24 +18,6 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> with Helpers{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(builder: (context, provider, _) {

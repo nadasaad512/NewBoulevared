@@ -21,10 +21,10 @@ class AppProvider extends ChangeNotifier{
   List<SpecialAds> special_ads = [];
   List<Categories> categories = [];
   List<Categories>? partCategories ;
-  List<Ads> BestAds = [];
+  List<Ads>? BestAds ;
   List<Banners> banners= [];
   List<notification> massages= [];
-  List<Offers> offer= [];
+  List<Offers>? offer;
   List<AdvertiserADs> AdmainAd = [];
   List<MyFollowings> FolowUser = [];
   User? user;
