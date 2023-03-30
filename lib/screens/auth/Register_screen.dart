@@ -17,12 +17,19 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
+
 class _RegisterScreenState extends State<RegisterScreen> with Helpers{
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<AppProvider>(context, listen: false).getAllcity();
+    Provider.of<AppProvider>(context, listen: false).getAllActivey();
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(builder: (context, provider, _) {
-      Provider.of<AppProvider>(context, listen: false).getAllcity();
-      Provider.of<AppProvider>(context, listen: false).getAllActivey();
+
    return   BackGround(
       back: true,
       rout: '/logain_screen',

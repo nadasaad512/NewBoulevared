@@ -123,12 +123,24 @@ class AppProvider extends ChangeNotifier{
             AphoneTextController.clear();
             ANameTextController.clear();
             ASurepasswordTextController.clear();
-              Aprogss=false;
+            pickedFile=null;
+            id=null;
+            idActive=null;
+            Aprogss=false;
             check=false;
               notifyListeners();
           }else{
+            ANameTextController.clear();
+            AemailTextController.clear();
+            ApasswordTextController.clear();
+            AphoneTextController.clear();
+            ANameTextController.clear();
+            ASurepasswordTextController.clear();
             Aprogss=false;
             check=false;
+            pickedFile=null;
+            id=null;
+            idActive=null;
             notifyListeners();
 
           }
