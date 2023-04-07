@@ -24,6 +24,8 @@ class _ListStoryScreenState extends State<ListStoryScreen> with SingleTickerProv
   int PageCurrent = 0;
   int PageDetal = 0;
   late PageController pageController;
+  final _pageNotifier = ValueNotifier(0.0);
+
   late PageController StoryController;
   late AnimationController animController;
   late VideoPlayerController controller;
@@ -44,6 +46,9 @@ class _ListStoryScreenState extends State<ListStoryScreen> with SingleTickerProv
     PageCurrent=widget.initialindex;
     pageController = PageController();
     StoryController = PageController();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      pageController.addListener(_listener);
+    });
     UserApiController().AdDetalies(idAD: widget.PageFollowing[PageCurrent].ads![0].id!);
     animController = AnimationController(vsync: this);
     controller = VideoPlayerController.network("");
@@ -67,12 +72,18 @@ class _ListStoryScreenState extends State<ListStoryScreen> with SingleTickerProv
   @override
   void dispose() {
     Wakelock.disable();
-    pageController.dispose();
-    StoryController.dispose();
+    controller.pause();
     controller.dispose();
+    pageController.dispose();
+    _pageNotifier.dispose();
+    pageController.removeListener(_listener);
+    StoryController.dispose();
     animController.dispose();
 
     super.dispose();
+  }
+  void _listener() {
+    _pageNotifier.value = pageController.page!;
   }
 
 
@@ -82,7 +93,11 @@ class _ListStoryScreenState extends State<ListStoryScreen> with SingleTickerProv
         backgroundColor: Colors.black,
         body: GestureDetector(
           onTapDown: (details) => _onTapDown(details),
-          child: PageView.builder(
+          child:ValueListenableBuilder<double>(
+              valueListenable: _pageNotifier,
+              builder: (_, value, child) {
+
+          return PageView.builder(
               itemCount: widget.PageFollowing.length,
               controller: pageController,
               onPageChanged: (int onPageChanged)async {
@@ -329,7 +344,7 @@ class _ListStoryScreenState extends State<ListStoryScreen> with SingleTickerProv
                                   InkWell(
                                     onTap: (){
                                       controller.dispose();
-                                   old.dispose();
+                                      old.dispose();
                                       Navigator.pop(context);
                                     },
                                     child: CircleAvatar(
@@ -354,7 +369,8 @@ class _ListStoryScreenState extends State<ListStoryScreen> with SingleTickerProv
               }
 
 
-          ),
+          );
+              }),
         )
 
 

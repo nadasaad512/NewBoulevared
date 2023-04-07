@@ -428,7 +428,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
               ):
               SizedBox.shrink(),
 
-              provider.BestAds!=null?
+              provider.BestAds!=null&& provider.BestAds!.isNotEmpty?
 
               Container(
                 margin: EdgeInsets.symmetric(vertical: 16.h),
@@ -568,6 +568,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                   offerad= provider.offer![index].ads!;
                   return Column(
                     children: [
+                      provider.BestAds!=null&&  provider.BestAds!.isNotEmpty?
                       Row(
                         children: [
                           Text( provider.offer![index].name.toString(),style: TextStyle(
@@ -596,7 +597,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers{
                             ),),
                           ),
                         ],
-                      ),
+                      ):SizedBox.shrink(),
                       SizedBox(height: 16.h,),
 
                       SizedBox(

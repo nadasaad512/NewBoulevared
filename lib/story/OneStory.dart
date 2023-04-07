@@ -1,3 +1,6 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -29,6 +32,8 @@ class _StoryPageState extends State<StoryPage>
   int CurrentPage = 0;
   late PageController pageController;
   late AnimationController animController;
+  final _pageNotifier = ValueNotifier(0.0);
+
   //List<story1> StroryData = [];
   late VideoPlayerController controller;
 
@@ -43,377 +48,461 @@ class _StoryPageState extends State<StoryPage>
   void initState() {
     super.initState();
     Wakelock.enable();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      pageController.addListener(_listener);
+    });
     pageController = PageController();
     animController = AnimationController(vsync: this);
     controller = VideoPlayerController.network("");
     controller.initialize();
-    Provider.of<AppProvider>(context, listen: false).getAlldataForStory(id:widget.AdId);
-   // UserApiController().AdDetalies(idAD: widget.AdId).then((value) {});
+    Provider.of<AppProvider>(context, listen: false)
+        .getAlldataForStory(id: widget.AdId);
+    // UserApiController().AdDetalies(idAD: widget.AdId).then((value) {});
   }
 
   @override
   void dispose() {
     Wakelock.disable();
-    pageController.dispose();
+    controller.pause();
     controller.dispose();
+    pageController.removeListener(_listener);
+    _pageNotifier.dispose();
+    pageController.dispose();
+
     animController.dispose();
     super.dispose();
+  }
+  void _listener() {
+    _pageNotifier.value = pageController.page!;
   }
 
   @override
   Widget build(BuildContext context) {
-    return  Consumer<AppProvider>(builder: (context, provider, _) {
-
-      return  Scaffold(
+    return Consumer<AppProvider>(builder: (context, provider, _) {
+      return Scaffold(
         backgroundColor: Colors.black,
-        body:
-            provider.story==null||provider.alldata==null||provider.StroryData==null?
-                SizedBox.shrink():
+        body: provider.story == null ||
+                provider.alldata == null ||
+                provider.StroryData == null
+            ? SizedBox.shrink()
+            : ValueListenableBuilder<double>(
+                valueListenable: _pageNotifier,
+                builder: (_, value, child) {
+                  return PageView.builder(
+                    controller: pageController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: provider.StroryData!.length,
+                    onPageChanged: (int currentPage) {
+                      setState(() {
+                        CurrentPage = currentPage;
+                      });
+                    },
+                    itemBuilder: (BuildContext, index) {
+                      final isLeaving = (index - value) <= 0;
+                      final t = (index - value);
+                      final rotationY = lerpDouble(0, 90, t);
+                      final opacity = lerpDouble(0, 1, t.abs())!.clamp(0.0, 1.0);
+                      final transform = Matrix4.identity();
+                      transform.setEntry(3, 2, 0.003);
+                      transform.rotateY(double.parse('${-degToRad(rotationY!)}'));
+                      if (provider.StroryData![CurrentPage].type == "image") {
+                        controller.dispose();
+                        animController.stop();
+                        animController.reset();
+                        animController.duration = const Duration(seconds: 10);
+                        animController.forward().whenComplete(() {
+                          CurrentPage < provider.StroryData!.length - 1
+                              ? pageController.jumpToPage(CurrentPage + 1)
+                              : Navigator.pop(context);
+                        });
 
-        PageView.builder(
-          controller: pageController,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: provider.StroryData!.length,
-          onPageChanged: (int currentPage) {
-            setState(() {
-              CurrentPage = currentPage;
-            });
-          },
-          itemBuilder: (BuildContext, index) {
-            if (provider.StroryData![CurrentPage].type == "image") {
-              controller.dispose();
-              animController.stop();
-              animController.reset();
-              animController.duration = const Duration(seconds: 10);
-              animController.forward().whenComplete(() {
-                CurrentPage < provider.StroryData!.length - 1
-                    ? pageController.jumpToPage(CurrentPage + 1)
-                    : Navigator.pop(context);
-              });
-
-              return GestureDetector(
-                  onTapDown: (details) => _onTapDown(details,provider),
-                  child:
-                  provider.StroryData!=null&&provider.alldata!=null?
-                  ImageStoryScreen(
-                    StroryData: provider.StroryData![CurrentPage],
-                    animController: animController,
-                    currentPage: CurrentPage,
-                    data: provider.StroryData!,
-                    ad: provider.alldata!,
-                  ):
-                      SizedBox.shrink()
-
-              );
-            } else {
-              loedvideo(provider);
-              return GestureDetector(
-                onTapDown: (details) => _onTapDown2(details,provider),
-                child: Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  color: Colors.black,
-                  child: Stack(
-                    children: [
-                      Center(
-                        child: AspectRatio(
-                          aspectRatio:
-                          double.parse(provider.StroryData![CurrentPage].width!).w /
-                              double.parse(provider.StroryData![CurrentPage].height!).h,
-                          child: VideoPlayer(controller),
-                        ),
-                      ),
-                      Positioned(
-                          top: 45.0,
-                          left: 10.0,
-                          right: 10.0,
-                          child: Column(children: <Widget>[
-                            Row(
-                              children: provider.StroryData!.asMap()
-                                  .map((i, e) {
-                                return MapEntry(
-                                  i,
-                                  AnimatedBar(
+                        return GestureDetector(
+                            onTapDown: (details) =>
+                                _onTapDown(details, provider),
+                            child: provider.StroryData != null &&
+                                    provider.alldata != null
+                                ? ImageStoryScreen(
+                                    StroryData:
+                                        provider.StroryData![CurrentPage],
                                     animController: animController,
-                                    position: i,
-                                    currentIndex: CurrentPage,
-                                  ),
-                                );
-                              })
-                                  .values
-                                  .toList(),
-                            ),
-                          ])),
-                      Positioned(
-                        top: 60.0,
-                        left: 15.0,
-                        right: 15.0,
-                        child: Row(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                controller.pause();
-                                animController.stop();
-
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => UserShowAdmain(
-                                          id: provider.alldata!.advertiser!.id!,
-                                        )));
-                              },
-                              child: Row(
-                                children: [
-                                  provider.alldata!.advertiser!.imageProfile != null
-                                      ?
-                                  CircleAvatar(
-                                      radius: 21.sp,
-                                      backgroundImage:
-                                      NetworkImage(
-                                          provider.alldata!.advertiser!.imageProfile.toString())
-                                  ):
-                                  CircleAvatar(radius: 21.sp,
-                                      backgroundColor: Color(0xff7B217E),
-                                      child: Icon(Icons.person_rounded,color: Colors.white,
-                                        size: 15.sp,)),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Text(
-                                    provider.alldata!.advertiser!.name.toString(),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                        fontSize: 16.sp),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Spacer(),
-                            InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: CircleAvatar(
-                                backgroundColor: Colors.grey.shade400,
-                                radius: 12.sp,
-                                child: Center(
-                                  child: Icon(
-                                    Icons.close_rounded,
-                                    size: 15.sp,
-                                    color: Colors.black,
+                                    currentPage: CurrentPage,
+                                    data: provider.StroryData!,
+                                    ad: provider.alldata!,
+                                  )
+                                : SizedBox.shrink());
+                      } else {
+                        loedvideo(provider);
+                        return GestureDetector(
+                          onTapDown: (details) =>
+                              _onTapDown2(details, provider),
+                          child: Container(
+                            height: double.infinity,
+                            width: double.infinity,
+                            color: Colors.black,
+                            child: Stack(
+                              children: [
+                                Center(
+                                  child: AspectRatio(
+                                    aspectRatio: double.parse(provider
+                                                .StroryData![CurrentPage]
+                                                .width!)
+                                            .w /
+                                        double.parse(provider
+                                                .StroryData![CurrentPage]
+                                                .height!)
+                                            .h,
+                                    child: VideoPlayer(controller),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 20.h,
-                        right: 34.w,
-                        left: 34.w,
-                        child: InkWell(
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(15),
-                                    topLeft: Radius.circular(15),
-                                  )),
-                              builder: (context) {
-                                return Container(
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: 16.w, vertical: 16.h),
-                                    decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.only(
+                                Positioned(
+                                    top: 45.0,
+                                    left: 10.0,
+                                    right: 10.0,
+                                    child: Column(children: <Widget>[
+                                      Row(
+                                        children: provider.StroryData!
+                                            .asMap()
+                                            .map((i, e) {
+                                              return MapEntry(
+                                                i,
+                                                AnimatedBar(
+                                                  animController:
+                                                      animController,
+                                                  position: i,
+                                                  currentIndex: CurrentPage,
+                                                ),
+                                              );
+                                            })
+                                            .values
+                                            .toList(),
+                                      ),
+                                    ])),
+                                Positioned(
+                                  top: 60.0,
+                                  left: 15.0,
+                                  right: 15.0,
+                                  child: Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          controller.pause();
+                                          animController.stop();
+
+
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UserShowAdmain(
+                                                        id: provider.alldata!
+                                                            .advertiser!.id!,
+                                                      )));
+                                        },
+                                        child: Row(
+                                          children: [
+                                            provider.alldata!.advertiser!
+                                                        .imageProfile !=
+                                                    null
+                                                ? CircleAvatar(
+                                                    radius: 21.sp,
+                                                    backgroundImage:
+                                                        NetworkImage(provider
+                                                            .alldata!
+                                                            .advertiser!
+                                                            .imageProfile
+                                                            .toString()))
+                                                : CircleAvatar(
+                                                    radius: 21.sp,
+                                                    backgroundColor:
+                                                        Color(0xff7B217E),
+                                                    child: Icon(
+                                                      Icons.person_rounded,
+                                                      color: Colors.white,
+                                                      size: 15.sp,
+                                                    )),
+                                            SizedBox(
+                                              width: 10.w,
+                                            ),
+                                            Text(
+                                              provider.alldata!.advertiser!.name
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white,
+                                                  fontSize: 16.sp),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      InkWell(
+                                        onTap: () {
+                                          controller.pause();
+                                          animController.stop();
+                                          Navigator.pop(context);
+                                        },
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.grey.shade400,
+                                          radius: 12.sp,
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.close_rounded,
+                                              size: 15.sp,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 20.h,
+                                  right: 34.w,
+                                  left: 34.w,
+                                  child: InkWell(
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
                                           topRight: Radius.circular(15),
                                           topLeft: Radius.circular(15),
                                         )),
-                                    height: 520.h,
-                                    width: double.infinity,
-                                    alignment: Alignment.center,
-                                    child: ListView(
-                                      children: [
-                                        Row(
+                                        builder: (context) {
+                                          return Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 16.w,
+                                                  vertical: 16.h),
+                                              decoration: const BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                topRight: Radius.circular(15),
+                                                topLeft: Radius.circular(15),
+                                              )),
+                                              height: 520.h,
+                                              width: double.infinity,
+                                              alignment: Alignment.center,
+                                              child: ListView(
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "وصف الإعلان",
+                                                        style: TextStyle(
+                                                            color: const Color(
+                                                                0xff7B217E),
+                                                            fontSize: 16.sp,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                      const Spacer(),
+                                                      IconButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        icon: SvgPicture.asset(
+                                                            "images/close.svg"),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10.h,
+                                                  ),
+                                                  provider.alldata!.details !=
+                                                          null
+                                                      ? Text(
+                                                          provider.alldata!
+                                                              .details!,
+                                                          style: TextStyle(
+                                                              fontSize: 14.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400),
+                                                        )
+                                                      : Container(),
+                                                  SizedBox(
+                                                    height: 12.h,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      IconButton(
+                                                          onPressed: () {},
+                                                          icon: Icon(
+                                                            Icons.location_on,
+                                                            color: const Color(
+                                                                0xff7B217E),
+                                                            size: 30.sp,
+                                                          )),
+                                                      Text(
+                                                        " السعودية-   ${provider.alldata!.city!.name.toString()}",
+                                                        style: TextStyle(
+                                                            color: const Color(
+                                                                0xff7B217E),
+                                                            fontSize: 16.sp,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10.h,
+                                                  ),
+                                                  MapScreen(
+                                                      latitud: double.parse(
+                                                          provider.alldata!
+                                                              .latitude!),
+                                                      longitud: double.parse(
+                                                          provider.alldata!
+                                                              .longitude!)),
+                                                  SizedBox(
+                                                    height: 10.h,
+                                                  ),
+                                                  Container(
+                                                    width: 343.w,
+                                                    height: 100.h,
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 12.w,
+                                                            vertical: 12.h),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      color:
+                                                          Colors.purple.shade50,
+                                                    ),
+                                                    child: Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 12.w,
+                                                              vertical: 12.h),
+                                                      child: Column(
+                                                        children: [
+                                                          provider.alldata!
+                                                                      .store_url ==
+                                                                  null
+                                                              ? Container()
+                                                              : Detatlies(
+                                                                  name:
+                                                                      "الموقع",
+                                                                  image:
+                                                                      "images/earth.svg"),
+                                                          SizedBox(
+                                                            height: 20.h,
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              provider.alldata!
+                                                                          .twitter ==
+                                                                      null
+                                                                  ? Container()
+                                                                  : Social(
+                                                                      image:
+                                                                          "images/twitter.svg",
+                                                                      link: provider
+                                                                          .alldata!
+                                                                          .twitter
+                                                                          .toString()),
+                                                              SizedBox(
+                                                                width: 26.w,
+                                                              ),
+                                                              provider.alldata!
+                                                                          .instagram ==
+                                                                      null
+                                                                  ? Container()
+                                                                  : Social(
+                                                                      image:
+                                                                          "images/instegram.svg",
+                                                                      link: provider
+                                                                          .alldata!
+                                                                          .instagram
+                                                                          .toString()),
+                                                              SizedBox(
+                                                                width: 26.w,
+                                                              ),
+                                                              provider.alldata!
+                                                                          .whatsapp ==
+                                                                      null
+                                                                  ? Container()
+                                                                  : Social(
+                                                                      image:
+                                                                          "images/whatsapp.svg",
+                                                                      isWhatsapp:
+                                                                          true,
+                                                                      context:
+                                                                          context,
+                                                                      link:
+                                                                          "${provider.alldata!.whatsapp}"),
+                                                              SizedBox(
+                                                                width: 26.w,
+                                                              ),
+                                                              provider.alldata!
+                                                                          .facebook ==
+                                                                      null
+                                                                  ? Container()
+                                                                  : Social(
+                                                                      image:
+                                                                          "images/facebook.svg",
+                                                                      link: provider
+                                                                          .alldata!
+                                                                          .facebook
+                                                                          .toString()),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ));
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 308.w,
+                                      height: 38.h,
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey,
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      child: Container(
+                                        margin: EdgeInsets.symmetric(
+                                            vertical: 4.h, horizontal: 12.w),
+                                        child: Row(
                                           children: [
-                                            Text(
-                                              "وصف الإعلان",
+                                            SvgPicture.asset("images/show.svg"),
+                                            SizedBox(
+                                              width: 10.w,
+                                            ),
+                                            const Text(
+                                              'اسحب للأعلى لمعرفة المزيد عن الإعلان',
                                               style: TextStyle(
-                                                  color: const Color(0xff7B217E),
-                                                  fontSize: 16.sp,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            const Spacer(),
-                                            IconButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              icon: SvgPicture.asset(
-                                                  "images/close.svg"),
-                                            ),
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 16),
+                                            )
                                           ],
                                         ),
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
-                                        provider.alldata!.details != null
-                                            ? Text(
-                                          provider.alldata!.details!,
-                                          style: TextStyle(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w400),
-                                        )
-                                            : Container(),
-                                        SizedBox(
-                                          height: 12.h,
-                                        ),
-                                        Row(
-                                          children: [
-                                            IconButton(
-                                                onPressed: () {},
-                                                icon: Icon(
-                                                  Icons.location_on,
-                                                  color: const Color(0xff7B217E),
-                                                  size: 30.sp,
-                                                )),
-                                            Text(
-                                              " السعودية-   ${provider.alldata!.city!.name.toString()}",
-                                              style: TextStyle(
-                                                  color: const Color(0xff7B217E),
-                                                  fontSize: 16.sp,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
-                                        MapScreen(
-                                            latitud: double.parse(provider.alldata!.latitude!),
-                                            longitud:
-                                            double.parse(provider.alldata!.longitude!)),
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
-                                        Container(
-                                          width: 343.w,
-                                          height: 100.h,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 12.w, vertical: 12.h),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                            BorderRadius.circular(5),
-                                            color: Colors.purple.shade50,
-                                          ),
-                                          child: Container(
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 12.w, vertical: 12.h),
-                                            child: Column(
-                                              children: [
-                                                provider.alldata!.store_url == null
-                                                    ? Container()
-                                                    : Detatlies(
-                                                    name:"الموقع",
-                                                    image:
-                                                    "images/earth.svg"),
-                                                SizedBox(
-                                                  height: 20.h,
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                                  children: [
-                                                    provider.alldata!.twitter == null
-                                                        ? Container()
-                                                        : Social(
-                                                        image:
-                                                        "images/twitter.svg",
-                                                        link: provider.alldata!.twitter
-                                                            .toString()),
-                                                    SizedBox(
-                                                      width: 26.w,
-                                                    ),
-                                                    provider.alldata!.instagram == null
-                                                        ? Container()
-                                                        : Social(
-                                                        image:
-                                                        "images/instegram.svg",
-                                                        link: provider.alldata!.instagram
-                                                            .toString()),
-                                                    SizedBox(
-                                                      width: 26.w,
-                                                    ),
-                                                    provider.alldata!.whatsapp == null
-                                                        ? Container()
-                                                        : Social(
-                                                        image:
-                                                        "images/whatsapp.svg",
-                                                        isWhatsapp: true,
-                                                        context: context,
-                                                        link:
-                                                        "${provider.alldata!.whatsapp}"),
-                                                    SizedBox(
-                                                      width: 26.w,
-                                                    ),
-                                                    provider.alldata!.facebook == null
-                                                        ? Container()
-                                                        : Social(
-                                                        image:
-                                                        "images/facebook.svg",
-                                                        link: provider.alldata!.facebook
-                                                            .toString()),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ));
-                              },
-                            );
-                          },
-                          child: Container(
-                            width: 308.w,
-                            height: 38.h,
-                            decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(5)),
-                            child: Container(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 4.h, horizontal: 12.w),
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset("images/show.svg"),
-                                  SizedBox(
-                                    width: 10.w,
+                                      ),
+                                    ),
                                   ),
-                                  const Text(
-                                    'اسحب للأعلى لمعرفة المزيد عن الإعلان',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16),
-                                  )
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }
-          },
-        ),
+                        );
+                      }
+                    },
+                  );
+                }),
       );
-
     });
-
-
   }
 
   // Future forward5Seconds() async => goToPosition(
@@ -438,17 +527,20 @@ class _StoryPageState extends State<StoryPage>
 
   Future forward5Seconds() async {
     await controller.pause(); // Pause the video player
-    await goToPosition((currentPosition) => currentPosition + const Duration(seconds: 10));
+    await goToPosition(
+        (currentPosition) => currentPosition + const Duration(seconds: 10));
     await controller.play(); // Resume playback
   }
 
   Future rewind5Seconds() async {
     await controller.pause(); // Pause the video player
-    await goToPosition((currentPosition) => currentPosition - const Duration(seconds: 10));
+    await goToPosition(
+        (currentPosition) => currentPosition - const Duration(seconds: 10));
     await controller.play(); // Resume playback
   }
 
-  Future goToPosition(Duration Function(Duration currentPosition) builder) async {
+  Future goToPosition(
+      Duration Function(Duration currentPosition) builder) async {
     final currentPosition = await controller.position;
     final newPosition = builder(currentPosition!);
 
@@ -460,8 +552,7 @@ class _StoryPageState extends State<StoryPage>
     await controller.seekTo(newPosition);
   }
 
-
-  void _onTapDown2(TapDownDetails details,AppProvider provider) {
+  void _onTapDown2(TapDownDetails details, AppProvider provider) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double dx = details.globalPosition.dx;
     if (dx < screenWidth / 3) {
@@ -469,12 +560,10 @@ class _StoryPageState extends State<StoryPage>
         if (CurrentPage < provider.StroryData!.length - 1) {
           pageController.jumpToPage(CurrentPage + 1);
         } else {
-          print("1");
           controller.dispose();
           Navigator.pop(context);
         }
       } else {
-        print("nada");
         forward5Seconds();
         if (controller.value.isInitialized) {
           final int duration = controller.value.duration.inMilliseconds;
@@ -489,13 +578,14 @@ class _StoryPageState extends State<StoryPage>
           animController.stop();
           animController.reset();
           animController.value = position / duration;
+
+
         }
 
         animController.forward().whenComplete(() {
           if (CurrentPage < provider.StroryData!.length - 1) {
             pageController.jumpToPage(CurrentPage + 1);
           } else {
-            print("2");
             controller.dispose();
             Navigator.pop(context);
           }
@@ -557,8 +647,8 @@ class _StoryPageState extends State<StoryPage>
     controller.dispose();
     animController.stop();
     animController.reset();
-    controller =
-        VideoPlayerController.network(provider.StroryData![CurrentPage].file.toString());
+    controller = VideoPlayerController.network(
+        provider.StroryData![CurrentPage].file.toString());
     await controller.initialize();
     splitted = provider.StroryData![CurrentPage].duration!.split('.');
     houres = int.parse(splitted[0]);
@@ -587,7 +677,6 @@ class _StoryPageState extends State<StoryPage>
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-
           children: [
             SvgPicture.asset(image),
             SizedBox(
@@ -632,7 +721,7 @@ class _StoryPageState extends State<StoryPage>
     );
   }
 
-  void _onTapDown(TapDownDetails details,AppProvider provider) {
+  void _onTapDown(TapDownDetails details, AppProvider provider) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double dx = details.globalPosition.dx;
     if (dx < screenWidth / 3) {
@@ -648,22 +737,17 @@ class _StoryPageState extends State<StoryPage>
                 : Navigator.pop(context);
           });
 
-          if (CurrentPage==provider.StroryData!.length-1){
+          if (CurrentPage == provider.StroryData!.length - 1) {
             print("here");
-
           }
 
           pageController.jumpToPage(CurrentPage + 1);
         } else {
           Navigator.pop(context);
-
         }
       } else {
         null;
       }
-
-
-
     } else if (dx > 2 * screenWidth / 3) {
       if (provider.StroryData![CurrentPage].type == "image") {
         controller.dispose();
@@ -702,6 +786,7 @@ class _StoryPageState extends State<StoryPage>
       }
     }
   }
+
   _launchWhatsapp({number, context}) async {
     var whatsapp = number;
     var whatsappAndroid = Uri.parse("?phone=$whatsapp&text=hello");
@@ -716,5 +801,5 @@ class _StoryPageState extends State<StoryPage>
     }
   }
 }
-
-
+num degToRad(num deg) => deg * (pi / 180.0);
+num radToDeg(num deg) => deg * (180.0 / pi);

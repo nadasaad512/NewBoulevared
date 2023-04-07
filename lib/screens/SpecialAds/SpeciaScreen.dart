@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../loed/loed.dart';
 import '../../models/special_ads.dart';
+import '../../story/OneStory.dart';
 
 class SpeciaScreen extends StatelessWidget{
   List<SpecialAds> _special_ads = [];
@@ -37,56 +38,71 @@ class SpeciaScreen extends StatelessWidget{
 
                  shrinkWrap: true,
                   itemBuilder: (BuildContext, index){
-                    return  Container(
-                      margin: EdgeInsets.only(
-                        right: 5.w,
-                        left: 5.w
-                      ),
-                      width: 130.w,
-                      decoration: BoxDecoration(
-                          color:   Color(0xff7B217E),
-                          borderRadius: BorderRadius.circular(5),
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(_special_ads[index].image!)
-                          )
-                      ),
+                    return  InkWell(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  StoryPage(
+                                    AdId: _special_ads[index].id!,
+                                  )
 
-                      child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: IconButton(onPressed: (){}, icon:  Icon(Icons.star_rounded,color: Color(0xffFFCC46),size: 25.sp,),),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(
-                                bottom: 10.h,
-                                right: 5.w
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(
+                          right: 5.w,
+                          left: 5.w
+                        ),
+                        width: 130.w,
+                        decoration: BoxDecoration(
+                            color:   Color(0xff7B217E),
+                            borderRadius: BorderRadius.circular(5),
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(_special_ads[index].image!)
+                            )
+                        ),
+
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: IconButton(onPressed: (){}, icon:  Icon(Icons.star_rounded,color: Color(0xffFFCC46),size: 25.sp,),),
                             ),
-                            alignment: Alignment.bottomRight,
-                            child:Row(
+                            Container(
+                              margin: EdgeInsets.only(
+                                  bottom: 10.h,
+                                  right: 5.w
+                              ),
+                              alignment: Alignment.bottomRight,
+                              child:Row(
 
-                              children: [
+                                children: [
 
-                                CircleAvatar(radius: 14,
-                                  backgroundImage: NetworkImage(_special_ads[index].image!),),
-                                SizedBox(width: 10.w,),
-                                Text(
-                                  _special_ads[index].name==null?
-                                  "الاسم التجاري ":
-
-
-                                  _special_ads[index].name!,style: TextStyle(
-                                    color:  Color(0xffFFFFFF),
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 10.sp
-                                ),),
+                                  CircleAvatar(radius: 14,
+                                    backgroundImage: NetworkImage(_special_ads[index].advertiser!.imageProfile.toString()),),
+                                  SizedBox(width: 10.w,),
+                                  Text(
+                                    _special_ads[index].advertiser!.name.toString()==null?
+                                    "الاسم التجاري ":
 
 
-                              ],
-                            ),
-                          )
-                        ],
+                                    _special_ads[index].advertiser!.name.toString(),style: TextStyle(
+                                      color: Color(0xffFFFFFF),
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 10.sp
+                                  ),),
+
+
+
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     );
                   }

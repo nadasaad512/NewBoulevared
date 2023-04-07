@@ -21,6 +21,7 @@ import 'package:new_boulevard/screens/maps/mapscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:new_boulevard/test.dart';
 import 'package:provider/provider.dart';
 import 'screens/mainscreen/MainScreen.dart';
 import 'Shared_Preferences/User_Preferences.dart';
@@ -62,7 +63,6 @@ class MyApp extends StatelessWidget {
             '/launch_screen': (context) => SplashScreen(),
             '/BestTenScreen': (context) => BestTenScreen(),
             '/LOGAIN_SCREEN': (context) => RegisterScreen(),
-            '/StoryAdsScreen': (context) => StoryAdsScreen(),
             '/NewAdsScreen': (context) => NewAdsScreen(edit: false,indexAd: 2),
             '/MainScreen': (context) => MainScreen(),
             '/HomeScreen': (context) => HomeScreen(),

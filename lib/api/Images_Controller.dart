@@ -48,6 +48,7 @@ class ImagesApiController with Helpers {
           'videos[${e.key.toString()}]', e.value));
     }));
     for (int i = 0; i < duration_video.length; i++) {
+
       multiPartRequest.fields
           .addAll({'duration[$i]': duration_video[i].toString()});
     }

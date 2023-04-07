@@ -47,8 +47,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
     }
     Position position = await Geolocator.getCurrentPosition();
     var myLocation = LatLng(position.latitude, position.longitude);
-    updateLocationMarker(position.latitude,
-        position.longitude);
+    updateLocationMarker(position.latitude, position.longitude);
 
   }
 
