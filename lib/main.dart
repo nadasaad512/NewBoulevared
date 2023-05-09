@@ -82,6 +82,7 @@ class MyApp extends StatelessWidget {
             '/AdsScreen': (context) => AdsScreen(),
             '/privacypolicies': (context) => privacypolicies(),
             '/TermsandConditions': (context) => TermsandConditions(),
+            '/VideoPlayerPage': (context) => VideoPlayerPage(videoUrl: 'https://www.youtube.com/watch?v=x0ZNQ0YXyfE&t=1051s',),
 
 
 

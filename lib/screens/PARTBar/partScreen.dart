@@ -38,13 +38,11 @@ class PartScreen extends StatelessWidget{
         itemBuilder: (BuildContext, index){
           return   InkWell(
               onTap: (){
-
-
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
 
-                      builder: (context) => DetailesScreen(name:provider.partCategories![index].name! ,idcat:provider.partCategories![index].id! ,)
+                      builder: (context) => DetailesScreen(name:provider.partCategories![index].name.toString() ,idcat:provider.partCategories![index].id! ,)
                   ),
 
 
@@ -63,7 +61,7 @@ class PartScreen extends StatelessWidget{
                         borderRadius: BorderRadius.circular(5),
                         image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(provider.partCategories![index].image!)
+                            image: NetworkImage(provider.partCategories![index].image.toString())
                         )
                     ),
 

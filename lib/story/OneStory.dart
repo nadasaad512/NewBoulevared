@@ -1,20 +1,16 @@
 import 'dart:math';
 import 'dart:ui';
-
+import 'package:cached_video_player/cached_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:new_boulevard/screens/Details/ad_story_screen.dart';
-import 'package:new_boulevard/screens/Profile/ProfileWidgt/profileScreen.dart';
 import 'package:new_boulevard/screens/maps/location.dart';
 import 'package:new_boulevard/story/imageitem.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
-import '../api/User_Controller.dart';
-import '../models/ads.dart';
-import '../models/detalies.dart';
 import '../provider/app_provider.dart';
 import '../screens/Profile/widget/AdaminAsUserShow.dart';
 
@@ -33,10 +29,7 @@ class _StoryPageState extends State<StoryPage>
   late PageController pageController;
   late AnimationController animController;
   final _pageNotifier = ValueNotifier(0.0);
-
-  //List<story1> StroryData = [];
-  late VideoPlayerController controller;
-
+  late CachedVideoPlayerController controller;
   bool start = false;
   bool end = false;
   var splitted;
@@ -53,7 +46,9 @@ class _StoryPageState extends State<StoryPage>
     });
     pageController = PageController();
     animController = AnimationController(vsync: this);
-    controller = VideoPlayerController.network("");
+    controller = CachedVideoPlayerController.network(
+      "",
+    );
     controller.initialize();
     Provider.of<AppProvider>(context, listen: false)
         .getAlldataForStory(id: widget.AdId);
@@ -72,6 +67,7 @@ class _StoryPageState extends State<StoryPage>
     animController.dispose();
     super.dispose();
   }
+
   void _listener() {
     _pageNotifier.value = pageController.page!;
   }
@@ -101,10 +97,12 @@ class _StoryPageState extends State<StoryPage>
                       final isLeaving = (index - value) <= 0;
                       final t = (index - value);
                       final rotationY = lerpDouble(0, 90, t);
-                      final opacity = lerpDouble(0, 1, t.abs())!.clamp(0.0, 1.0);
+                      final opacity =
+                          lerpDouble(0, 1, t.abs())!.clamp(0.0, 1.0);
                       final transform = Matrix4.identity();
                       transform.setEntry(3, 2, 0.003);
-                      transform.rotateY(double.parse('${-degToRad(rotationY!)}'));
+                      transform
+                          .rotateY(double.parse('${-degToRad(rotationY!)}'));
                       if (provider.StroryData![CurrentPage].type == "image") {
                         controller.dispose();
                         animController.stop();
@@ -131,7 +129,7 @@ class _StoryPageState extends State<StoryPage>
                                   )
                                 : SizedBox.shrink());
                       } else {
-                        loedvideo(provider);
+                        loadVideo(provider);
                         return GestureDetector(
                           onTapDown: (details) =>
                               _onTapDown2(details, provider),
@@ -143,16 +141,17 @@ class _StoryPageState extends State<StoryPage>
                               children: [
                                 Center(
                                   child: AspectRatio(
-                                    aspectRatio: double.parse(provider
-                                                .StroryData![CurrentPage]
-                                                .width!)
-                                            .w /
-                                        double.parse(provider
-                                                .StroryData![CurrentPage]
-                                                .height!)
-                                            .h,
-                                    child: VideoPlayer(controller),
-                                  ),
+                                      aspectRatio: double.parse(provider
+                                                  .StroryData![CurrentPage]
+                                                  .width!)
+                                              .w /
+                                          double.parse(provider
+                                                  .StroryData![CurrentPage]
+                                                  .height!)
+                                              .h,
+                                      child: CachedVideoPlayer(
+                                        controller,
+                                      )),
                                 ),
                                 Positioned(
                                     top: 45.0,
@@ -187,7 +186,6 @@ class _StoryPageState extends State<StoryPage>
                                         onTap: () {
                                           controller.pause();
                                           animController.stop();
-
 
                                           Navigator.push(
                                               context,
@@ -505,26 +503,6 @@ class _StoryPageState extends State<StoryPage>
     });
   }
 
-  // Future forward5Seconds() async => goToPosition(
-  //     (currentPosition) => currentPosition + const Duration(seconds: 10));
-  //
-  // Future rewind5Seconds() async => goToPosition(
-  //     (currentPosition) => currentPosition - const Duration(seconds: 10));
-  //
-  // Future goToPosition(
-  //   Duration Function(Duration currentPosition) builder,
-  // ) async {
-  //   final currentPosition = await controller.position;
-  //   final newPosition = builder(currentPosition!);
-  //
-  //   newPosition <= const Duration(hours: 0, minutes: 0, seconds: 10)
-  //       ? start = true
-  //       : start = false;
-  //   newPosition >= controller.value.duration ? end = true : end = false;
-  //
-  //   await controller.seekTo(newPosition);
-  // }
-
   Future forward5Seconds() async {
     await controller.pause(); // Pause the video player
     await goToPosition(
@@ -578,8 +556,6 @@ class _StoryPageState extends State<StoryPage>
           animController.stop();
           animController.reset();
           animController.value = position / duration;
-
-
         }
 
         animController.forward().whenComplete(() {
@@ -641,14 +617,14 @@ class _StoryPageState extends State<StoryPage>
     }
   }
 
-  loedvideo(AppProvider provider) async {
+  void loadVideo(AppProvider provider) async {
     end = false;
     start = false;
-    controller.dispose();
     animController.stop();
+    controller.dispose();
     animController.reset();
-    controller = VideoPlayerController.network(
-        provider.StroryData![CurrentPage].file.toString());
+
+    controller = CachedVideoPlayerController.network(provider.StroryData![CurrentPage].file.toString());
     await controller.initialize();
     splitted = provider.StroryData![CurrentPage].duration!.split('.');
     houres = int.parse(splitted[0]);
@@ -663,7 +639,6 @@ class _StoryPageState extends State<StoryPage>
             : Navigator.pop(context);
       });
     });
-
     controller.play();
   }
 
@@ -800,6 +775,8 @@ class _StoryPageState extends State<StoryPage>
       );
     }
   }
+
+  num degToRad(num deg) => deg * (pi / 180.0);
+
+  num radToDeg(num deg) => deg * (180.0 / pi);
 }
-num degToRad(num deg) => deg * (pi / 180.0);
-num radToDeg(num deg) => deg * (180.0 / pi);

@@ -23,6 +23,7 @@ dependencies:
   shared_preferences: ^2.0.15
   image_picker: ^0.8.5+3
   video_player: ^2.4.5
+  cached_network_image: ^3.2.3
   share_plus: ^4.0.10
   url_launcher: ^6.1.4
   google_maps_flutter:
@@ -37,6 +38,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   loading_animation_widget: ^1.2.0+4
   provider: ^6.0.5
+  flutter_cache_manager: ^3.3.0
+  chewie: ^1.4.0
+  cache_manager: ^1.0.0+4
+  cached_video_player: ^2.0.4
+
+
 
 
 

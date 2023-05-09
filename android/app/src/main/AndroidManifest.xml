@@ -9,6 +9,7 @@
     <application
         android:label="بوليڤارد"
         android:name="${applicationName}"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/launcher_icon">
        <meta-data android:name="com.google.android.geo.API_KEY"
            android:value="AIzaSyArEv2GkDOZZhaMNxl0uPZp5uyHUulV8TQ"/>
