@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,7 +6,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/ads.dart';
 import '../models/detalies.dart';
 import '../screens/Details/ad_story_screen.dart';
-import '../screens/Profile/ProfileWidgt/profileScreen.dart';
 import '../screens/Profile/widget/AdaminAsUserShow.dart';
 import '../screens/maps/location.dart';
 

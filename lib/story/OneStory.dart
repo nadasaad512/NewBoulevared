@@ -1,5 +1,4 @@
-import 'dart:math';
-import 'dart:ui';
+
 import 'package:cached_video_player/cached_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +8,6 @@ import 'package:new_boulevard/screens/maps/location.dart';
 import 'package:new_boulevard/story/imageitem.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 import '../provider/app_provider.dart';
 import '../screens/Profile/widget/AdaminAsUserShow.dart';
@@ -94,15 +92,6 @@ class _StoryPageState extends State<StoryPage>
                       });
                     },
                     itemBuilder: (BuildContext, index) {
-                      final isLeaving = (index - value) <= 0;
-                      final t = (index - value);
-                      final rotationY = lerpDouble(0, 90, t);
-                      final opacity =
-                          lerpDouble(0, 1, t.abs())!.clamp(0.0, 1.0);
-                      final transform = Matrix4.identity();
-                      transform.setEntry(3, 2, 0.003);
-                      transform
-                          .rotateY(double.parse('${-degToRad(rotationY!)}'));
                       if (provider.StroryData![CurrentPage].type == "image") {
                         controller.dispose();
                         animController.stop();
@@ -517,8 +506,7 @@ class _StoryPageState extends State<StoryPage>
     await controller.play(); // Resume playback
   }
 
-  Future goToPosition(
-      Duration Function(Duration currentPosition) builder) async {
+  Future goToPosition(Duration Function(Duration currentPosition) builder) async {
     final currentPosition = await controller.position;
     final newPosition = builder(currentPosition!);
 
@@ -623,7 +611,6 @@ class _StoryPageState extends State<StoryPage>
     animController.stop();
     controller.dispose();
     animController.reset();
-
     controller = CachedVideoPlayerController.network(provider.StroryData![CurrentPage].file.toString());
     await controller.initialize();
     splitted = provider.StroryData![CurrentPage].duration!.split('.');
@@ -641,6 +628,8 @@ class _StoryPageState extends State<StoryPage>
     });
     controller.play();
   }
+
+
 
   Widget Detatlies({required String name, required String image}) {
     return InkWell(
@@ -776,7 +765,4 @@ class _StoryPageState extends State<StoryPage>
     }
   }
 
-  num degToRad(num deg) => deg * (pi / 180.0);
-
-  num radToDeg(num deg) => deg * (180.0 / pi);
 }

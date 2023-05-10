@@ -1102,7 +1102,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
                                                 setState(() {
                                                   type=provider.Normal_Price![index].id;
-                                                  price=int.parse(provider.Normal_Price![index].price!);
+                                                  price=provider.Normal_Price![index].price!;
                                                   if(specialindex==null){
                                                     normallindex=index;
 
@@ -1204,7 +1204,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                               onTap: (){
                                                 setState(() {
 
-                                                  price=int.parse(provider.Special_Price![index].price!);
+                                                  price=provider.Special_Price![index].price!;
                                                   type=provider.Special_Price![index].id!;
                                                   if(normallindex==null){
                                                     specialindex=index;

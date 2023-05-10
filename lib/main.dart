@@ -1,7 +1,6 @@
 
 import 'package:new_boulevard/provider/app_provider.dart';
 import 'package:new_boulevard/screens/BestTen/BestTenScreen.dart';
-import 'package:new_boulevard/screens/Details/ad_story_screen.dart';
 import 'package:new_boulevard/screens/homescreen/Home_Screen.dart';
 import 'package:new_boulevard/screens/PARTBar/partScreen.dart';
 import 'package:new_boulevard/screens/Profile/ProfileWidgt/EditAdmain.dart';
@@ -21,7 +20,6 @@ import 'package:new_boulevard/screens/maps/mapscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:new_boulevard/test.dart';
 import 'package:provider/provider.dart';
 import 'screens/mainscreen/MainScreen.dart';
 import 'Shared_Preferences/User_Preferences.dart';
@@ -82,7 +80,7 @@ class MyApp extends StatelessWidget {
             '/AdsScreen': (context) => AdsScreen(),
             '/privacypolicies': (context) => privacypolicies(),
             '/TermsandConditions': (context) => TermsandConditions(),
-            '/VideoPlayerPage': (context) => VideoPlayerPage(videoUrl: 'https://www.youtube.com/watch?v=x0ZNQ0YXyfE&t=1051s',),
+
 
 
 

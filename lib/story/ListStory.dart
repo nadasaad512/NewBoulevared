@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'package:cached_video_player/cached_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_boulevard/screens/Details/ad_story_screen.dart';
-import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 import '../api/User_Controller.dart';
 import '../models/Follower_user.dart';
@@ -25,11 +25,10 @@ class _ListStoryScreenState extends State<ListStoryScreen> with SingleTickerProv
   int PageDetal = 0;
   late PageController pageController;
   final _pageNotifier = ValueNotifier(0.0);
-
   late PageController StoryController;
   late AnimationController animController;
-  late VideoPlayerController controller;
-  late VideoPlayerController old;
+  late CachedVideoPlayerController controller;
+  late CachedVideoPlayerController old;
   List<story1> img = [];
   List<story1> vido = [];
   List<ListStory> Story = [];
@@ -51,7 +50,7 @@ class _ListStoryScreenState extends State<ListStoryScreen> with SingleTickerProv
     });
     UserApiController().AdDetalies(idAD: widget.PageFollowing[PageCurrent].ads![0].id!);
     animController = AnimationController(vsync: this);
-    controller = VideoPlayerController.network("");
+    controller = CachedVideoPlayerController.network("");
     controller.initialize();
     old = controller;
     for (var y = 0; y < widget.PageFollowing.length; y++) {
@@ -255,7 +254,7 @@ class _ListStoryScreenState extends State<ListStoryScreen> with SingleTickerProv
                             Center(
                               child: AspectRatio(
                                 aspectRatio: double.parse(Story[PageCurrent].ad![CurrentStory].width!)/ double.parse(Story[PageCurrent].ad![CurrentStory].height!),
-                                child: VideoPlayer(controller),
+                                child: CachedVideoPlayer(controller),
                               ),
                             ),
                             Positioned(
@@ -377,7 +376,6 @@ class _ListStoryScreenState extends State<ListStoryScreen> with SingleTickerProv
     );
   }
   loedImage(){
-
     Size size1=  _calculateImageDimension(image1: Story[PageCurrent].ad![CurrentStory].file.toString());
       heightImg= size1.height;
       widthImg= size1.width;
@@ -685,7 +683,7 @@ class _ListStoryScreenState extends State<ListStoryScreen> with SingleTickerProv
     old.dispose();
     animController.stop();
     animController.reset();
-    controller = VideoPlayerController.network(Story[PageCurrent].ad![CurrentStory].file.toString());
+    controller = CachedVideoPlayerController.network(Story[PageCurrent].ad![CurrentStory].file.toString());
     old = controller;
    await controller.initialize();
     var  splitted =  Story[PageCurrent].ad![CurrentStory].duration!.split('.');
