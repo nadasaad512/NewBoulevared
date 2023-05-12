@@ -1,5 +1,4 @@
 
-import 'package:cached_video_player/cached_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,6 +7,8 @@ import 'package:new_boulevard/screens/maps/location.dart';
 import 'package:new_boulevard/story/imageitem.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:video_cached_player/video_cached_player.dart';
+import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 import '../provider/app_provider.dart';
 import '../screens/Profile/widget/AdaminAsUserShow.dart';
@@ -27,7 +28,7 @@ class _StoryPageState extends State<StoryPage>
   late PageController pageController;
   late AnimationController animController;
   final _pageNotifier = ValueNotifier(0.0);
-  late CachedVideoPlayerController controller;
+  late CachedVideoPlayerController  controller;
   bool start = false;
   bool end = false;
   var splitted;
@@ -140,6 +141,7 @@ class _StoryPageState extends State<StoryPage>
                                               .h,
                                       child: CachedVideoPlayer(
                                         controller,
+
                                       )),
                                 ),
                                 Positioned(

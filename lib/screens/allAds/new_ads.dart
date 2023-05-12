@@ -2214,6 +2214,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
   }
 
 
+
   Future uploadImage() async {
     setState(() {
       progg=true;

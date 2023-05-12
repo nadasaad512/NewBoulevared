@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'package:cached_video_player/cached_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_boulevard/screens/Details/ad_story_screen.dart';
+import 'package:video_cached_player/video_cached_player.dart';
+import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 import '../api/User_Controller.dart';
 import '../models/Follower_user.dart';
@@ -27,8 +28,8 @@ class _ListStoryScreenState extends State<ListStoryScreen> with SingleTickerProv
   final _pageNotifier = ValueNotifier(0.0);
   late PageController StoryController;
   late AnimationController animController;
-  late CachedVideoPlayerController controller;
-  late CachedVideoPlayerController old;
+  late CachedVideoPlayerController  controller;
+  late CachedVideoPlayerController  old;
   List<story1> img = [];
   List<story1> vido = [];
   List<ListStory> Story = [];

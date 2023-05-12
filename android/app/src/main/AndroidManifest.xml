@@ -13,6 +13,9 @@
         android:icon="@mipmap/launcher_icon">
        <meta-data android:name="com.google.android.geo.API_KEY"
            android:value="AIzaSyArEv2GkDOZZhaMNxl0uPZp5uyHUulV8TQ"/>
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
 
         <activity
             android:name=".MainActivity"
