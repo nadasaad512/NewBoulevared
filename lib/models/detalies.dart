@@ -40,6 +40,7 @@ class Ads {
   String? adTypeId;
   String? userId;
   String? categoryId;
+  AdType? adType;
   String? cityId;
   String? image;
   String? ad_paid;
@@ -55,7 +56,6 @@ class Ads {
   String? name;
   String? details;
   Advertiser? advertiser;
-  AdType? adType;
   Category? category;
   City? city;
   List<story1>? adImages;
@@ -146,3 +146,7 @@ class Ads {
     return data;
   }
 }
+
+
+
+

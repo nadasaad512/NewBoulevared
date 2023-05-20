@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../loed/loed.dart';
 import '../models/ads.dart';
 import '../models/detalies.dart';
 import '../screens/Details/ad_story_screen.dart';
@@ -34,26 +36,33 @@ class _ImageStoryScreenState extends State<ImageStoryScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    _calculateImageDimension(image1: widget.StroryData.file.toString())
-        .then((value) {
-      heightImg = value.height;
-      widthImg = value.width;
-    });
+    // _calculateImageDimension(image1: widget.StroryData.file.toString())
+    //     .then((value) {
+    //   heightImg = value.height;
+    //   widthImg = value.width;
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: heightImg.h,
-      width: widthImg.w,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        image: DecorationImage(
-          image: NetworkImage(widget.StroryData.file.toString()),
-        ),
-      ),
+      // height: heightImg.h,
+      // width: widthImg.w,
+      // decoration: BoxDecoration(
+      //
+      //   // image: DecorationImage(
+      //   //   image: NetworkImage(widget.StroryData.file.toString()),
+      //   // ),
+      // ),
       child: Stack(
         children: [
+          Center(
+            child: CachedNetworkImage(
+              imageUrl: widget.StroryData.file.toString(),
+
+
+            ),
+          ),
           Positioned(
               top: 45.0,
               left: 10.0,

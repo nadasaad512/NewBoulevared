@@ -401,8 +401,6 @@ class UserApiController with Helpers {
     if (UserPreferences().token.isNotEmpty) {
       var response = await http.get(url, headers: {
         HttpHeaders.authorizationHeader: UserPreferences().token,
-        "Accept-Language":"ar"
-
       });
       if (jsonDecode(response.body)['status'] == true) {
         var json = jsonDecode(response.body);

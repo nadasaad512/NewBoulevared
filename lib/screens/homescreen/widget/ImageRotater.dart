@@ -10,8 +10,11 @@ import '../../../models/setting.dart';
 
 class CasualImageSlider extends StatefulWidget {
   final List<Banners> imageUrls;
+  final ScrollController scrollController;
 
-  CasualImageSlider({required this.imageUrls});
+
+  CasualImageSlider({required this.imageUrls, required this.scrollController});
+
 
   @override
   _CasualImageSliderState createState() => _CasualImageSliderState();
@@ -55,7 +58,9 @@ class _CasualImageSliderState extends State<CasualImageSlider> {
           controller: _controller,
           onPageChanged: (index) => setState(() => _currentIndex = index),
           children:
-          widget.imageUrls.map((url) => Image.network(url.image.toString(),fit: BoxFit.fill,)).toList(),
+          widget.imageUrls.map((url) => Container(
+            margin: EdgeInsets.symmetric(horizontal: 5.w),
+              child: Image.network(url.image.toString(),fit: BoxFit.cover,))).toList(),
         ),
         Positioned(
           bottom: 5.h,

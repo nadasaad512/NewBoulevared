@@ -62,7 +62,6 @@ class _StoryPageState extends State<StoryPage>
     pageController.removeListener(_listener);
     _pageNotifier.dispose();
     pageController.dispose();
-
     animController.dispose();
     super.dispose();
   }
@@ -118,11 +117,11 @@ class _StoryPageState extends State<StoryPage>
                                     ad: provider.alldata!,
                                   )
                                 : SizedBox.shrink());
-                      } else {
+                      }
+                      else {
                         loadVideo(provider);
                         return GestureDetector(
-                          onTapDown: (details) =>
-                              _onTapDown2(details, provider),
+                          onTapDown: (details) => _onTapDown2(details, provider),
                           child: Container(
                             height: double.infinity,
                             width: double.infinity,

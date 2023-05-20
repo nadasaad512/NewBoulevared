@@ -159,7 +159,7 @@ class AdType {
   int? id;
   String? type;
   var daysCount;
-  int? price;
+  String? price;
   String? name;
   String? details;
 

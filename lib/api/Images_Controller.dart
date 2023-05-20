@@ -78,16 +78,12 @@ class ImagesApiController with Helpers {
 
     response.stream.transform(utf8.decoder).listen((event) {
       if (response.statusCode < 400) {
-
-        print("response");
-        print(event);
         var dataObject = jsonDecode(event)["ad"];
         Ads ad = Ads.fromJson(dataObject);
         uploadEvent(true, jsonDecode(event)['message'], ad);
       } else if (response.statusCode != 500) {
         var dataObject = jsonDecode(event)['ad'];
         Ads ad = Ads.fromJson(dataObject);
-
         showSnackBar(context,
             message: jsonDecode(event)['message'], error: true);
         uploadEvent(false, jsonDecode(event)['message'], ad);
@@ -106,8 +102,8 @@ class ImagesApiController with Helpers {
       {required List<XFile> images,
       required List<String> videos,
       required String? coverimg,
-      required String category_id,
-      required String city_id,
+      required String idCategory,
+      required String idCity,
       required String details_ar,
       required double lat,
       required double lon,
@@ -142,8 +138,7 @@ class ImagesApiController with Helpers {
     }
 
     if (videos.isNotEmpty || videos != []) {
-      List<dynamic> vidros =
-          await Future.wait(videos.asMap().entries.map((e) async {
+      List<dynamic> vidros = await Future.wait(videos.asMap().entries.map((e) async {
         multiPartRequest.files.add(await http.MultipartFile.fromPath(
             'videos[${e.key.toString()}]', e.value));
       }));
@@ -151,15 +146,13 @@ class ImagesApiController with Helpers {
 
     if (duration_video.isNotEmpty || duration_video != []) {
       for (int i = 0; i < duration_video.length; i++) {
-        multiPartRequest.fields
-            .addAll({'duration[$i]': duration_video[i].toString()});
+        multiPartRequest.fields.addAll({'duration[$i]': duration_video[i].toString()});
       }
     }
 
     if (height.isNotEmpty || height != []) {
       for (int i = 0; i < height.length; i++) {
-        multiPartRequest.fields
-            .addAll({'videos_height[$i]': height[i].toString()});
+        multiPartRequest.fields.addAll({'videos_height[$i]': height[i].toString()});
       }
     }
 
@@ -170,41 +163,36 @@ class ImagesApiController with Helpers {
       }
     }
 
-    multiPartRequest.fields['category_id'] = category_id;
+    multiPartRequest.fields['category_id'] = idCategory;
     multiPartRequest.fields['latitude'] = lat.toString();
     multiPartRequest.fields['longitude'] = lon.toString();
-    multiPartRequest.fields['city_id'] = city_id;
+    multiPartRequest.fields['city_id'] = idCity;
     multiPartRequest.fields['details_en'] = details_ar;
-
     multiPartRequest.fields['ad_id'] = ad_id;
     multiPartRequest.fields['ad_type_id'] = adTypeid.toString();
-
     multiPartRequest.fields['store_url'] = store_url;
     multiPartRequest.fields['facebook'] = facebook;
     multiPartRequest.fields['whatsapp'] = whatsapp;
     multiPartRequest.fields['instagram'] = instagram;
     multiPartRequest.fields['twitter'] = twitter;
-    multiPartRequest.headers[HttpHeaders.authorizationHeader] =
-        UserPreferences().token;
+    multiPartRequest.headers[HttpHeaders.authorizationHeader] = UserPreferences().token;
     multiPartRequest.headers['X-Requested-With'] = 'XMLHttpRequest';
-    var response = await multiPartRequest.send();
+    print(adTypeid);
     print("response");
-
-
+    var response = await multiPartRequest.send();
+    print(response);
     response.stream.transform(utf8.decoder).listen((event) {
-      if (response.statusCode < 400) {
-        var dataObject = jsonDecode(event)['ad'];
-        showSnackBar(context,
-            message: jsonDecode(event)['message'], error: false);
-        uploadEvent(true, jsonDecode(event)['message']);
-      } else if (response.statusCode != 500) {
-        showSnackBar(context,
-            message: jsonDecode(event)['message'], error: true);
-        uploadEvent(false, jsonDecode(event)['message']);
+      print("event");
+      print(event);
+      if (jsonDecode(event)['status'] =="true") {
+        print("1");
+        showSnackBar(context, message: "تم التعديل بنجاح", error: false);
+        uploadEvent(true, "تم التعديل بنجاح",);
       } else {
-        showSnackBar(context,
-            message: 'Something went wrong, please try again!', error: true);
+        print("2");
+        showSnackBar(context, message: jsonDecode(event)['message'], error: true);
         uploadEvent(false, jsonDecode(event)['message']);
+
       }
     });
   }

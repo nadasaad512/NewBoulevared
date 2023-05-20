@@ -108,8 +108,10 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
       whatsup.text=ad.whatsapp.toString();
       insta.text=ad.instagram.toString();
       link.text=ad.store_url.toString();
-      adType=ad.adTypeId==null? 0: int.parse(ad.adTypeId!);
+      adType=int.parse(ad.adType!.id.toString());
       twita.text=ad.twitter.toString();
+      idActive=ad.category!.id.toString();
+      id=ad.city!.id!.toString();
       info.text=ad.details.toString();
       location=ad.latitude.toString()+ad.longitude.toString();
       _selected1=
@@ -132,11 +134,6 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
 
   }
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     Provider.of<AppProvider>(context, listen: false).getAllCategory();
@@ -158,7 +155,6 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-
                 children: [
                   Container(
 
@@ -262,6 +258,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
                     PageView(
                   controller: _pageController,
+
                   physics: NeverScrollableScrollPhysics(),
                   onPageChanged: (int currentPage) {
                     setState(() {
@@ -302,12 +299,15 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                   ),
                                 ),
                                 SizedBox(width: 10.w,),
-                                ad.adImages!=null?
+
+                                ad.adImages==[]|| ad.adImages==null||ad.adImages!.isEmpty?
+                                SizedBox.shrink():
                                 SizedBox(
                                   height: 100.h,
                                   child: GridView.builder(
                                       scrollDirection: Axis.horizontal,
                                       shrinkWrap: true,
+
                                       itemCount:  ad.adImages!.length,
                                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                           childAspectRatio: 100.w / 100.h,
@@ -364,7 +364,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
 
                                   ),
-                                ):SizedBox.shrink()
+                                )
 
 
                               ],
@@ -470,8 +470,8 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                   ),
                                 ),
                                 SizedBox(width: 10.w,),
-                                ad.adVideos!=null?
-
+                                ad.adVideos==[]||ad.adVideos==null||ad.adVideos!.isEmpty?
+                                SizedBox.shrink():
                                 SizedBox(
                                   height: 100.h,
                                   child: GridView.builder(
@@ -482,7 +482,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                           crossAxisCount: 1,
                                           mainAxisSpacing: 10.w
                                       ),
-                                      shrinkWrap: true,
+                                       shrinkWrap: true,
                                       itemBuilder: (BuildContext, index){
                                         controller=VideoPlayerController.network(ad.adVideos![index].file.toString());
                                         controller.initialize();
@@ -538,8 +538,8 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
 
                                   ),
-                                ):
-                                SizedBox.shrink()
+                                )
+
 
 
 
@@ -946,7 +946,6 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                   EditProgress=true;
                                 });
 
-
                                 await EditImageFuncation();
                                 setState(() {
                                   EditProgress=false;
@@ -1102,7 +1101,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
                                                 setState(() {
                                                   type=provider.Normal_Price![index].id;
-                                                  price=provider.Normal_Price![index].price!;
+                                                  price=int.parse(provider.Normal_Price![index].price!);
                                                   if(specialindex==null){
                                                     normallindex=index;
 
@@ -1204,7 +1203,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                               onTap: (){
                                                 setState(() {
 
-                                                  price=provider.Special_Price![index].price!;
+                                                  price=int.parse(provider.Special_Price![index].price!);
                                                   type=provider.Special_Price![index].id!;
                                                   if(normallindex==null){
                                                     specialindex=index;
@@ -2273,6 +2272,8 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
   Future EditImageFuncation() async {
 
+
+
     await ImagesApiController().
     EditAds(
         context,
@@ -2289,8 +2290,8 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
         images: images,
         videos: videoList1,
         coverimg: EditImage,
-        category_id: idActive.toString(),
-        city_id: id.toString(),
+        idCategory: idActive.toString(),
+        idCity: id.toString(),
         details_ar: info.text,
         width: width,
         height: height,
@@ -2304,6 +2305,8 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
 
           }else{
+            print("massege");
+            print(massege);
 
             setState(() {
               progg=false;
