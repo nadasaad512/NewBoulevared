@@ -48,6 +48,7 @@ class AppProvider extends ChangeNotifier{
   List<Awards>? award;
   bool AwardsLoed=true;
   bool close =false;
+  bool isEdit =false;
 
   bool progss = false;
   List<String?> userFollowFound=[];

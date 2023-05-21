@@ -156,6 +156,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+
                   Container(
 
                       width:  30,
@@ -266,7 +267,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                     });
                   },
                   children: [
-
+                    provider.isEdit==false?
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 10.w),
                       child: ListView(
@@ -975,7 +976,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
                         ],
                       ),
-                    ),
+                    ):
                     SingleChildScrollView(
                       child: Container(
 
@@ -999,8 +1000,8 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                             Center(
                               child:  ElevatedButton(
                                 onPressed: ()  {
-
                                   Navigator.pushNamed(context,'/MainScreen');
+
                                 },
                                 child: Text('الذهاب الى الرئيسية',style: TextStyle(
                                     fontWeight: FontWeight.w700,
@@ -1591,7 +1592,6 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                     child: GridView.builder(
                                         scrollDirection: Axis.horizontal,
                                         itemCount: videoList.length,
-
                                         gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
                                             childAspectRatio: 100.w / 100.h,
@@ -1615,11 +1615,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                                   SizedBox(
                                                     height: 100.h,
                                                     width: 100.w,
-
-
-
                                                     child: AspectRatio(
-
                                                       aspectRatio: videoList[index].value.aspectRatio,
                                                       child: VideoPlayer(videoList[index]),
 
@@ -1662,7 +1658,6 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                                           child: CircleAvatar(
                                                               backgroundColor: Colors.purple,
                                                               radius: 10.sp,
-
                                                               child: Icon(Icons.close,size: 10.sp,color: Colors.white,)
                                                           ),
                                                         ),
@@ -2202,6 +2197,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
         ..initialize().then((value) {
           videoList.add(_videoPlayerController!);
           videoList1.add(_video!.path);
+          print(videoList.length);
           duration_video.add(a!.duration!);
           height.add(a.height!);
           width.add(a.width!);
@@ -2297,7 +2293,11 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
         height: height,
         uploadEvent: (status,massege){
           if(status){
-            _pageController.jumpToPage(3);
+            Provider.of<AppProvider>(context, listen: false).isEdit=true;
+            Provider.of<AppProvider>(context, listen: false).notifyListeners();
+
+            _pageController.jumpToPage(1);
+            print("nada");
 
             setState(() {
               progg=false;
@@ -2305,8 +2305,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
 
 
           }else{
-            print("massege");
-            print(massege);
+
 
             setState(() {
               progg=false;

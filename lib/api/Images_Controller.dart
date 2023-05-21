@@ -71,11 +71,9 @@ class ImagesApiController with Helpers {
     multiPartRequest.fields['whatsapp'] = whatsapp;
     multiPartRequest.fields['instagram'] = instagram;
     multiPartRequest.fields['twitter'] = twitter;
-    multiPartRequest.headers[HttpHeaders.authorizationHeader] =
-        UserPreferences().token;
+    multiPartRequest.headers[HttpHeaders.authorizationHeader] = UserPreferences().token;
     multiPartRequest.headers['X-Requested-With'] = 'XMLHttpRequest';
     var response = await multiPartRequest.send();
-
     response.stream.transform(utf8.decoder).listen((event) {
       if (response.statusCode < 400) {
         var dataObject = jsonDecode(event)["ad"];
@@ -98,102 +96,119 @@ class ImagesApiController with Helpers {
     });
   }
 
-  Future<void> EditAds(BuildContext context,
-      {required List<XFile> images,
-      required List<String> videos,
-      required String? coverimg,
-      required String idCategory,
-      required String idCity,
-      required String details_ar,
-      required double lat,
-      required double lon,
-      required List<double> duration_video,
-      required String store_url,
-      required String ad_id,
-      required int adTypeid,
-      required String facebook,
-      required String whatsapp,
-      required String instagram,
-      required String twitter,
-      required List<int> height,
-      required List<int> width,
-      required void Function(bool status, String massege) uploadEvent}) async {
+  Future<void> EditAds(BuildContext context, {
+    required List<XFile> images,
+    required List<String> videos,
+    required String? coverimg,
+    required String idCategory,
+    required String idCity,
+    required String details_ar,
+    required double lat,
+    required double lon,
+    required List<double> duration_video,
+    required String store_url,
+    required String ad_id,
+    required int adTypeid,
+    required String facebook,
+    required String whatsapp,
+    required String instagram,
+    required String twitter,
+    required List<int> height,
+    required List<int> width,
+    required void Function(bool status, String message) uploadEvent
+  }) async {
     var url = Uri.parse(ApiSettings.updateNewAd);
-    var multiPartRequest = http.MultipartRequest(
-      'POST',
-      url,
-    );
+    var multiPartRequest = http.MultipartRequest('POST', url);
 
-    coverimg != null
-        ? multiPartRequest.files
-            .add(await http.MultipartFile.fromPath('image', coverimg))
-        : null;
+    if (coverimg != null) {
+      multiPartRequest.files.add(
+          await http.MultipartFile.fromPath('image', coverimg));
+    }
 
-    if (images.isNotEmpty || images != []) {
-      List<dynamic> result =
-          await Future.wait(images.asMap().entries.map((e) async {
+    if (images.isNotEmpty) {
+      await Future.wait(images
+          .asMap()
+          .entries
+          .map((e) async {
         multiPartRequest.files.add(await http.MultipartFile.fromPath(
             'extra_images[${e.key.toString()}]', e.value.path));
       }));
     }
 
-    if (videos.isNotEmpty || videos != []) {
-      List<dynamic> vidros = await Future.wait(videos.asMap().entries.map((e) async {
+    if (videos.isNotEmpty) {
+      await Future.wait(videos
+          .asMap()
+          .entries
+          .map((e) async {
         multiPartRequest.files.add(await http.MultipartFile.fromPath(
             'videos[${e.key.toString()}]', e.value));
       }));
     }
 
-    if (duration_video.isNotEmpty || duration_video != []) {
+    if (duration_video.isNotEmpty) {
       for (int i = 0; i < duration_video.length; i++) {
-        multiPartRequest.fields.addAll({'duration[$i]': duration_video[i].toString()});
+        multiPartRequest.fields.addAll(
+            {'duration[$i]': duration_video[i].toString()});
       }
     }
 
-    if (height.isNotEmpty || height != []) {
+    if (height.isNotEmpty) {
       for (int i = 0; i < height.length; i++) {
-        multiPartRequest.fields.addAll({'videos_height[$i]': height[i].toString()});
+        multiPartRequest.fields.addAll(
+            {'videos_height[$i]': height[i].toString()});
       }
     }
 
-    if (width.isNotEmpty || width != []) {
+    if (width.isNotEmpty) {
       for (int i = 0; i < width.length; i++) {
-        multiPartRequest.fields
-            .addAll({'videos_width[$i]': width[i].toString()});
+        multiPartRequest.fields.addAll(
+            {'videos_width[$i]': width[i].toString()});
       }
     }
 
-    multiPartRequest.fields['category_id'] = idCategory;
-    multiPartRequest.fields['latitude'] = lat.toString();
-    multiPartRequest.fields['longitude'] = lon.toString();
-    multiPartRequest.fields['city_id'] = idCity;
-    multiPartRequest.fields['details_en'] = details_ar;
-    multiPartRequest.fields['ad_id'] = ad_id;
-    multiPartRequest.fields['ad_type_id'] = adTypeid.toString();
-    multiPartRequest.fields['store_url'] = store_url;
-    multiPartRequest.fields['facebook'] = facebook;
-    multiPartRequest.fields['whatsapp'] = whatsapp;
-    multiPartRequest.fields['instagram'] = instagram;
-    multiPartRequest.fields['twitter'] = twitter;
-    multiPartRequest.headers[HttpHeaders.authorizationHeader] = UserPreferences().token;
-    multiPartRequest.headers['X-Requested-With'] = 'XMLHttpRequest';
-    print(adTypeid);
-    print("response");
-    var response = await multiPartRequest.send();
-    print(response);
-    response.stream.transform(utf8.decoder).listen((event) {
-      print("event");
-      print(event);
-      if (jsonDecode(event)['status'] =="true") {
-        print("1");
-        showSnackBar(context, message: "تم التعديل بنجاح", error: false);
-        uploadEvent(true, "تم التعديل بنجاح",);
-      } else {
-        print("2");
-        showSnackBar(context, message: jsonDecode(event)['message'], error: true);
-        uploadEvent(false, jsonDecode(event)['message']);
-
-      }
+    multiPartRequest.fields.addAll({
+      'category_id': idCategory,
+      'latitude': lat.toString(),
+      'longitude': lon.toString(),
+      'city_id': idCity,
+      'details_en': details_ar,
+      'ad_id': ad_id,
+      'ad_type_id': adTypeid.toString(),
+      'store_url': store_url,
+      'facebook': facebook,
+      'whatsapp': whatsapp,
+      'instagram': instagram,
+      'twitter': twitter,
     });
-  }
-}
+
+    multiPartRequest.headers[HttpHeaders.authorizationHeader] =
+        UserPreferences().token;
+    multiPartRequest.headers['X-Requested-With'] = 'XMLHttpRequest';
+
+    try {
+      var response = await multiPartRequest.send();
+      var responseBody = await response.stream.transform(utf8.decoder).join();
+
+      if (response.statusCode == 200) {
+        var decodedResponse = jsonDecode(responseBody);
+        if (decodedResponse['code'] == 200) {
+          showSnackBar(context, message: "تم التعديل بنجاح", error: false);
+          uploadEvent(true, "تم التعديل بنجاح");
+        } else {
+          showSnackBar(
+              context, message: decodedResponse['message'], error: true);
+          uploadEvent(false, decodedResponse['message']);
+        }
+      } else {
+        // Handle non-200 status code
+        showSnackBar(context,
+            message: 'Request failed with status ${response.statusCode}',
+            error: true);
+        uploadEvent(false, 'Request failed with status ${response.statusCode}');
+      }
+    } catch (error) {
+      // Handle the exception
+      showSnackBar(context, message: 'An error occurred: $error', error: true);
+      uploadEvent(false, 'An error occurred');
+    }
+  }}

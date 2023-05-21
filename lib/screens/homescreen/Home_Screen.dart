@@ -35,9 +35,16 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
     await provider.getAllListStory();
     provider.notifyListeners();
   }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("object");
+  }
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<AppProvider>(context, listen: false).isEdit=false;
     return Back_Ground(
         childTab: "الرئيسية",
         ad: true,
