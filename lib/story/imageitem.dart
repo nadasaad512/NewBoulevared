@@ -59,8 +59,6 @@ class _ImageStoryScreenState extends State<ImageStoryScreen>
           Center(
             child: CachedNetworkImage(
               imageUrl: widget.StroryData.file.toString(),
-
-
             ),
           ),
           Positioned(

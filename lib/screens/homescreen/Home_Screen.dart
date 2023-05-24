@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:another_flushbar/flushbar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_boulevard/screens/homescreen/widget/ImageRotater.dart';
@@ -25,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
   bool isDone = false;
   final ScrollController _scrollController = ScrollController();
 
-
   loed(AppProvider provider) async {
     await provider.getAllBanner();
     await provider.getAllCategory();
@@ -35,22 +35,23 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
     await provider.getAllListStory();
     provider.notifyListeners();
   }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("object");
+
   }
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<AppProvider>(context, listen: false).isEdit=false;
+    Provider.of<AppProvider>(context, listen: false).isEdit = false;
     return Back_Ground(
         childTab: "الرئيسية",
         ad: true,
-        child:
-        Consumer<AppProvider>(builder: (context, provider, _) {
+        child: Consumer<AppProvider>(builder: (context, provider, _) {
           return
+            provider.categories.isNotEmpty?
             RefreshIndicator(
             color: Colors.purple,
             onRefresh: () async {
@@ -228,97 +229,109 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
                                     return InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => StoryPage(
-                                                    AdId: provider
-                                                        .special_ads[index].id!,
-                                                  )),
-                                        );
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(left: 12.w),
-                                        height: 220.h,
-                                        width: 150.w,
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey[300]!,
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: NetworkImage(provider
-                                                    .special_ads[index].image
-                                                    .toString()))),
-                                        child: Stack(
-                                          children: [
-                                            Align(
-                                              alignment: Alignment.topLeft,
-                                              child: IconButton(
-                                                onPressed: () {},
-                                                icon: Icon(
-                                                  Icons.star_rounded,
-                                                  color: Color(0xffFFCC46),
-                                                  size: 25.sp,
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => StoryPage(
+                                                      AdId: provider
+                                                          .special_ads[index]
+                                                          .id!,
+                                                    )),
+                                          );
+                                        },
+                                        child: CachedNetworkImage(
+                                          imageUrl: provider
+                                              .special_ads[index].image
+                                              .toString(),
+
+                                          imageBuilder:
+                                              (context, imageProvider) =>
+                                                  Container(
+                                            margin: EdgeInsets.only(left: 12.w),
+                                            height: 220.h,
+                                            width: 150.w,
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey[300]!,
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                image: DecorationImage(
+                                                    fit: BoxFit.cover,
+                                                    image: imageProvider)),
+                                            child: Stack(
+                                              children: [
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: IconButton(
+                                                    onPressed: () {},
+                                                    icon: Icon(
+                                                      Icons.star_rounded,
+                                                      color: Color(0xffFFCC46),
+                                                      size: 25.sp,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.only(
-                                                  bottom: 10.h, right: 5.w),
-                                              alignment: Alignment.bottomRight,
-                                              child: Row(
-                                                children: [
-                                                  provider
-                                                              .special_ads[
-                                                                  index]
-                                                              .advertiser!
-                                                              .imageProfile !=
-                                                          null
-                                                      ? CircleAvatar(
-                                                          backgroundColor:
-                                                              Colors.grey[300]!,
-                                                          radius: 14,
-                                                          backgroundImage:
-                                                              NetworkImage(provider
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      bottom: 10.h, right: 5.w),
+                                                  alignment:
+                                                      Alignment.bottomRight,
+                                                  child: Row(
+                                                    children: [
+                                                      provider
                                                                   .special_ads[
                                                                       index]
                                                                   .advertiser!
-                                                                  .imageProfile
-                                                                  .toString()),
-                                                        )
-                                                      : CircleAvatar(
-                                                          radius: 12.sp,
-                                                          backgroundColor:
-                                                              Color(0xff7B217E),
-                                                          child: Icon(
-                                                            Icons
-                                                                .person_rounded,
-                                                            color: Colors.white,
-                                                            size: 15.sp,
-                                                          )),
-                                                  SizedBox(
-                                                    width: 10.w,
+                                                                  .imageProfile !=
+                                                              null
+                                                          ? CircleAvatar(
+                                                              backgroundColor:
+                                                                  Colors.grey[
+                                                                      300]!,
+                                                              radius: 14,
+                                                              backgroundImage:
+                                                                  NetworkImage(provider
+                                                                      .special_ads[
+                                                                          index]
+                                                                      .advertiser!
+                                                                      .imageProfile
+                                                                      .toString()),
+                                                            )
+                                                          : CircleAvatar(
+                                                              radius: 12.sp,
+                                                              backgroundColor:
+                                                                  Color(
+                                                                      0xff7B217E),
+                                                              child: Icon(
+                                                                Icons
+                                                                    .person_rounded,
+                                                                color: Colors
+                                                                    .white,
+                                                                size: 15.sp,
+                                                              )),
+                                                      SizedBox(
+                                                        width: 10.w,
+                                                      ),
+                                                      Text(
+                                                        provider
+                                                            .special_ads[index]
+                                                            .advertiser!
+                                                            .name
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            color: Color(
+                                                                0xffFFFFFF),
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            fontSize: 10.sp),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  Text(
-                                                    provider.special_ads[index]
-                                                        .advertiser!.name
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        color:
-                                                            Color(0xffFFFFFF),
-                                                        fontWeight:
-                                                            FontWeight.w900,
-                                                        fontSize: 10.sp),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    );
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ));
                                   },
                                 ),
                               )
@@ -383,21 +396,21 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
                                         },
                                         child: Column(
                                           children: [
-                                            Container(
-                                              width: 130.w,
-                                              height: 190.h,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.grey[300]!,
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  image: DecorationImage(
-                                                      fit: BoxFit.cover,
-                                                      image: NetworkImage(
-                                                          provider
-                                                              .categories[index]
-                                                              .image
-                                                              .toString()))),
-                                            ),
+                                          CachedNetworkImage(
+                                          imageUrl: provider.categories[index].image.toString(),
+                                          imageBuilder: (context, imageProvider) =>  Container(
+                                            width: 130.w,
+                                            height: 190.h,
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey[300]!,
+                                                borderRadius:
+                                                BorderRadius.circular(5),
+                                                image: DecorationImage(
+                                                    fit: BoxFit.cover,
+                                                    image: imageProvider)),
+                                          ),),
+
+
                                             SizedBox(
                                               height: 10.h,
                                             ),
@@ -622,96 +635,98 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
                                                           )),
                                                 );
                                               },
-                                              child: Container(
-                                                margin:
-                                                    EdgeInsets.only(left: 12.w),
-                                                width: 130.w,
-                                                //height: 80.h,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.grey[300]!,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                    image: DecorationImage(
-                                                        fit: BoxFit.cover,
-                                                        image: NetworkImage(
-                                                            offerad[index]
-                                                                .image
-                                                                .toString()))),
+                                              child: CachedNetworkImage(
+                                                imageUrl:offerad[index].image.toString(),
+                                                imageBuilder: (context, imageProvider) =>   Container(
+                                                  margin:
+                                                  EdgeInsets.only(left: 12.w),
+                                                  width: 130.w,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.grey[300]!,
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          5),
+                                                      image: DecorationImage(
+                                                          fit: BoxFit.cover,
+                                                          image:imageProvider)),
 
-                                                child: Stack(
-                                                  children: [
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.topLeft,
-                                                      child: IconButton(
-                                                        onPressed: () {},
-                                                        icon: Icon(
-                                                          Icons.star_rounded,
-                                                          color:
-                                                              Color(0xffFFCC46),
-                                                          size: 25.sp,
+                                                  child: Stack(
+                                                    children: [
+                                                      Align(
+                                                        alignment:
+                                                        Alignment.topLeft,
+                                                        child: IconButton(
+                                                          onPressed: () {},
+                                                          icon: Icon(
+                                                            Icons.star_rounded,
+                                                            color:
+                                                            Color(0xffFFCC46),
+                                                            size: 25.sp,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    Container(
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 10.h,
-                                                          right: 5.w),
-                                                      alignment:
-                                                          Alignment.bottomRight,
-                                                      child: Row(
-                                                        children: [
-                                                          offerad[index]
-                                                                      .advertiser!
-                                                                      .imageProfile !=
-                                                                  null
-                                                              ? CircleAvatar(
-                                                                  radius: 14,
-                                                                  backgroundColor:
-                                                                      Colors.grey[
-                                                                          300]!,
-                                                                  backgroundImage: NetworkImage(offerad[
-                                                                          index]
-                                                                      .advertiser!
-                                                                      .imageProfile
-                                                                      .toString()),
-                                                                )
-                                                              : CircleAvatar(
-                                                                  radius: 12.sp,
-                                                                  backgroundColor:
-                                                                      Colors.grey[
-                                                                          300]!,
-                                                                  child: Icon(
-                                                                    Icons
-                                                                        .person_rounded,
-                                                                    color: Colors
-                                                                        .white,
-                                                                    size: 15.sp,
-                                                                  )),
-                                                          SizedBox(
-                                                            width: 10.w,
-                                                          ),
-                                                          Text(
+                                                      Container(
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 10.h,
+                                                            right: 5.w),
+                                                        alignment:
+                                                        Alignment.bottomRight,
+                                                        child: Row(
+                                                          children: [
                                                             offerad[index]
                                                                 .advertiser!
-                                                                .name
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                                color: Color(
-                                                                    0xffFFFFFF),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w900,
-                                                                fontSize:
-                                                                    10.sp),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
+                                                                .imageProfile !=
+                                                                null
+                                                                ? CircleAvatar(
+                                                              radius: 14,
+                                                              backgroundColor:
+                                                              Colors.grey[
+                                                              300]!,
+                                                              backgroundImage: NetworkImage(offerad[
+                                                              index]
+                                                                  .advertiser!
+                                                                  .imageProfile
+                                                                  .toString()),
+                                                            )
+                                                                : CircleAvatar(
+                                                                radius: 12.sp,
+                                                                backgroundColor:
+                                                                Colors.grey[
+                                                                300]!,
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .person_rounded,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  size: 15.sp,
+                                                                )),
+                                                            SizedBox(
+                                                              width: 10.w,
+                                                            ),
+                                                            Text(
+                                                              offerad[index]
+                                                                  .advertiser!
+                                                                  .name
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                  color: Color(
+                                                                      0xffFFFFFF),
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .w900,
+                                                                  fontSize:
+                                                                  10.sp),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),),
+
+
+
+
                                             );
                                           },
                                         ),
@@ -727,7 +742,8 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
                       ],
                     ),
             ),
-          );
+          ):
+            LoedWidget();
         }));
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -52,29 +53,28 @@ class PartScreen extends StatelessWidget{
               },
               child: Column(
                 children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10.w),
-                    width: 165.w,
-                    height: 250.h,
-                    decoration: BoxDecoration(
-                        color: Colors.grey[300]!,
-                        borderRadius: BorderRadius.circular(5),
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(provider.partCategories![index].image.toString())
-                        )
-                    ),
-
+                  CachedNetworkImage(
+                imageUrl: provider.partCategories![index].image.toString(),
+                imageBuilder: (context, imageProvider) => Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10.w),
+                  width: 165.w,
+                  height: 250.h,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[300]!,
+                      borderRadius: BorderRadius.circular(5),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image:imageProvider
+                      )
                   ),
+
+                ),),
                   SizedBox(height: 10.h,),
                   Center(
-                    child:  Text(provider.partCategories![index].name.toString(),style: TextStyle(
+                    child:Text(provider.partCategories![index].name.toString(),style: TextStyle(
                         color:  Color(0xff7B217E),
                         fontWeight: FontWeight.normal,
                         fontSize: 18.sp
-
-
-                      // fontSize: 18.sp
                     ),) ,
                   )
                 ],

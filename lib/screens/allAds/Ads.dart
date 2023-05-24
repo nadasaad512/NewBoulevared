@@ -1,5 +1,6 @@
 
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -98,14 +99,12 @@ class AdsScreen extends StatelessWidget{
                 return  provider.detalies![index].adType!.type=="special"?
                 InkWell(
                   onTap: (){
-
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
                               StoryPage(
                                 AdId:provider.detalies![index].id!,
-
                               )
                       ),
 
@@ -200,110 +199,106 @@ class AdsScreen extends StatelessWidget{
                     :
                 InkWell(
                   onTap: (){
-
-
-
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
                               StoryPage(
                                 AdId:provider.detalies![index].id!,
-
                               )
                       ),
-
-
-
                     );
-
-
                   },
-                  child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10.w,vertical: 10.h),
-                      width: 165.w,
-                      height: 170.h,
-                      decoration: BoxDecoration(
-                          color:Colors.grey[300]!,
-                          borderRadius: BorderRadius.circular(5),
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(provider.detalies![index].image!)
-                          )
-                      ),
-                      child:    Stack(
-                        children: [
-                          Center(
-                            child: CircleAvatar(
-                              radius: 30.sp,
-                              backgroundColor: Colors.purple.shade700,
+                  child: CachedNetworkImage(
+                    imageUrl: provider.detalies![index].image!.toString(),
+                    imageBuilder: (context, imageProvider) =>  Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10.w,vertical: 10.h),
+                        width: 165.w,
+                        height: 170.h,
+                        decoration: BoxDecoration(
+                            color:Colors.grey[300]!,
+                            borderRadius: BorderRadius.circular(5),
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(provider.detalies![index].image!)
+                            )
+                        ),
+                        child:    Stack(
+                          children: [
+                            Center(
+                              child: CircleAvatar(
+                                radius: 30.sp,
+                                backgroundColor: Colors.purple.shade700,
 
-                              child:TextButton(onPressed: ()
-                              {
+                                child:TextButton(onPressed: ()
+                                {
 
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          StoryPage(
-                                            AdId:provider.detalies![index].id!,
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            StoryPage(
+                                              AdId:provider.detalies![index].id!,
 
-                                          )
-                                  ),
-
-
-
-                                );
+                                            )
+                                    ),
 
 
-                              }, child: Icon(
 
-                                Icons.play_arrow_rounded ,
-
-                                size: 30.sp,
-                                color: Colors.white,
-                              ),),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                                bottom: 10.h,
-                                right: 5.w
-                            ),
-                            alignment: Alignment.bottomRight,
-                            child:Row(
-
-                              children: [
-                                provider.detalies![index].advertiser!.imageProfile!=null?
-
-                                CircleAvatar(radius: 14, backgroundImage:
+                                  );
 
 
-                                NetworkImage(provider.detalies![index].advertiser!.imageProfile!)
+                                }, child: Icon(
 
+                                  Icons.play_arrow_rounded ,
 
-                                ):
-                                CircleAvatar(radius: 12.sp,
-                                    backgroundColor: Color(0xff7B217E),
-                                    child: Icon(Icons.person_rounded,color: Colors.white,
-                                      size: 15.sp,)),
-                                SizedBox(width: 10.w,),
-                                Text(
-                                  provider.detalies![index].advertiser!.name!,style: TextStyle(
-                                    color:  Color(0xffFFFFFF),
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 10.sp
+                                  size: 30.sp,
+                                  color: Colors.white,
                                 ),),
-
-
-                              ],
+                              ),
                             ),
-                          )
-                        ],
-                      )
+                            Container(
+                              margin: EdgeInsets.only(
+                                  bottom: 10.h,
+                                  right: 5.w
+                              ),
+                              alignment: Alignment.bottomRight,
+                              child:Row(
+
+                                children: [
+                                  provider.detalies![index].advertiser!.imageProfile!=null?
+
+                                  CircleAvatar(radius: 14, backgroundImage:
 
 
-                  ),
+                                  NetworkImage(provider.detalies![index].advertiser!.imageProfile!)
+
+
+                                  ):
+                                  CircleAvatar(radius: 12.sp,
+                                      backgroundColor: Color(0xff7B217E),
+                                      child: Icon(Icons.person_rounded,color: Colors.white,
+                                        size: 15.sp,)),
+                                  SizedBox(width: 10.w,),
+                                  Text(
+                                    provider.detalies![index].advertiser!.name!,style: TextStyle(
+                                      color:  Color(0xffFFFFFF),
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 10.sp
+                                  ),),
+
+
+                                ],
+                              ),
+                            )
+                          ],
+                        )
+
+
+                    ),),
+
+
+
                 );
               },
 
