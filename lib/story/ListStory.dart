@@ -730,7 +730,7 @@ class _ListStoryScreenState extends State<ListStoryScreen> with SingleTickerProv
     final newPosition = builder(currentPosition!);
     newPosition<=Duration(hours:0,minutes: 0,seconds:10 )?start=true:start=false;
     newPosition>= controller.value.duration?end=true:end=false;
-    await  controller.seekTo(newPosition);
+    newPosition >= controller.value.duration ?null: await controller.seekTo(newPosition);
 
 
 

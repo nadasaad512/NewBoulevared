@@ -514,9 +514,13 @@ class _StoryPageState extends State<StoryPage>
     newPosition <= const Duration(hours: 0, minutes: 0, seconds: 10)
         ? start = true
         : start = false;
-    newPosition >= controller.value.duration ? end = true : end = false;
+    newPosition >= controller.value.duration
+       // ||newPosition<Duration(seconds: 10)
+        ? end = true : end = false;
+    print("newPosition");
+    print(newPosition);
 
-    await controller.seekTo(newPosition);
+    newPosition >= controller.value.duration ?null: await controller.seekTo(newPosition);
   }
 
   void _onTapDown2(TapDownDetails details, AppProvider provider) {
@@ -607,6 +611,8 @@ class _StoryPageState extends State<StoryPage>
   }
 
   void loadVideo(AppProvider provider) async {
+    print("provider.StroryData![CurrentPage].duration.toString()");
+    print(provider.StroryData![CurrentPage].duration.toString());
     end = false;
     start = false;
     animController.stop();
@@ -618,8 +624,7 @@ class _StoryPageState extends State<StoryPage>
     houres = int.parse(splitted[0]);
     mint = int.parse(splitted[1]);
     second = int.parse(splitted[2]);
-    animController.duration =
-        Duration(hours: houres, minutes: mint, seconds: second);
+    animController.duration = Duration(hours: houres, minutes: mint, seconds: second);
     animController.forward().whenComplete(() {
       setState(() {
         CurrentPage < provider.StroryData!.length - 1
