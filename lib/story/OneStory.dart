@@ -580,7 +580,6 @@ class _StoryPageState extends State<StoryPage>
           }
           animController.stop();
           animController.reset();
-
           animController.value = position / duration;
         }
         animController.forward().whenComplete(() {
