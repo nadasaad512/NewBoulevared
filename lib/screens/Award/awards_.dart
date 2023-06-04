@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -173,43 +174,46 @@ class AwardScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          margin: EdgeInsets.only(
-                            top: 10.h,
-                          ),
-                          height: 188.h,
-                          width: 323.w,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[300]!,
-                              borderRadius: BorderRadius.circular(5),
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                      provider. award![index].image.toString()))
 
-                          ),
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: Container(
-                              margin:
-                              EdgeInsets.only(top: 8.h, right: 8.w),
-                              height: 27.h,
-                              width: 58.w,
-                              decoration: BoxDecoration(
-                                  color: Color(0xff18499A),
-                                  borderRadius:
-                                  BorderRadius.circular(14)),
-                              child: Center(
-                                  child: Text(
-                                    "${provider.award![index].pointsCount} نقطة",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 10.sp),
-                                  )),
+                        CachedNetworkImage(
+                          imageUrl:provider. award![index].image.toString(),
+                          imageBuilder: (context, imageProvider) =>   Container(
+                            margin: EdgeInsets.only(
+                              top: 10.h,
                             ),
-                          ),
-                        ),
+                            height: 188.h,
+                            width: 323.w,
+                            decoration: BoxDecoration(
+                                color: Colors.grey[300]!,
+                                borderRadius: BorderRadius.circular(5),
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                        provider. award![index].image.toString()))
+
+                            ),
+                            child: Align(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                margin:
+                                EdgeInsets.only(top: 8.h, right: 8.w),
+                                height: 27.h,
+                                width: 58.w,
+                                decoration: BoxDecoration(
+                                    color: Color(0xff18499A),
+                                    borderRadius:
+                                    BorderRadius.circular(14)),
+                                child: Center(
+                                    child: Text(
+                                      "${provider.award![index].pointsCount} نقطة",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 10.sp),
+                                    )),
+                              ),
+                            ),
+                          ),),
                         SizedBox(
                           height: 20.h,
                         ),
