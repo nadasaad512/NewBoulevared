@@ -501,9 +501,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
                                           BorderRadius.circular(5),
                                           image: DecorationImage(
                                               fit: BoxFit.cover,
-                                              image: NetworkImage(provider
-                                                  .BestAds![index].image
-                                                  .toString()))),
+                                              image:imageProvider)),
 
                                       child: Stack(
                                         children: [

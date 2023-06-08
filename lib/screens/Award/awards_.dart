@@ -188,8 +188,7 @@ class AwardScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(5),
                                 image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                        provider. award![index].image.toString()))
+                                    image:imageProvider)
 
                             ),
                             child: Align(

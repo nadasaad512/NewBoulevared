@@ -24,8 +24,8 @@ class InfoScreen extends StatelessWidget{
                 Center(
                   child: CircleAvatar(
                     radius:77.sp,
-                      backgroundColor: Colors.white,
-                      backgroundImage: AssetImage("images/logo.png")
+                    //  backgroundColor: Colors.white,
+                      backgroundImage: AssetImage("images/basicLogo.png")
 
                   ),
                 ),

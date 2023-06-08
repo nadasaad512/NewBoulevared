@@ -16,7 +16,6 @@ class ConditionScreen extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: 20.w),
           child: SingleChildScrollView(
             child: Column(
-              // crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 SizedBox(
                   height: 24.h,
@@ -24,8 +23,8 @@ class ConditionScreen extends StatelessWidget {
                 Center(
                   child: CircleAvatar(
                       radius: 77.sp,
-                      backgroundColor: Colors.white,
-                      backgroundImage: const AssetImage("images/logo.png")),
+                     // backgroundColor: Colors.white,
+                      backgroundImage: const AssetImage("images/basicLogo.png")),
                 ),
                 SizedBox(
                   height: 20.h,

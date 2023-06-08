@@ -70,7 +70,7 @@ class BackGround extends StatelessWidget {
             child: CircleAvatar(
                 radius: 77.sp,
                 backgroundColor: Colors.white,
-                backgroundImage:  ExactAssetImage("images/bv2.png")
+                backgroundImage:ExactAssetImage("images/basicLogo.png")
 
             ))
       ],
