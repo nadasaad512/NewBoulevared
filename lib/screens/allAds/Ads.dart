@@ -220,7 +220,7 @@ class AdsScreen extends StatelessWidget{
                             borderRadius: BorderRadius.circular(5),
                             image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(provider.detalies![index].image!)
+                                image: imageProvider
                             )
                         ),
                         child:    Stack(

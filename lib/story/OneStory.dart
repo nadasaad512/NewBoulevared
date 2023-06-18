@@ -12,6 +12,7 @@ import 'package:video_player/video_player.dart';
 import 'package:wakelock/wakelock.dart';
 import '../provider/app_provider.dart';
 import '../screens/Profile/widget/AdaminAsUserShow.dart';
+import '../screens/maps/mapscreen.dart';
 
 class StoryPage extends StatefulWidget {
   int AdId;
@@ -339,13 +340,39 @@ class _StoryPageState extends State<StoryPage>
                                                   SizedBox(
                                                     height: 10.h,
                                                   ),
-                                                  MapScreen(
-                                                      latitud: double.parse(
-                                                          provider.alldata!
-                                                              .latitude!),
-                                                      longitud: double.parse(
-                                                          provider.alldata!
-                                                              .longitude!)),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      controller.pause();
+                                                      Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                GoogleMapPage(
+                                                                  latitude:double.parse(
+                                                                      provider.alldata!
+                                                                          .latitude!),
+                                                                  longitude:double.parse(
+                                                                      provider.alldata!
+                                                                          .longitude!),
+                                                                  onlyView: true,
+                                                                )),
+                                                      );
+                                                    },
+                                                    child: SizedBox(
+                                                      height: 150.h,
+                                                      child: GoogleMapPage(
+                                                        latitude:double.parse(
+                                                            provider.alldata!
+                                                                .latitude!),
+                                                        longitude: double.parse(
+                                                            provider.alldata!
+                                                                .longitude!),
+                                                        onlyView: true,
+
+                                                      ),
+                                                    ),
+                                                  ),
+
                                                   SizedBox(
                                                     height: 10.h,
                                                   ),
@@ -464,13 +491,14 @@ class _StoryPageState extends State<StoryPage>
                                         margin: EdgeInsets.symmetric(
                                             vertical: 4.h, horizontal: 12.w),
                                         child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             SvgPicture.asset("images/show.svg"),
                                             SizedBox(
                                               width: 10.w,
                                             ),
                                             const Text(
-                                              'اسحب للأعلى لمعرفة المزيد عن الإعلان',
+                                              'اضغط لمعرفة المزيد عن الإعلان',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 16),
@@ -535,7 +563,9 @@ class _StoryPageState extends State<StoryPage>
           Navigator.pop(context);
         }
       } else {
-        forward5Seconds();
+
+        controller.value.isInitialized?
+        forward5Seconds():null;
         if (controller.value.isInitialized) {
           final int duration = controller.value.duration.inMilliseconds;
           final int position = controller.value.position.inMilliseconds;
@@ -550,7 +580,7 @@ class _StoryPageState extends State<StoryPage>
           animController.reset();
           animController.value = position / duration;
         }
-
+        controller.value.isInitialized?
         animController.forward().whenComplete(() {
           if (CurrentPage < provider.StroryData!.length - 1) {
             pageController.jumpToPage(CurrentPage + 1);
@@ -558,7 +588,7 @@ class _StoryPageState extends State<StoryPage>
             controller.dispose();
             Navigator.pop(context);
           }
-        });
+        }):null;
       }
     } else if (dx > 2 * screenWidth / 3) {
       if (start) {
@@ -610,8 +640,6 @@ class _StoryPageState extends State<StoryPage>
   }
 
   void loadVideo(AppProvider provider) async {
-    print("provider.StroryData![CurrentPage].duration.toString()");
-    print(provider.StroryData![CurrentPage].duration.toString());
     end = false;
     start = false;
     animController.stop();
@@ -624,6 +652,7 @@ class _StoryPageState extends State<StoryPage>
     mint = int.parse(splitted[1]);
     second = int.parse(splitted[2]);
     animController.duration = Duration(hours: houres, minutes: mint, seconds: second);
+
     animController.forward().whenComplete(() {
       setState(() {
         CurrentPage < provider.StroryData!.length - 1
@@ -666,17 +695,17 @@ class _StoryPageState extends State<StoryPage>
 
   Widget Social(
       {required String link,
-      required String image,
-      BuildContext? context,
-      isWhatsapp = false}) {
+        required String image,
+        BuildContext? context,
+        isWhatsapp = false}) {
     return InkWell(
         onTap: () {
           if (isWhatsapp) {
-            controller.pause();
+            animController.stop();
+            openWhatsApp(phoneNumber: link);
+          } else {
             animController.stop();
             launch(link);
-          } else {
-            _launchWhatsapp(context: context, number: link);
           }
         },
         child: SvgPicture.asset(image));
@@ -756,17 +785,13 @@ class _StoryPageState extends State<StoryPage>
     }
   }
 
-  _launchWhatsapp({number, context}) async {
-    var whatsapp = number;
-    var whatsappAndroid = Uri.parse("?phone=$whatsapp&text=hello");
-    if (await canLaunchUrl(whatsappAndroid)) {
-      await launchUrl(whatsappAndroid);
+  void openWhatsApp({required String phoneNumber}) async {
+    String url = "https://wa.me/$phoneNumber/?text=${Uri.encodeComponent("")}";
+
+    if (await canLaunch(url)) {
+      await launch(url);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("WhatsApp is not installed on the device"),
-        ),
-      );
+      throw 'Could not launch $url';
     }
   }
 

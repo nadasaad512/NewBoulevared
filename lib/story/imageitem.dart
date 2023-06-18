@@ -10,6 +10,7 @@ import '../models/detalies.dart';
 import '../screens/Details/ad_story_screen.dart';
 import '../screens/Profile/widget/AdaminAsUserShow.dart';
 import '../screens/maps/location.dart';
+import '../screens/maps/mapscreen.dart';
 
 class ImageStoryScreen extends StatefulWidget {
   story1 StroryData;
@@ -17,6 +18,7 @@ class ImageStoryScreen extends StatefulWidget {
   int currentPage;
   List<story1> data;
   Ads ad;
+
   ImageStoryScreen({
     required this.StroryData,
     required this.animController,
@@ -24,6 +26,7 @@ class ImageStoryScreen extends StatefulWidget {
     required this.data,
     required this.ad,
   });
+
   @override
   State<ImageStoryScreen> createState() => _ImageStoryScreenState();
 }
@@ -32,6 +35,7 @@ class _ImageStoryScreenState extends State<ImageStoryScreen>
     with SingleTickerProviderStateMixin {
   double heightImg = 0;
   double widthImg = 0;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -101,32 +105,34 @@ class _ImageStoryScreenState extends State<ImageStoryScreen>
                   },
                   child: Row(
                     children: [
-                      widget.ad.advertiser==null?
-                          SizedBox.shrink():
-                  widget.ad.advertiser!.imageProfile == null?
-                  CircleAvatar(radius: 21.sp,
-                      backgroundColor: Color(0xff7B217E),
-                      child: Icon(Icons.person_rounded,color: Colors.white,
-                        size: 15.sp,)):
-                      CircleAvatar(
-                          radius: 21.sp,
-                          backgroundImage:
-                              NetworkImage(
-                                      widget.ad.advertiser!.imageProfile.toString())
-                                  ),
-
+                      widget.ad.advertiser == null
+                          ? SizedBox.shrink()
+                          : widget.ad.advertiser!.imageProfile == null
+                              ? CircleAvatar(
+                                  radius: 21.sp,
+                                  backgroundColor: Color(0xff7B217E),
+                                  child: Icon(
+                                    Icons.person_rounded,
+                                    color: Colors.white,
+                                    size: 15.sp,
+                                  ))
+                              : CircleAvatar(
+                                  radius: 21.sp,
+                                  backgroundImage: NetworkImage(widget
+                                      .ad.advertiser!.imageProfile
+                                      .toString())),
                       SizedBox(
                         width: 10.w,
                       ),
-                      widget.ad.advertiser==null?
-                          SizedBox.shrink():
-                      Text(
-                        widget.ad.advertiser!.name.toString(),
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                            fontSize: 16.sp),
-                      ),
+                      widget.ad.advertiser == null
+                          ? SizedBox.shrink()
+                          : Text(
+                              widget.ad.advertiser!.name.toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  fontSize: 16.sp),
+                            ),
                     ],
                   ),
                 ),
@@ -231,9 +237,29 @@ class _ImageStoryScreenState extends State<ImageStoryScreen>
                             SizedBox(
                               height: 10.h,
                             ),
-                            MapScreen(
-                                latitud: double.parse(ad.latitude!),
-                                longitud: double.parse(ad.longitude!)),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                      GoogleMapPage(
+                                        latitude:  double.parse(ad.latitude!),
+                                        longitude: double.parse(ad.longitude!),
+                                        onlyView: true,
+                                      )),
+                                );
+                              },
+                              child: SizedBox(
+                                height: 150.h,
+                                child: GoogleMapPage(
+                                    latitude:  double.parse(ad.latitude!),
+                                    longitude: double.parse(ad.longitude!),
+                                  onlyView: true,
+
+                                  ),
+                              ),
+                            ),
                             SizedBox(
                               height: 10.h,
                             ),
@@ -313,15 +339,18 @@ class _ImageStoryScreenState extends State<ImageStoryScreen>
                 child: Container(
                   margin: EdgeInsets.symmetric(vertical: 4.h, horizontal: 12.w),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SvgPicture.asset("images/show.svg"),
                       SizedBox(
                         width: 10.w,
                       ),
-                      const Text(
-                        'اسحب للأعلى لمعرفة المزيد عن الإعلان',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 16),
+                      Center(
+                        child: Text(
+                          'اضغط لمعرفة المزيد عن الإعلان',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 16),
+                        ),
                       )
                     ],
                   ),
@@ -332,21 +361,6 @@ class _ImageStoryScreenState extends State<ImageStoryScreen>
         ],
       ),
     );
-  }
-
-  Future<Size> _calculateImageDimension({required String image1}) {
-    Completer<Size> completer = Completer();
-    Image image = Image.network(image1);
-    image.image.resolve(const ImageConfiguration()).addListener(
-      ImageStreamListener(
-        (ImageInfo image, bool synchronousCall) {
-          var myImage = image.image;
-          Size size = Size(myImage.width.toDouble(), myImage.height.toDouble());
-          completer.complete(size);
-        },
-      ),
-    );
-    return completer.future;
   }
 
   Widget Detatlies({required String name, required String image}) {
@@ -386,9 +400,10 @@ class _ImageStoryScreenState extends State<ImageStoryScreen>
         onTap: () {
           if (isWhatsapp) {
             widget.animController.stop();
-            launch(link);
+            openWhatsApp(phoneNumber: link);
           } else {
-            _launchWhatsapp(context: context, number: link);
+            widget.animController.stop();
+            launch(link);
           }
         },
         child: SvgPicture.asset(image));
@@ -403,16 +418,12 @@ class _ImageStoryScreenState extends State<ImageStoryScreen>
   }
 }
 
-_launchWhatsapp({number, context}) async {
-  var whatsapp = number;
-  var whatsappAndroid = Uri.parse("?phone=$whatsapp&text=hello");
-  if (await canLaunchUrl(whatsappAndroid)) {
-    await launchUrl(whatsappAndroid);
+void openWhatsApp({required String phoneNumber}) async {
+  String url = "https://wa.me/$phoneNumber/?text=${Uri.encodeComponent("")}";
+
+  if (await canLaunch(url)) {
+    await launch(url);
   } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("WhatsApp is not installed on the device"),
-      ),
-    );
+    throw 'Could not launch $url';
   }
 }

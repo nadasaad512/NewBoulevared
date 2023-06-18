@@ -63,7 +63,7 @@ class ImagesApiController with Helpers {
     multiPartRequest.fields['ad_type_id'] = ad_type_id;
     multiPartRequest.fields['category_id'] = category_id;
     multiPartRequest.fields['city_id'] = city_id;
-    multiPartRequest.fields['details_en'] = details_ar;
+    multiPartRequest.fields['details_ar'] = details_ar;
     multiPartRequest.fields['latitude'] = lat.toString();
     multiPartRequest.fields['longitude'] = lon.toString();
     multiPartRequest.fields['store_url'] = store_url;
@@ -171,7 +171,7 @@ class ImagesApiController with Helpers {
       'latitude': lat.toString(),
       'longitude': lon.toString(),
       'city_id': idCity,
-      'details_en': details_ar,
+      'details_ar': details_ar,
       'ad_id': ad_id,
       'ad_type_id': adTypeid.toString(),
       'store_url': store_url,

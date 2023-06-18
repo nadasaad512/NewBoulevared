@@ -41,7 +41,7 @@ class _FieldScreenState extends State<FieldScreen> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50.h,
+      height: 70.h,
       width: 343.w,
       child: TextFormField(
         validator: (v) => widget.vali ? widget.validation!(v) : null,

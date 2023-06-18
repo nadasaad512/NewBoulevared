@@ -113,6 +113,8 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
       idActive=ad.category!.id.toString();
       id=ad.city!.id!.toString();
       info.text=ad.details.toString();
+      lat=double.parse(ad.latitude!);
+      lon=double.parse(ad.longitude!);
       location=ad.latitude.toString()+ad.longitude.toString();
       _selected1=
       ad.category!=null?
@@ -932,11 +934,10 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                           SizedBox(height: 14.h,),
                           FieldScreen(title: "الفيس بوك",controller: face,isicon: true,icon:"images/facebook.svg" ,),
                           SizedBox(height: 12.h,),
-                          FieldScreen(title: "الواتس أب",controller: whatsup,isicon: true,icon:"images/whatsapp.svg"),
+                          FieldScreen(title: "الواتس أب مع مقدمة بلدك",controller: whatsup,isicon: true,icon:"images/whatsapp.svg",),
                           SizedBox(height: 12.h,),
                           FieldScreen(title: "الانستجرام",controller: insta,isicon: true,icon:"images/instegram.svg"),
                           SizedBox(height: 12.h,),
-
                           FieldScreen(title: "تويتر",controller: twita,isicon: true,icon:"images/twitter.svg"),
                           SizedBox(height: 22.h,),
                           Center(
@@ -2236,6 +2237,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
        category_id: idActive.toString(),
        city_id: id.toString(),
        details_ar: info.text,
+
      width: width,
      height: height,
      uploadEvent: (status,massege,ad){

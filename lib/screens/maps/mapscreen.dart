@@ -75,7 +75,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
     if (widget.latitude != null)
       BitmapDescriptor.fromAssetImage(
         ImageConfiguration(),
-        'images/logo2.png',
+        '',
       ).then((val) {
         setState(() {
           _markerIcon = val;
@@ -93,7 +93,8 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
     latLng = LatLng(widget.latitude ?? 24.633333, widget.longitude ??  46.716667);
     initialLocation = CameraPosition(
       target: latLng,
-      zoom: 14.5,
+      zoom:widget.onlyView == true?
+          10:14.5,
     );
     loadMarkerIcon();
     super.initState();
@@ -105,7 +106,8 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
       appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: Padding(
+          leading:  widget.onlyView == true
+              ? Center():Padding(
             padding: const EdgeInsets.only(left: 7, right: 7),
             child: IconButton(
               onPressed: () {
@@ -127,7 +129,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
             myLocationButtonEnabled: false,
             mapType: MapType.normal,
             initialCameraPosition: initialLocation,
-            zoomControlsEnabled: false,
+            zoomControlsEnabled:  widget.onlyView==true?true:false,
             onMapCreated: (GoogleMapController controller) async {
               _controller = controller;
             },
@@ -159,6 +161,8 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                        await pickLocation();
                       }),
                 ),
+          widget.onlyView == true
+              ? Center():
           Positioned(
             bottom: 87,
             right: 20,
@@ -208,15 +212,17 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                   ),
             ),
           ),
-          widget.onlyView == true
-              ? Center()
-              : Center(
+
+             Center(
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 55),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset('images/location1.png',scale: 5.sp,color: Color(0xff7B217E)),
+                        Image.asset('images/location1.png',scale:
+                        widget.onlyView == true
+                            ? 10.sp:
+                        5.sp,color: Color(0xff7B217E)),
 
                         SizedBox(height: 10),
                         Container(
