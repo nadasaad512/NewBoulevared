@@ -300,8 +300,6 @@ login(BuildContext context) async {
   getAlldataForStory({required int id}) async{
     story = null;
     alldata = null;
-
-
     story= await UserApiController().AdDetalies(idAD:id );
     alldata=story;
     notifyListeners();

@@ -11,6 +11,7 @@ import '../screens/Details/ad_story_screen.dart';
 import '../screens/Profile/widget/AdaminAsUserShow.dart';
 import '../screens/maps/location.dart';
 import '../screens/maps/mapscreen.dart';
+import '../utils/helpers.dart';
 
 class ImageStoryScreen extends StatefulWidget {
   story1 StroryData;
@@ -32,7 +33,7 @@ class ImageStoryScreen extends StatefulWidget {
 }
 
 class _ImageStoryScreenState extends State<ImageStoryScreen>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin , Helpers{
   double heightImg = 0;
   double widthImg = 0;
 
@@ -237,27 +238,31 @@ class _ImageStoryScreenState extends State<ImageStoryScreen>
                             SizedBox(
                               height: 10.h,
                             ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                      GoogleMapPage(
-                                        latitude:  double.parse(ad.latitude!),
-                                        longitude: double.parse(ad.longitude!),
-                                        onlyView: true,
-                                      )),
-                                );
+                            GestureDetector(
+                              onTap: () async{
+                                String googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=${double.parse(
+                                               ad.latitude!)},'
+                                    '${double.parse(ad.longitude!)}';
+
+                                if (await canLaunch(googleMapsUrl)) {
+                                await launch(googleMapsUrl);
+                                } else {
+                                throw 'Could not open the map.';
+                                }
+
                               },
-                              child: SizedBox(
+                              child: Container(
                                 height: 150.h,
                                 child: GoogleMapPage(
-                                    latitude:  double.parse(ad.latitude!),
-                                    longitude: double.parse(ad.longitude!),
+                                  latitude:double.parse(
+                                      ad.latitude!),
+                                  longitude: double.parse(
+                                      ad.longitude!),
                                   onlyView: true,
 
-                                  ),
+
+
+                                ),
                               ),
                             ),
                             SizedBox(
@@ -419,11 +424,9 @@ class _ImageStoryScreenState extends State<ImageStoryScreen>
 }
 
 void openWhatsApp({required String phoneNumber}) async {
-  String url = "https://wa.me/$phoneNumber/?text=${Uri.encodeComponent("")}";
 
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
-  }
+
+  launchUrl(Uri.parse(
+      "whatsapp://send?phone=${phoneNumber}&text=${"Hi"}"));
+
 }

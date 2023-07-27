@@ -249,7 +249,10 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                             provider.user!.instagram !=
                                                 null
                                                 ? InkWell(
+
                                               onTap: () {
+
+
                                                 launch(provider.user!
                                                     .instagram!);
                                               },
@@ -265,8 +268,9 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                                 null
                                                 ? InkWell(
                                               onTap: () {
-                                                launch(provider.user!
-                                                    .whatsapp!);
+
+                                                launchUrl(Uri.parse(
+                                                    "whatsapp://send?phone=${provider.user!.mobile ?? ""}&text=${"Hi"}"));
                                               },
                                               child: SvgPicture
                                                   .asset(

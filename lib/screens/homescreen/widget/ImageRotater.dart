@@ -59,7 +59,7 @@ class _CasualImageSliderState extends State<CasualImageSlider> {
           onPageChanged: (index) => setState(() => _currentIndex = index),
           children:
           widget.imageUrls.map((url) => Container(
-            margin: EdgeInsets.symmetric(horizontal: 5.w),
+          
               child: Image.network(url.image.toString(),fit: BoxFit.cover,))).toList(),
         ),
         Positioned(

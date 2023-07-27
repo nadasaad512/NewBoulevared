@@ -30,13 +30,10 @@ class SpeciaScreen extends StatelessWidget{
                   SliverGridDelegateWithFixedCrossAxisCount(
                       childAspectRatio: 98.w / 160.h,
                       crossAxisCount: 2,
-                     // crossAxisSpacing: 13.w,
                       mainAxisSpacing: 14.h
 
                   ),
-                 // physics: NeverScrollableScrollPhysics(),
-
-                 shrinkWrap: true,
+                  shrinkWrap: true,
                   itemBuilder: (BuildContext, index){
                     return  InkWell(
                       onTap: (){

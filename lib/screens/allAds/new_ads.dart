@@ -64,6 +64,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
   TextEditingController face = TextEditingController();
   TextEditingController twita = TextEditingController();
   TextEditingController whatsup = TextEditingController();
+  TextEditingController whatsup2 = TextEditingController();
   TextEditingController insta = TextEditingController();
   TextEditingController link = TextEditingController();
   TextEditingController info = TextEditingController();
@@ -868,7 +869,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                             child: InkWell(
                                 onTap: ()async{
                                   final  result = await
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => GoogleMapPage(onlyView:false ,)),);
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => GoogleMapPage(onlyView:false ,  isArrow: true,)),);
                                   if (!mounted) return;
                                   setState(() {
                                     location=result['address'];
@@ -934,7 +935,8 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                           SizedBox(height: 14.h,),
                           FieldScreen(title: "الفيس بوك",controller: face,isicon: true,icon:"images/facebook.svg" ,),
                           SizedBox(height: 12.h,),
-                          FieldScreen(title: "الواتس أب مع مقدمة بلدك",controller: whatsup,isicon: true,icon:"images/whatsapp.svg",),
+
+                          FieldScreen(title: "966xxx",controller: whatsup,isicon: true,icon:"images/whatsapp.svg",),
                           SizedBox(height: 12.h,),
                           FieldScreen(title: "الانستجرام",controller: insta,isicon: true,icon:"images/instegram.svg"),
                           SizedBox(height: 12.h,),
@@ -1882,7 +1884,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                               child: InkWell(
                                   onTap: ()async{
                                     final  result = await
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => GoogleMapPage(onlyView:false ,)),);
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => GoogleMapPage(onlyView:false ,isArrow: true,)),);
                                     if (!mounted) return;
                                     setState(() {
                                       location=result['address'];
@@ -1947,7 +1949,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                             SizedBox(height: 14.h,),
                             FieldScreen(title: "الفيس بوك",controller: face,isicon: true,icon:"images/facebook.svg" ,),
                             SizedBox(height: 12.h,),
-                            FieldScreen(title: "الواتس أب",controller: whatsup,isicon: true,icon:"images/whatsapp.svg"),
+                            FieldScreen(title: "966xxx",controller: whatsup,isicon: true,icon:"images/whatsapp.svg",),
                             SizedBox(height: 12.h,),
                             FieldScreen(title: "الانستجرام",controller: insta,isicon: true,icon:"images/instegram.svg"),
                             SizedBox(height: 12.h,),
@@ -1991,6 +1993,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
                                   children:[
                                     Expanded(child:  ElevatedButton(
                                       onPressed: () {
+
                                         setState(() {
                                           _currentPage >0 ? _pageController.jumpToPage(_currentPage-1):null;
                                           num.remove(1);
@@ -2215,9 +2218,6 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
     setState(() {
       progg=true;
     });
-    print(idActive.toString(),);
-    print(type.toString(),);
-    print(id.toString(),);
 
  await ImagesApiController().
       uploadImage(
@@ -2226,7 +2226,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
         lat: lat,
        lon: lon,
        facebook:face.text ,
-        whatsapp:whatsup.text ,
+        whatsapp:"+${whatsup.text}" ,
        instagram: insta.text,
        twitter: twita.text,
        store_url:link.text ,
@@ -2281,7 +2281,7 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers{
         lon: lon,
         adTypeid: adType,
         facebook:face.text ,
-        whatsapp:whatsup.text ,
+        whatsapp:whatsup.text.contains('+')? whatsup.text:"+${whatsup.text}",
         instagram: insta.text,
         twitter: twita.text,
         store_url:link.text ,

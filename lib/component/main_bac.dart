@@ -13,6 +13,7 @@ import '../loed/loed.dart';
 import '../models/setting.dart';
 import '../models/user.dart';
 import '../provider/app_provider.dart';
+import '../screens/homescreen/widget/ImageRotater.dart';
 
 class Back_Ground extends StatefulWidget {
   final Widget child;
@@ -21,6 +22,7 @@ class Back_Ground extends StatefulWidget {
   final bool Bar;
   final bool edit;
   final bool eror;
+  final bool home;
   final bool EditAdmain;
   final bool ad;
   String? backRout;
@@ -33,6 +35,7 @@ class Back_Ground extends StatefulWidget {
       this.Bar = false,
       this.eror = false,
       this.edit = false,
+      this.home = false,
       this.EditAdmain = false,
       this.backRout,
       this.ad = false})
@@ -63,7 +66,7 @@ class _Back_GroundState extends State<Back_Ground> {
   }
 
 
-
+  final ScrollController _scrollController = ScrollController();
   bool progss = false;
 
   @override
@@ -299,7 +302,10 @@ class _Back_GroundState extends State<Back_Ground> {
                    ],
                  ),
                ),
-               child: Container(
+               child:
+               widget. home==true?
+                   SizedBox.shrink():
+               Container(
                  margin: EdgeInsets.only(
                      bottom: widget.eror ? 680.h : 600.h,
                      left: 10.w,
@@ -580,15 +586,312 @@ class _Back_GroundState extends State<Back_Ground> {
                  ),
                ),
              ),
+
+            widget. home==true?
+             provider.banners.isNotEmpty
+                 ? SizedBox(
+                     height: 250.h,
+                     child: CasualImageSlider(
+                         scrollController: _scrollController,
+                         imageUrls: provider.banners))
+                 : SizedBox.shrink():
+                   SizedBox.shrink(),
+             widget. home==true?
+             Container(
+               margin: EdgeInsets.only(
+                   bottom: widget.eror ? 680.h : 600.h,
+                   left: 10.w,
+                   right: 10.w,
+                 top: 35
+               ),
+               child: Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: [
+
+                   IconButton(
+                       onPressed: () {
+                         _key.currentState!.openDrawer();
+                       },
+                       icon: const Icon(
+                         Icons.menu,
+                         color: Colors.white,
+                         size: 30,
+                       )),
+                   SizedBox(width: 80.w,),
+                   Text(
+                     widget.childTab,
+                     style: TextStyle(
+                         color: Colors.white,
+                         fontSize: 16.sp,
+                         fontWeight: FontWeight.w700),
+                   ),
+                   const Spacer(),
+
+                   widget.ad == true
+                       ?
+                   provider.user!=null?
+                   provider.user!.type == "advertiser"
+                       ? IconButton(
+                       onPressed: () {
+                         Navigator.pushNamed(
+                             context, '/NewAdsScreen');
+                       },
+                       icon: const Icon(
+                         Icons.add,
+                         color: Colors.white,
+                       ))
+                       :SizedBox.shrink()
+                       : SizedBox.shrink():
+                   SizedBox.shrink(),
+
+
+
+                   widget.back == true
+                       ? IconButton(
+                       onPressed: () {
+
+                         Navigator.pushNamed(context, '/MainScreen');
+                       },
+                       icon: const Icon(
+                         Icons.arrow_forward_ios_rounded,
+                         color: Colors.white,
+                         size: 20,
+                       ))
+                       : const Text(""),
+                   widget.edit == true
+                       ? IconButton(
+                     onPressed: () {
+                       {
+                         NameTextController.text =
+                             provider.user!.name;
+                         phoneTextController.text =
+                             provider.user!.mobile;
+                         emailTextController.text =
+                             provider.user!.email;
+
+                         widget.EditAdmain == false
+                             ? showModalBottomSheet(
+                           context: context,
+                           shape:
+                           const RoundedRectangleBorder(
+                             // <-- SEE HERE
+                               borderRadius:
+                               BorderRadius.only(
+                                 topRight: Radius.circular(15),
+                                 topLeft: Radius.circular(15),
+                               )),
+                           builder: (context) {
+                             return StatefulBuilder(builder:
+                                 (BuildContext context,
+                                 StateSetter setState) {
+                               return Container(
+                                   margin:
+                                   EdgeInsets.symmetric(
+                                       horizontal: 16.w,
+                                       vertical: 16.h),
+                                   decoration:
+                                   const BoxDecoration(
+                                       borderRadius:
+                                       BorderRadius
+                                           .only(
+                                         topRight:
+                                         Radius.circular(15),
+                                         topLeft:
+                                         Radius.circular(15),
+                                       )),
+                                   height: 520.h,
+                                   width: double.infinity,
+                                   alignment:
+                                   Alignment.center,
+                                   child: ListView(
+                                     children: [
+                                       Row(
+                                         mainAxisAlignment:
+                                         MainAxisAlignment
+                                             .spaceBetween,
+                                         children: [
+                                           SizedBox(
+                                             width: 30.w,
+                                           ),
+                                           Text(
+                                             "تعديل الملف الشخصي",
+                                             style: TextStyle(
+                                                 color: const Color(
+                                                     0xff7B217E),
+                                                 fontSize:
+                                                 18.sp,
+                                                 fontWeight:
+                                                 FontWeight
+                                                     .w600),
+                                           ),
+                                           IconButton(
+                                             onPressed: () {
+                                               Navigator.pop(
+                                                   context);
+                                               select
+                                                   ? Navigator
+                                                   .pop(
+                                                   context)
+                                                   : null;
+                                             },
+                                             icon: SvgPicture
+                                                 .asset(
+                                                 "images/close.svg"),
+                                           ),
+                                         ],
+                                       ),
+                                       InkWell(
+                                         onTap: () async {
+                                           _pickedFile =
+                                           await _imagePicker
+                                               .getImage(
+                                             source:
+                                             ImageSource
+                                                 .gallery,
+                                           );
+                                           if (_pickedFile !=
+                                               null) {
+                                             setState(() {});
+                                           }
+                                         },
+                                         child: Center(
+                                           child: Container(
+                                             height: 132.h,
+                                             width: 132.w,
+                                             decoration: BoxDecoration(
+                                                 color:Color(0xff7B217E),
+                                                 shape: BoxShape.circle,
+                                                 image: _pickedFile != null
+                                                     ? DecorationImage(
+                                                     fit: BoxFit.cover,
+                                                     image: FileImage(
+                                                       File(_pickedFile!.path),
+                                                     ))
+                                                     : DecorationImage(fit: BoxFit.cover, image: NetworkImage(provider.user!.imageProfile.toString()))
+
+                                               //:null
+
+                                             ),
+                                             child: Align(
+                                                 alignment:
+                                                 Alignment
+                                                     .bottomRight,
+                                                 child:
+                                                 CircleAvatar(
+                                                   backgroundColor:
+                                                   const Color(
+                                                       0xff7B217E),
+                                                   radius:
+                                                   16.sp,
+                                                   child:
+                                                   Icon(
+                                                     Icons
+                                                         .add,
+                                                     size: 16
+                                                         .sp,
+                                                     color: Colors
+                                                         .white,
+                                                   ),
+                                                 )),
+                                           ),
+                                         ),
+                                       ),
+                                       SizedBox(
+                                         height: 22.h,
+                                       ),
+                                       FieldScreen(
+                                         title: provider.user!.name,
+                                         controller:
+                                         NameTextController,
+                                       ),
+                                       SizedBox(
+                                         height: 16.h,
+                                       ),
+                                       FieldScreen(
+                                         title: provider.user!.mobile,
+                                         controller:
+                                         phoneTextController,
+                                       ),
+                                       SizedBox(
+                                         height: 16.h,
+                                       ),
+                                       FieldScreen(
+                                         title:provider.user!.email,
+                                         controller:
+                                         emailTextController,
+                                       ),
+                                       SizedBox(
+                                         height: 28.h,
+                                       ),
+                                       ElevatedButton(
+                                         onPressed:
+                                             () async {
+                                           setState(() {
+                                             progss = true;
+                                           });
+                                           await Edit(
+                                               image: _pickedFile !=
+                                                   null
+                                                   ? _pickedFile!
+                                                   .path
+                                                   : null);
+                                           setState(() {});
+                                         },
+                                         style:
+                                         ElevatedButton
+                                             .styleFrom(
+                                           backgroundColor:
+                                           const Color(
+                                               0xff7B217E),
+                                           minimumSize: Size(
+                                               double
+                                                   .infinity,
+                                               50.h),
+                                         ),
+                                         child: progss
+                                             ? const CircularProgressIndicator(
+                                           color: Colors
+                                               .white,
+                                         )
+                                             : Text(
+                                           'تعديل الملف الشخصي',
+                                           style: TextStyle(
+                                               fontWeight:
+                                               FontWeight
+                                                   .w700,
+                                               fontSize:
+                                               18.sp),
+                                         ),
+                                       ),
+                                       SizedBox(
+                                         height: 300.h,
+                                       ),
+                                     ],
+                                   ));
+                             });
+                           },
+                         )
+                             : Navigator.pushReplacementNamed(
+                             context, '/EditAdmainScreen');
+                       }
+                     },
+                     icon: SvgPicture.asset("images/edit.svg"),
+                   )
+                       : const Text(""),
+                 ],
+               ),
+             ):SizedBox.shrink(),
              Container(
                  width: double.infinity,
                  height: double.infinity,
-                 margin: EdgeInsets.only(top: 90.h),
+                 margin:
+                 widget. home==true? EdgeInsets.only(top: 250.h):
+                EdgeInsets.only(top: 90.h),
                  decoration: const BoxDecoration(
                    color: Colors.white,
                    borderRadius: BorderRadius.only(
-                     topRight: Radius.circular(15),
-                     topLeft: Radius.circular(15),
+                     topRight: Radius.circular(5),
+                     topLeft: Radius.circular(5),
                    ),
                  ),
                  child: widget.child),

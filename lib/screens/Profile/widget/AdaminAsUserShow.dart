@@ -239,9 +239,11 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                                   child: Column(
                                     children: [
                                       InkWell(
-                                        onTap: () {
-                                          launch(
-                                              "whatsapp://send?phone=${provider.advertiser!.mobile}&text=${"Hi"}");
+                                        onTap: () async{
+
+
+                                          launchUrl(Uri.parse(
+                                              "whatsapp://send?phone=${provider.advertiser!.whatsapp}&text=${"Hi"}"));
 
                                         },
                                         child: Detatlies(
@@ -276,18 +278,30 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                                         mainAxisAlignment:
                                         MainAxisAlignment.center,
                                         children: [
+
+                                          provider.advertiser!.twitter !=
+                                              null
+                                              ? InkWell(
+                                            onTap: () {
+                                              launch(provider.advertiser!
+                                                  .twitter!);
+                                            },
+                                            child: SvgPicture
+                                                .asset(
+                                                "images/twitter.svg"),
+                                          )
+                                              : const Text(""),
                                           SizedBox(
                                             width: 26.w,
                                           ),
                                           provider.advertiser!.instagram != null
                                               ? InkWell(
                                             onTap: () {
-
-
                                               launch(provider.advertiser!.instagram.toString());
                                             },
-                                            child: SvgPicture.asset(
-                                                "images/insnapshot.data!.instagram!stegram.svg"),
+                                            child:SvgPicture
+                                                .asset(
+                                                "images/instegram.svg"),
                                           )
                                               : const Text(""),
                                           SizedBox(
@@ -295,8 +309,11 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                                           ),
                                           provider.advertiser!.whatsapp != null
                                               ? InkWell(
-                                            onTap: () {
-                                              launch(provider.advertiser!.whatsapp.toString());
+                                            onTap: () async{
+
+                                              launchUrl(Uri.parse(
+                                                  "whatsapp://send?phone=${provider.advertiser!.whatsapp}&text=${"Hi"}"));
+
                                             },
                                             child: SvgPicture.asset(
                                                 "images/whatsapp.svg"),

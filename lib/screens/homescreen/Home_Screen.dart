@@ -47,8 +47,9 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
   Widget build(BuildContext context) {
     Provider.of<AppProvider>(context, listen: false).isEdit = false;
     return Back_Ground(
-        childTab: "الرئيسية",
+        childTab: "",
         ad: true,
+        home: true,
         child: Consumer<AppProvider>(builder: (context, provider, _) {
           return
             provider.categories.isNotEmpty?
@@ -98,13 +99,13 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
                   ? LoedWidget()
                   : ListView(
                       children: [
-                        provider.banners.isNotEmpty
-                            ? SizedBox(
-                                height: 150.h,
-                                child: CasualImageSlider(
-                                    scrollController: _scrollController,
-                                    imageUrls: provider.banners))
-                            : SizedBox.shrink(),
+                        // provider.banners.isNotEmpty
+                        //     ? SizedBox(
+                        //         height: 150.h,
+                        //         child: CasualImageSlider(
+                        //             scrollController: _scrollController,
+                        //             imageUrls: provider.banners))
+                        //     : SizedBox.shrink(),
                         SizedBox(
                           height: 16.h,
                         ),
