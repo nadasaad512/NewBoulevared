@@ -33,7 +33,7 @@ class OfferScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => StoryPage(
+                        builder: (context) => storyPageScreen(
                               AdId: offerad[index].id!,
                             )),
                   );

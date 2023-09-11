@@ -23,7 +23,7 @@ class AdmainOneAdScreen extends StatelessWidget{
             MaterialPageRoute(
                 builder:
                     (context) =>
-                    StoryPage(
+                    storyPageScreen(
                       AdId: provider.AdmainAd[0].id!,
                     )),
           );
@@ -316,7 +316,7 @@ class AdmainOneAdScreen extends StatelessWidget{
             MaterialPageRoute(
                 builder:
                     (context) =>
-                    StoryPage(
+                    storyPageScreen(
                       AdId: provider.AdmainAd[0].id!,
                     )),
           );

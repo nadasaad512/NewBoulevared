@@ -42,12 +42,7 @@ class _CasualImageSliderState extends State<CasualImageSlider> {
 
     });
   }
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _controller.dispose();
-  }
+
 
 
   @override
@@ -59,7 +54,7 @@ class _CasualImageSliderState extends State<CasualImageSlider> {
           onPageChanged: (index) => setState(() => _currentIndex = index),
           children:
           widget.imageUrls.map((url) => Container(
-          
+
               child: Image.network(url.image.toString(),fit: BoxFit.cover,))).toList(),
         ),
         Positioned(
@@ -78,7 +73,6 @@ class _CasualImageSliderState extends State<CasualImageSlider> {
                   return Container(
                     height: 5.h,
                     width: 20.w,
-
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color:int==_currentIndex? Colors.purple:Colors.white,

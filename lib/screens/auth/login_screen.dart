@@ -90,7 +90,8 @@ class _LOGAIN_SCREENState extends State<LOGAIN_SCREEN> with Helpers {
                       : Text(
                     'تسجيل الدخول',
                     style: TextStyle(
-                        fontWeight: FontWeight.w700, fontSize: 18.sp),
+                        fontWeight: FontWeight.w700, fontSize: 18.sp,
+                    color: Colors.white),
                   ),
                 ),
                 SizedBox(

@@ -1,7 +1,7 @@
 import 'package:new_boulevard/component/main_bac.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:flutter_html/flutter_html.dart';
 import '../../../api/User_Controller.dart';
 import '../../../models/setting.dart';
 import '../../loed/loed.dart';
@@ -36,7 +36,7 @@ class ConditionScreen extends StatelessWidget {
                       TextStyle(fontWeight: FontWeight.w600, fontSize: 20.sp),
                 )),
                 SizedBox(
-                  height: 10.h,
+                  height: 20.h,
                 ),
                 FutureBuilder<Settings>(
                     future: UserApiController().Setting(),
@@ -44,13 +44,20 @@ class ConditionScreen extends StatelessWidget {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return LoedWidget();
                       } else if (snapshot.hasData) {
-                        return Text(
-                          snapshot.data!.advertisingPolicies.toString(),
-                          style: const TextStyle(
-                            overflow: TextOverflow.ellipsis,
+                        return  Html(data:snapshot.data!.advertisingPolicies.toString(), style: {
+                          "p": Style(
+                              fontSize: FontSize(16.0),
+                              color: Colors.black
+                            // Add more styling properties as needed
                           ),
-                          maxLines: 80,
-                        );
+                          "strong": Style(
+                              fontSize: FontSize(16.0),
+                              color: Colors.black
+                          ),
+                        });
+
+
+
                       }
                       return const Center(
                         child: Icon(

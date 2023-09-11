@@ -1,3 +1,4 @@
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:new_boulevard/api/User_Controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,9 +10,7 @@ import '../../../provider/app_provider.dart';
 import '../../../story/OneStory.dart';
 import '../../../Shared_Preferences/User_Preferences.dart';
 import '../../../component/main_bac.dart';
-import '../../../models/Follower_user.dart';
-import '../../../models/ads.dart';
-import '../../../models/user.dart';
+
 import '../ProfileWidgt/allFollower.dart';
 
 
@@ -19,7 +18,8 @@ import '../ProfileWidgt/allFollower.dart';
 class UserShowAdmain extends StatefulWidget {
   int id;
 
-  UserShowAdmain({required this.id});
+
+  UserShowAdmain({required this.id,});
 
   @override
   State<UserShowAdmain> createState() => _UserShowAdmainState();
@@ -32,8 +32,9 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
 
   @override
   Widget build(BuildContext context) {
+
     Provider.of<AppProvider>(context, listen: false).getInfoAdmain(widget.id);
-    Provider.of<AppProvider>(context, listen: false).getUserFolow(widget.id);
+ //   Provider.of<AppProvider>(context, listen: false).getUserFolow(widget.id);
     Provider.of<AppProvider>(context, listen: false).getAllADS_AdmainForUser(id: widget.id);
     return Consumer<AppProvider>(builder: (context, provider, _) {
     return
@@ -80,7 +81,7 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => AllFollower(
-                                    id: widget.id,
+                                    id:provider.advertiser!.id!,
                                   )));
                         },
                         child: Row(
@@ -107,12 +108,11 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                               width: 35.w,
                             ),
                             UserPreferences().user.type == "user"
-                                ? provider.userFollowFound.contains(widget.id.toString())
+                                ?
+                           provider.statusFollow=="إلغاء متابعة"
                                 ? InkWell(
                               onTap: () async {
                                 await provider.unfollow(widget.id);
-                                await provider.getInfoAdmain(widget.id);
-
                               },
                               child: Container(
                                 height: 38.h,
@@ -129,6 +129,10 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
+                                      provider. staus?
+                                  LoadingAnimationWidget.staggeredDotsWave(
+                                      color:Colors.white, size: 20.sp
+                                ):
                                       Text(
                                         provider.statusFollow,
                                         style: TextStyle(
@@ -148,8 +152,6 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                                 : InkWell(
                               onTap: () async {
                                 await provider.follow(widget.id);
-                                await provider.getInfoAdmain(widget.id);
-
                               },
                               child: Container(
                                 height: 38.h,
@@ -171,6 +173,10 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                                     MainAxisAlignment
                                         .center,
                                     children: [
+                                      provider.staus?
+                                      LoadingAnimationWidget.staggeredDotsWave(
+                                          color:Colors.white, size: 20.sp
+                                      ):
 
                                       Text(
                                         provider.statusFollow,
@@ -209,6 +215,8 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                       borderRadius: BorderRadius.circular(5)),
                   labelColor: Colors.white,
                   unselectedLabelColor: const Color(0xff7B217E),
+                  indicatorSize: TabBarIndicatorSize.tab,
+
                   tabs: const [
                     Tab(
                       text: "تواصل معنا",
@@ -404,7 +412,7 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                                         MaterialPageRoute(
                                             builder:
                                                 (context) =>
-                                                StoryPage(
+                                                storyPageScreen(
                                                   AdId: provider.AdmainAd[
                                                   index]
                                                       .id!,
@@ -455,7 +463,7 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
                                         MaterialPageRoute(
                                             builder:
                                                 (context) =>
-                                                StoryPage(
+                                                storyPageScreen(
                                                   AdId: provider.AdmainAd[
                                                   index]
                                                       .id!,
@@ -503,9 +511,12 @@ class _UserShowAdmainState extends State<UserShowAdmain> {
         SizedBox(
           width: 10.w,
         ),
-        Text(
-          name,
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+        Directionality(
+           textDirection: TextDirection.ltr,
+          child: Text(
+            name,
+            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+          ),
         ),
       ],
     );

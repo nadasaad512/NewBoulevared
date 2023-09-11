@@ -33,6 +33,8 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
     await provider.getAllBestTenAds();
     await provider.getAllOffer();
     await provider.getAllListStory();
+    await provider.getAllNotification();
+    await provider.getProfile();
     provider.notifyListeners();
   }
 
@@ -40,6 +42,12 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Provider.of<AppProvider>(context, listen: false).getAllBanner();
+    Provider.of<AppProvider>(context, listen: false).getAllCategory();
+    Provider.of<AppProvider>(context, listen: false).getAllSpecialAds();
+    Provider.of<AppProvider>(context, listen: false).getAllBestTenAds();
+    Provider.of<AppProvider>(context, listen: false).getAllOffer();
+    Provider.of<AppProvider>(context, listen: false).getAllListStory();
 
   }
 
@@ -49,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
     return Back_Ground(
         childTab: "",
         ad: true,
-        home: true,
+        home: Provider.of<AppProvider>(context, listen: false).banners!=[]? true:false,
         child: Consumer<AppProvider>(builder: (context, provider, _) {
           return
             provider.categories.isNotEmpty?
@@ -57,9 +65,6 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
             color: Colors.purple,
             onRefresh: () async {
               await loed(provider);
-
-              await Future.delayed(Duration(milliseconds: 1500));
-              await provider.getAllNotification();
               if (provider.massages.isNotEmpty) {
                 for (int i = 0; i < provider.massages.length; i++) {
                   Flushbar(
@@ -88,8 +93,6 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
                     flushbarPosition: FlushbarPosition.TOP,
                     leftBarIndicatorColor: Colors.white,
                   )..show(context);
-
-                  await Future.delayed(Duration(seconds: 3));
                 }
               }
             },
@@ -98,18 +101,14 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
               child: provider.categories == []
                   ? LoedWidget()
                   : ListView(
+                padding: EdgeInsets.zero,
                       children: [
-                        // provider.banners.isNotEmpty
-                        //     ? SizedBox(
-                        //         height: 150.h,
-                        //         child: CasualImageSlider(
-                        //             scrollController: _scrollController,
-                        //             imageUrls: provider.banners))
-                        //     : SizedBox.shrink(),
+                        provider.folow.isNotEmpty
+                            ?
                         SizedBox(
                           height: 16.h,
-                        ),
-                        provider.folow.isNotEmpty
+                        ):SizedBox.shrink(),
+                       provider.folow.isNotEmpty
                             ? SizedBox(
                                 height: 110.h,
                                 child: ListView.builder(
@@ -182,6 +181,9 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
                                   },
                                 ))
                             : SizedBox.shrink(),
+                        SizedBox(
+                          height: 16.h,
+                        ),
                         provider.special_ads.isNotEmpty
                             ? Row(
                                 children: [
@@ -218,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
                               )
                             : SizedBox.shrink(),
                         SizedBox(
-                          height: 16.h,
+                          height: 8.h,
                         ),
                         provider.special_ads.isNotEmpty
                             ? SizedBox(
@@ -234,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => StoryPage(
+                                                builder: (context) => storyPageScreen(
                                                       AdId: provider
                                                           .special_ads[index]
                                                           .id!,
@@ -279,8 +281,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
                                                       Alignment.bottomRight,
                                                   child: Row(
                                                     children: [
-                                                      provider
-                                                                  .special_ads[
+                                                      provider.special_ads[
                                                                       index]
                                                                   .advertiser!
                                                                   .imageProfile !=
@@ -480,7 +481,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => StoryPage(
+                                              builder: (context) => storyPageScreen(
                                                     AdId: provider
                                                         .BestAds![index].id!,
                                                   )),
@@ -636,7 +637,7 @@ class _HomeScreenState extends State<HomeScreen> with Helpers {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          StoryPage(
+                                                          storyPageScreen(
                                                             AdId: offerad[index]
                                                                 .id!,
                                                           )),

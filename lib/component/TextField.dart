@@ -54,10 +54,8 @@ class _FieldScreenState extends State<FieldScreen> {
         keyboardType: widget.type,
         obscureText: _obscureText,
         cursorColor: Colors.black,
-
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
-
           hintText: widget.title,
           hintStyle: TextStyle(
             color: Colors.grey.shade500,

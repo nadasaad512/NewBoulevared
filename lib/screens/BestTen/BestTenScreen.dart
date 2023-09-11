@@ -44,7 +44,7 @@ class BestTenScreen extends StatelessWidget{
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            StoryPage(
+                            storyPageScreen(
                               AdId: provider.BestAds![index].id!,
 
                             )

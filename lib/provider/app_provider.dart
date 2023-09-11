@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:video_cached_player/video_cached_player.dart';
 
 import '../Shared_Preferences/User_Preferences.dart';
 import '../api/User_Controller.dart';
 import '../models/BestOffers.dart';
+import '../models/Folllowers_Advertiser.dart';
 import '../models/Follower_user.dart';
 import '../models/activity.dart';
 import '../models/ads.dart';
@@ -27,6 +29,7 @@ class AppProvider extends ChangeNotifier{
   List<Offers>? offer;
   List<AdvertiserADs> AdmainAd = [];
   List<MyFollowings> FolowUser = [];
+  List<MyFollowers>? FolowAdmain;
   User? user;
   bool HomeLoed=true;
   bool PartScreenLoed=true;
@@ -39,6 +42,7 @@ class AppProvider extends ChangeNotifier{
   List<Ads>? detalies ;
   List<Ads>? PartAd ;
   List<MyFollowings> userfollow = [];
+ // List<CachedVideoPlayerController> controllers = [];
   int ? idcity;
   int ? idpartcity;
   bool filtter=false;
@@ -49,15 +53,19 @@ class AppProvider extends ChangeNotifier{
   bool AwardsLoed=true;
   bool close =false;
   bool isEdit =false;
+  String loeduploed ="";
+  double loeduploedd =0.0;
 
   bool progss = false;
-  List<String?> userFollowFound=[];
+  bool staus = false;
+  List<int?> userFollowFound=[];
   String statusFollow="";
   ///story
   Ads? story ;
   Ads? alldata ;
   Advertiser? advertiser ;
   List<story1>? StroryData ;
+  List<story1>? listVideo ;
   ///
    List<AdType>? Special_Price ;
   List<AdType>? Normal_Price;
@@ -109,7 +117,7 @@ class AppProvider extends ChangeNotifier{
         name: ANameTextController.text,
         email :AemailTextController.text,
         password : ApasswordTextController.text,
-        mobile : AphoneTextController.text,
+        mobile :"+${AphoneTextController.text}",
         type : gender,
         commercialActivities:idActive!,
         cityId: id!,
@@ -124,13 +132,15 @@ class AppProvider extends ChangeNotifier{
             AphoneTextController.clear();
             ANameTextController.clear();
             ASurepasswordTextController.clear();
+            idActive=null;
             pickedFile=null;
             id=null;
             idActive=null;
             Aprogss=false;
             check=false;
               notifyListeners();
-          }else{
+          }
+          else{
             ANameTextController.clear();
             AemailTextController.clear();
             ApasswordTextController.clear();
@@ -146,11 +156,23 @@ class AppProvider extends ChangeNotifier{
 
           }
 
-        }
-
-
-
+        },
     );
+    ANameTextController.clear();
+    AemailTextController.clear();
+    ApasswordTextController.clear();
+    AphoneTextController.clear();
+    ANameTextController.clear();
+    ASurepasswordTextController.clear();
+    idActive=null;
+    pickedFile=null;
+    id=null;
+    idActive=null;
+    Aprogss=false;
+    check=false;
+    selectedCity=null;
+    selectedActivity=null;
+    notifyListeners();
 
 
   }
@@ -298,14 +320,18 @@ login(BuildContext context) async {
 
 
   getAlldataForStory({required int id}) async{
+   listVideo=null;
     story = null;
+   StroryData = null;
     alldata = null;
     story= await UserApiController().AdDetalies(idAD:id );
     alldata=story;
     notifyListeners();
-    StroryData = List.from(story!.adImages!)
-      ..addAll(List.from(story!.adVideos!));
+    StroryData = List.from(story!.adImages!)..addAll(List.from(story!.adVideos!));
+    listVideo =List.from(story!.adVideos!);
     notifyListeners();
+
+
   }
 
 
@@ -318,27 +344,43 @@ login(BuildContext context) async {
   }
   getInfoAdmain(int id) async{
     advertiser= await UserApiController().info_Admain(userid: id);
+    await getUserFolow(id);
+    notifyListeners();
+  }
+  getAdmainFollower(int id) async{
+    FolowAdmain= await UserApiController().Followers_Advertiser(id);
     notifyListeners();
   }
 
   getUserFolow(int id) async{
+    statusFollow="";
+    notifyListeners();
     userfollow= await UserApiController().CountFollowers_User();
     userFollowFound= userfollow.map((e) => e.id).toList();
-    statusFollow=userFollowFound.contains(id.toString())?"إلغاء متابعة":" متابعة";
+    statusFollow=userFollowFound.contains(id)?"إلغاء متابعة":" متابعة";
+    print(statusFollow);
     notifyListeners();
   }
   unfollow(int id) async{
+   try{
+     staus=true;
+     notifyListeners();
      await UserApiController().Follow_One(followed_id: id.toString(), action: "unfollow");
-     userFollowFound.remove(id);
-    FolowUser.remove(id);
-  statusFollow=" متابعة";
-   notifyListeners();
+     await getInfoAdmain(id);
+     staus=false;
+     notifyListeners();
+   }on Exception{
+
+   }
 
   }
   follow(int id) async{
+    staus=true;
+    notifyListeners();
      await UserApiController().Follow_One(followed_id: id.toString(), action: "follow");
-      statusFollow="إلغاء متابعة";
-   notifyListeners();
+     await getInfoAdmain(id);
+    staus=false;
+    notifyListeners();
 
   }
 

@@ -64,7 +64,7 @@ class AdmainAdScreen extends StatelessWidget{
                  MaterialPageRoute(
                      builder:
                          (context) =>
-                         StoryPage(
+                         storyPageScreen(
                            AdId: provider.AdmainAd[index + 1].id!,
                          )),
                );
@@ -168,14 +168,6 @@ class AdmainAdScreen extends StatelessWidget{
                                                  children: [
                                                    IconButton(
                                                        onPressed: () {
-                                                         // Navigator.pushReplacement(
-                                                         //   context,
-                                                         //   MaterialPageRoute(
-                                                         //       builder: (context) => NewAdsScreen(
-                                                         //             edit: true,
-                                                         //             indexAd: 237,
-                                                         //           )),
-                                                         // );
                                                        },
                                                        icon: const Icon(
                                                          Icons.edit,
@@ -251,6 +243,7 @@ class AdmainAdScreen extends StatelessWidget{
                                                                      onTap: () async {
 
                                                                        await provider.DeletId(context, id: provider.AdmainAd[index + 1].id!);
+
                                                                      },
                                                                      child: Container(
                                                                        height: 50.h,
@@ -362,7 +355,7 @@ class AdmainAdScreen extends StatelessWidget{
                  MaterialPageRoute(
                      builder:
                          (context) =>
-                         StoryPage(
+                         storyPageScreen(
                            AdId: provider.AdmainAd[index + 1].id!,
                          )),
                );

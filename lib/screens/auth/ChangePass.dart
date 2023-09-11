@@ -88,12 +88,13 @@ class _ChangePasswordState extends State<ChangePassword> {
                 },
                 child: progss?CircularProgressIndicator(color: Colors.white,): Text('تغيير كلمة المرور',style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    fontSize: 18.sp
+                    fontSize: 18.sp,
+                  color: Colors.white
                 ),),
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xff7B217E),
-
                   minimumSize: Size(double.infinity, 50.h),
+
                 ),
               ),
 

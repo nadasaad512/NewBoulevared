@@ -35,8 +35,6 @@ class ApiSettings {
   static const EditProfile = '${_API_URL}editProfile';
   static const AwardsCanWin = '${_API_URL}awardsCanWin';
   static const RequestAward = '${_API_URL}requestAward';
-
-//Ads
   static const setting = '${_API_URL}settings';
   static const bestads = '${_API_URL}getBestOffers';
   static const Notifications = '${_API_URL}getMyNotifications';

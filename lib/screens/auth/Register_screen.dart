@@ -115,21 +115,17 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                   SizedBox(height: 16.h,),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    height: 50.h,
-                    width: 330.w,
+                    height: 60.h,
+                    width: 340.w,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         shape: BoxShape.rectangle,
-
-
                         border: Border.all(
                           color: Colors.grey.shade400,
                         )
                     ),
 
                     child: DropdownButton(
-
-
                       isExpanded: true,
                       underline: Container(),
                       menuMaxHeight: 500.h,
@@ -141,7 +137,6 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                       ),),
 
                       iconEnabledColor: Colors.white,
-
                       value: provider.selectedActivity,
                       icon: Icon(Icons.arrow_forward_ios_rounded,
                         color: Colors.grey.shade500, size: 18,),
@@ -152,7 +147,6 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                           fontWeight: FontWeight.w400
                       ),
                       onChanged: (newValue) {
-
                           provider.selectedActivity = newValue;
                           provider.notifyListeners();
 
@@ -191,25 +185,19 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                   SizedBox(height: 16.h,),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    height: 50.h,
-                    width: 330.w,
+                    height: 60.h,
+                    width: 340.w,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         shape: BoxShape.rectangle,
-
-
                         border: Border.all(
                             color: Color(0xffC4C4C4)
                         )
                     ),
-
                     child: DropdownButton(
-
-
                       isExpanded: true,
                       underline: Container(),
                       menuMaxHeight: 500.h,
-
                       hint: Text("المدينة", style: TextStyle(
                         color: Colors.grey.shade500,
                         fontSize: 15.sp,
@@ -303,13 +291,13 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
 
                   Row(
                     children: [
+                      SizedBox(width: 10.h,),
                       SizedBox(
-                        height: 10.h,
-                        width: 20.w,
+                        height: 30.h,
+                        width: 30.w,
                         child: Checkbox(
                           value: provider.check,
                           activeColor: Color(0xff7B217E),
-
                           onChanged: (bool? value) {
 
                               provider.check = value!;
@@ -393,11 +381,11 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                       color: Colors.white,) : Text(
                       'تسجيل جديد', style: TextStyle(
                         fontWeight: FontWeight.w700,
+                        color: Colors.white,
                         fontSize: 18.sp
                     ),),
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xff7B217E),
-
                       minimumSize: Size(double.infinity, 50.h),
                     ),
                   ),
@@ -410,7 +398,6 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                       }, child: Text("تسجيل الدخول", style: TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 16.sp,
-
                           color: Color(0xff7B217E)
                       ),)),
                       Text("لديك حساب ؟", style: TextStyle(
@@ -532,6 +519,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers{
                       color: Colors.white,) : Text(
                       'تسجيل جديد', style: TextStyle(
                         fontWeight: FontWeight.w700,
+                        color: Colors.white,
                         fontSize: 18.sp
                     ),),
                     style: ElevatedButton.styleFrom(

@@ -8,15 +8,23 @@ import '../../api/User_Controller.dart';
 import '../../component/TextField.dart';
 import '../../component/main_bac.dart';
 import '../../loed/loed.dart';
-import '../../models/award.dart';
-import '../../models/user.dart';
 import '../../provider/app_provider.dart';
 
-class AwardScreen extends StatelessWidget {
+class AwardScreen extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
+  State<AwardScreen> createState() => _AwardScreenState();
+}
+
+class _AwardScreenState extends State<AwardScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     Provider.of<AppProvider>(context, listen: false).getProfile();
     Provider.of<AppProvider>(context, listen: false).getAllAward();
+  }
+  @override
+  Widget build(BuildContext context) {
     return Back_Ground(
         Bar: true,
         ad: true,
@@ -28,34 +36,8 @@ class AwardScreen extends StatelessWidget {
 
           ListView(
           children: [
-            UserPreferences().token==''?
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
 
-                children: [
-                  Text('لتتمكن من كسب النقاط والدخول في السحوبات  ',  overflow: TextOverflow.ellipsis,maxLines: 2,style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600
-                  ),),
-                  TextButton(onPressed: (){
-
-                    Navigator.pushNamed(context, '/register_screen');
-                  }, child: Text("سجل الان",style: TextStyle(
-
-                      fontWeight: FontWeight.w500,
-                      decoration: TextDecoration.underline,
-                      fontSize: 20.sp,
-                      color: Color(0xff18499A)
-                  ),)),
-
-                ],
-              ),
-            ):
-
-
-           provider.user!.type =='user'?
+            provider.user!=null&& provider.user!.type =='user'?
             Column(
           children: [
             Center(
@@ -130,7 +112,6 @@ class AwardScreen extends StatelessWidget {
 
             children: [
 
-
               Text('لتتمكن من كسب النقاط والدخول في السحوبات   ',  overflow: TextOverflow.ellipsis,maxLines: 2,style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600
@@ -152,7 +133,10 @@ class AwardScreen extends StatelessWidget {
 
             provider.award==null?
             LoedWidget():
-
+            provider.award!.isEmpty?
+            Center(child: Text("لا يوجد جوائز لعرضها ",style: TextStyle(
+              fontSize: 20.sp
+            ),)):
             ListView.builder(
               itemCount: provider.award!.length,
               shrinkWrap: true,
@@ -355,7 +339,8 @@ class AwardScreen extends StatelessWidget {
                                                 child:
                                                 Text('تأكيد الدخول في السحب',style: TextStyle(
                                                     fontWeight: FontWeight.w700,
-                                                    fontSize: 18.sp
+                                                    fontSize: 18.sp,
+                                                  color: Colors.white
                                                 ),),
                                                 style: ElevatedButton.styleFrom(
                                                   primary: Color(0xff7B217E),
@@ -467,7 +452,8 @@ class AwardScreen extends StatelessWidget {
                     child:
                     Text('عودة الى الجوائز',style: TextStyle(
                         fontWeight: FontWeight.w700,
-                        fontSize: 18.sp
+                        fontSize: 18.sp,
+                        color: Colors.white
                     ),),
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xff7B217E),

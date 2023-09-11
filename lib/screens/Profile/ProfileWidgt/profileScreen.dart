@@ -1,4 +1,5 @@
-import 'package:new_boulevard/api/User_Controller.dart';
+
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:new_boulevard/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,71 +10,69 @@ import '../../../loed/loed.dart';
 import '../../../provider/app_provider.dart';
 import '../../../Shared_Preferences/User_Preferences.dart';
 import '../../../component/main_bac.dart';
-import '../../../models/user.dart';
 import '../widget/AdaminAsUserShow.dart';
 import '../widget/AdmainAD.dart';
 import '../widget/AdmainOneAD.dart';
 import 'allFollower.dart';
 
 class ProfileScreen extends StatefulWidget {
+
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> with Helpers {
-
-
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     Provider.of<AppProvider>(context, listen: false).getProfile();
     Provider.of<AppProvider>(context, listen: false).getAllUserFollow();
     Provider.of<AppProvider>(context, listen: false).getAllADS_Admain();
-    return UserPreferences().token == ''
-        ? Container(
-            margin: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'لتتمكن من الاستفادة من خدامتنا سجل الان ',
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-                ),
-                SizedBox(
-                  height: 50.h,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/register_screen');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff7B217E),
-                    minimumSize: Size(double.infinity, 50.h),
-                  ),
-                  child: Text(
-                    'انشاء  حساب  الان ',
-                    style:
-                        TextStyle(fontWeight: FontWeight.w700, fontSize: 18.sp),
-                  ),
-                ),
-              ],
-            ),
-          )
-        :
+  }
+  @override
+  Widget build(BuildContext context) {
+    return
     Consumer<AppProvider>(builder: (context, provider, _) {
-      return
+      return provider.user == null ?
+      Container(
+        margin: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'لتتمكن من الاستفادة من خدامتنا سجل الان ',
+              overflow: TextOverflow.ellipsis,
 
-
-      provider.user==null?
-          SizedBox.shrink():
-        provider.user!.type == "advertiser"
+              maxLines: 2,
+              style:
+              TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+            ),
+            SizedBox(
+              height: 50.h,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/register_screen');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xff7B217E),
+                minimumSize: Size(double.infinity, 50.h),
+              ),
+              child: Text(
+                'انشاء  حساب  الان ',
+                style:
+                TextStyle(fontWeight: FontWeight.w700, fontSize: 18.sp,color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ) :
+      provider.user!.type == "advertiser"
           ? Back_Ground(
           Bar: true,
           edit: true,
           EditAdmain: true,
-          childTab:provider.user!.name,
+          childTab: provider.user!.name,
           child: DefaultTabController(
             length: 2,
             child: Column(
@@ -141,14 +140,14 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 16.w),
                   height: 50,
-                  decoration: BoxDecoration(
-                      color: Colors.purple.shade50,
-                      borderRadius: BorderRadius.circular(5)),
+                  decoration: BoxDecoration(color: Colors.purple.shade50, borderRadius: BorderRadius.circular(5)),
                   child: TabBar(
                     indicator: BoxDecoration(
-                        color: const Color(0xff7B217E),
-                        borderRadius: BorderRadius.circular(5)),
+                        color:  Color(0xff7B217E),
+                        borderRadius: BorderRadius.circular(5),
+                    ),
                     labelColor: Colors.white,
+                   indicatorSize: TabBarIndicatorSize.tab,
                     unselectedLabelColor: const Color(0xff7B217E),
                     tabs: const [
                       Tab(
@@ -167,12 +166,9 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                             children: [
                               Container(
                                   width: 343.w,
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 16.w,
-                                      vertical: 10.h),
+                                  margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                                   decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.circular(5),
+                                    borderRadius: BorderRadius.circular(5),
                                     color: Colors.purple.shade50,
                                   ),
                                   child: Container(
@@ -183,11 +179,11 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                       children: [
                                         InkWell(
                                           onTap: () {
-
+                                            print(provider.user!.whatsapp);
                                             launchUrl(Uri.parse(
-                                                "whatsapp://send?phone=${provider.user!.mobile ?? ""}&text=${"Hi"}"));
-
-
+                                                "whatsapp://send?phone=${provider
+                                                    .user!.whatsapp ??
+                                                    ""}&text=${"Hi"}"));
                                           },
                                           child: Detatlies(
                                               name: provider.user!.mobile,
@@ -200,7 +196,8 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                         InkWell(
                                           onTap: () {
                                             launch(
-                                                "mailto:${provider.user!.email}");
+                                                "mailto:${provider.user!
+                                                    .email}");
                                           },
                                           child: Detatlies(
                                               name: provider.user!.email,
@@ -251,8 +248,6 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                                 ? InkWell(
 
                                               onTap: () {
-
-
                                                 launch(provider.user!
                                                     .instagram!);
                                               },
@@ -268,9 +263,10 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                                 null
                                                 ? InkWell(
                                               onTap: () {
-
                                                 launchUrl(Uri.parse(
-                                                    "whatsapp://send?phone=${provider.user!.mobile ?? ""}&text=${"Hi"}"));
+                                                    "whatsapp://send?phone=${provider
+                                                        .user!.mobile ??
+                                                        ""}&text=${"Hi"}"));
                                               },
                                               child: SvgPicture
                                                   .asset(
@@ -405,6 +401,8 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                             ),
                           )
                         ]))
+
+                
               ],
             ),
           ))
@@ -424,12 +422,12 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                       radius: 44.sp,
                       backgroundColor: Color(0xff7B217E),
                       backgroundImage:
-                     provider.user!.imageProfile == null
+                      provider.user!.imageProfile == null
                           ? null
                           : NetworkImage(
-                         provider.user!.imageProfile!),
-                      child:  provider.user!.imageProfile == null?
-                      Icon(Icons.person,color: Colors.white,size: 30.sp,):
+                          provider.user!.imageProfile!),
+                      child: provider.user!.imageProfile == null ?
+                      Icon(Icons.person, color: Colors.white, size: 30.sp,) :
                       SizedBox.shrink(),
                     ),
                     SizedBox(
@@ -455,7 +453,8 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                         child: Text(
                           provider.user!.pointsCount == null
                               ? "0"
-                              : "${provider.user!.pointsCount!.toString()} نقطة",
+                              : "${provider.user!.pointsCount!
+                              .toString()} نقطة",
                           style: TextStyle(
                               fontSize: 16.sp,
                               color: Colors.white,
@@ -497,7 +496,7 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                           MaterialPageRoute(
                               builder: (context) =>
                                   UserShowAdmain(
-                                      id: int.parse(provider.FolowUser[index].id!))),
+                                      id: provider.FolowUser[index].id!)),
                         );
                       },
                       child: Container(
@@ -529,16 +528,23 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                           71.h,
                                           decoration: BoxDecoration(
                                               color: Colors.grey[300]!,
-                                              borderRadius: BorderRadius.circular(
+                                              borderRadius: BorderRadius
+                                                  .circular(
                                                   5),
-                                              image: provider.FolowUser[index].imageProfile != null
-                                                  ? DecorationImage(fit: BoxFit.cover, image: NetworkImage(provider.FolowUser[index].imageProfile!))
+                                              image: provider.FolowUser[index]
+                                                  .imageProfile != null
+                                                  ? DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: NetworkImage(
+                                                      provider.FolowUser[index]
+                                                          .imageProfile!))
                                                   : null)),
                                       SizedBox(
                                         width: 15.w,
                                       ),
                                       Column(
                                         children: [
+
                                           Text(
                                             provider.FolowUser[index]
                                                 .name!,
@@ -559,16 +565,20 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                             decoration: BoxDecoration(
                                                 color:
                                                 const Color(0xff969696),
-                                                borderRadius: BorderRadius.circular(13)),
+                                                borderRadius: BorderRadius
+                                                    .circular(13)),
                                             child:
                                             Center(
                                               child:
                                               Text(
-                                                "${provider.FolowUser[index].followMeCount.toString()} متابع",
+                                                "${provider.FolowUser[index]
+                                                    .followMeCount
+                                                    .toString()} متابع",
                                                 style: TextStyle(
                                                     fontSize: 10.sp,
                                                     color: Colors.white,
-                                                    fontWeight: FontWeight.w500),
+                                                    fontWeight: FontWeight
+                                                        .w500),
                                               ),
                                             ),
                                           ),
@@ -578,8 +588,10 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                       InkWell(
                                         onTap:
                                             () async {
-
-                                          await provider.unfollow(int.parse(provider.FolowUser[index].id.toString()));
+                                          await provider.unfollow(int.parse(
+                                              provider.FolowUser[index].id
+                                                  .toString()));
+                                          await provider.getAllUserFollow();
                                         },
                                         child:
                                         Container(
@@ -595,6 +607,10 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
                                           child:
                                           Center(
                                             child:
+                                            provider. staus?
+                                            LoadingAnimationWidget.staggeredDotsWave(
+                                                color:Colors.white, size: 20.sp
+                                            ):
                                             Text(
                                               "إلغاء متابعة",
                                               style: TextStyle(
@@ -615,11 +631,8 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
               ],
             ),
           ));
-
     });
   }
-
-
 
   Widget Detatlies({required String name, required String image}) {
     return Row(
@@ -628,9 +641,12 @@ class _ProfileScreenState extends State<ProfileScreen> with Helpers {
         SizedBox(
           width: 10.w,
         ),
-        Text(
-          name,
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: Text(
+            name,
+            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+          ),
         ),
       ],
     );

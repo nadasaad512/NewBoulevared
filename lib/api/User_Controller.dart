@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:new_boulevard/models/notification.dart';
 import '../Shared_Preferences/User_Preferences.dart';
@@ -178,33 +179,40 @@ class UserApiController with Helpers {
     required String email,
     required String code,
   }) async {
-    var url = Uri.parse(ApiSettings.createNewPassword);
-    var response = await http.post(url, body: {
-      'password': password,
-      'confirm_password': confirm_password,
-      'email': email,
-      'code': code,
-    }, headers: {
-      HttpHeaders.authorizationHeader: UserPreferences().token,
-    });
-    if (jsonDecode(response.body)['status'] == true) {
-      showSnackBar(context,
-          message: jsonDecode(response.body)['message'], error: false);
-      return true;
-    } else if (jsonDecode(response.body)['status'] == false) {
-      showSnackBar(context,
-          message: jsonDecode(response.body)['message'], error: true);
-    } else {
-      showSnackBar(context,
-          message: 'Something went wrong, please try again!', error: true);
-    }
-    return false;
+try{
+  var url = Uri.parse(ApiSettings.createNewPassword);
+  var response = await http.post(url, body: {
+    'password': password,
+    'confirm_password': confirm_password,
+    'email': email,
+    'code': code,
+  }, headers: {
+    HttpHeaders.authorizationHeader: UserPreferences().token,
+  });
+  if (jsonDecode(response.body)['status'] == true) {
+    showSnackBar(context,
+        message: jsonDecode(response.body)['message'], error: false);
+    return true;
+  } else if (jsonDecode(response.body)['status'] == false) {
+    showSnackBar(context,
+        message: jsonDecode(response.body)['message'], error: true);
+  } else {
+    showSnackBar(context,
+        message: 'Something went wrong, please try again!', error: true);
+  }
+  return false;
+}on Exception{
+  showSnackBar(context,
+      message: 'Something went wrong, please try again!', error: true);
+  return false;
+}
   }
 
   Future<bool> Change_Password(BuildContext context,
       {required String password,
       required String confirm_password,
       required String old_password}) async {
+  try{
     var url = Uri.parse(ApiSettings.Change_Password);
     var response = await http.post(url, body: {
       'password': password,
@@ -226,6 +234,11 @@ class UserApiController with Helpers {
           message: 'Something went wrong, please try again!', error: true);
     }
     return false;
+  }on Exception{
+    showSnackBar(context,
+        message: 'Something went wrong, please try again!', error: true);
+    return false;
+  }
   }
 
   Future<bool> logout(BuildContext context) async {
@@ -397,40 +410,49 @@ class UserApiController with Helpers {
   }
 
   Future<User?> getProfile() async {
-    var url = Uri.parse(ApiSettings.Profile);
-    if (UserPreferences().token.isNotEmpty) {
-      var response = await http.get(url, headers: {
-        HttpHeaders.authorizationHeader: UserPreferences().token,
-      });
-      if (jsonDecode(response.body)['status'] == true) {
-        var json = jsonDecode(response.body);
-        var jsonArray = json['user'];
-        User user = User.fromJson(jsonArray);
-        return user;
+    try{
+      var url = Uri.parse(ApiSettings.Profile);
+      if (UserPreferences().token.isNotEmpty) {
+        var response = await http.get(url, headers: {
+          HttpHeaders.authorizationHeader: UserPreferences().token,
+        });
+        if (jsonDecode(response.body)['status'] == true) {
+          var json = jsonDecode(response.body);
+          var jsonArray = json['user'];
+          User user = User.fromJson(jsonArray);
+          return user;
+        }
       }
-    } else {
+      else {
+        return null;
+      }
+      return null;
+    } on Exception{
       return null;
     }
-    return null;
   }
 
   Future<bool> Follow_One({
     required String followed_id,
     required String action,
   }) async {
-    var url = Uri.parse(ApiSettings.Follow_One);
-    var response = await http.post(url, body: {
-      'followed_id': followed_id,
-      'action': action,
-    }, headers: {
-      HttpHeaders.authorizationHeader: UserPreferences().token,
-    });
-    if (jsonDecode(response.body)['status'] == true) {
-      return true;
-    } else if (jsonDecode(response.body)['status'] == false) {
-      return false;
-    } else {}
-    return false;
+   try{
+     var url = Uri.parse(ApiSettings.Follow_One);
+     var response = await http.post(url, body: {
+       'followed_id': followed_id,
+       'action': action,
+     }, headers: {
+       HttpHeaders.authorizationHeader: UserPreferences().token,
+     });
+     if (jsonDecode(response.body)['status'] == true) {
+       return true;
+     } else if (jsonDecode(response.body)['status'] == false) {
+       return false;
+     } else {}
+     return false;
+   }on Exception{
+     return false;
+   }
   }
 
   Future EditProfile(BuildContext context,
@@ -483,65 +505,63 @@ class UserApiController with Helpers {
       required String domain,
       img,
       required void Function(bool status, String massege) uploadEvent}) async {
-    var url = Uri.parse(ApiSettings.EditProfile);
-    var multiPartRequest = http.MultipartRequest(
-      'POST',
-      url,
-    );
-    img != null
-        ? multiPartRequest.files
-            .add(await http.MultipartFile.fromPath('image_profile', img))
-        : null;
-    multiPartRequest.fields['email'] = email;
-    multiPartRequest.fields['mobile'] = mobile;
-    multiPartRequest.fields['name'] = Name;
-    multiPartRequest.fields['city_id'] = city_id;
-    multiPartRequest.fields['commercial_activity_id'] = commercialActivities;
-    multiPartRequest.fields['facebook'] = facebook;
-    multiPartRequest.fields['whatsapp'] = whatsapp;
-    multiPartRequest.fields['instagram'] = instagram;
-    multiPartRequest.fields['twitter'] = twitter;
-    multiPartRequest.fields['domain'] = domain;
+    final dio = Dio();
+    dio.options.headers[HttpHeaders.authorizationHeader] = UserPreferences().token;
+    dio.options.headers['X-Requested-With'] = 'XMLHttpRequest';
+  try{
+    final formData = FormData();
+    if (img != null) {
+      formData.files.add(MapEntry('image_profile', await MultipartFile.fromFile(img)));
+    }
+    formData.fields.add(MapEntry('email',email));
+    formData.fields.add(MapEntry('mobile', mobile));
+    formData.fields.add(MapEntry('name', Name));
+    formData.fields.add(MapEntry('city_id', city_id));
+    formData.fields.add(MapEntry('commercial_activity_id', commercialActivities));
+    formData.fields.add(MapEntry('facebook', facebook));
+    formData.fields.add(MapEntry('whatsapp',mobile));
+    formData.fields.add(MapEntry('instagram', instagram));
+    formData.fields.add(MapEntry('twitter', twitter));
+    formData.fields.add(MapEntry('domain', domain));
+    final response = await dio.post(ApiSettings.EditProfile, data: formData,);
 
-    multiPartRequest.headers[HttpHeaders.authorizationHeader] =
-        UserPreferences().token;
-    multiPartRequest.headers['X-Requested-With'] = 'XMLHttpRequest';
-    var response = await multiPartRequest.send();
-    response.stream.transform(utf8.decoder).listen((event) {
-      if (response.statusCode < 400) {
-        print(event);
-        showSnackBar(context,
-            message: jsonDecode(event)['message'], error: false);
-        uploadEvent(true, jsonDecode(event)['message']);
-      } else if (response.statusCode != 500) {
-        showSnackBar(context,
-            message: jsonDecode(event)['message'], error: true);
-        uploadEvent(false, jsonDecode(event)['message']);
-      } else {
-        showSnackBar(context,
-            message: 'Something went wrong, please try again!', error: true);
-        uploadEvent(false, jsonDecode(event)['message']);
-      }
-    });
+    if (response.statusCode == 200) {
+      showSnackBar(context, message: "تم التعديل بنجاح", error: false);
+      uploadEvent(true, "تم التعديل بنجاح");
+    } else if (response.statusCode != 500) {
+      showSnackBar(context, message: response.data['message'], error: true);
+      uploadEvent(false, response.data['message']);
+    } else {
+      showSnackBar(context, message: response.data['message'], error: true);
+      uploadEvent(false, response.data['message']);
+    }
+
+  }on Exception{
+
+  }
   }
 
   Future<List<Awards>> Awards_CanWin() async {
-    var url = Uri.parse(ApiSettings.AwardsCanWin);
-    var response = await http.get(
-      url,
-      headers: {
-        HttpHeaders.authorizationHeader: UserPreferences().token,
-      },
-    );
-    if (jsonDecode(response.body)['status'] == true) {
-      var json = jsonDecode(response.body);
-      var jsonArray = json['awards'] as List;
-      List<Awards> awards = jsonArray.map((jsonObject) => Awards.fromJson(jsonObject)).toList();
-      return awards;
-    } else if (jsonDecode(response.body)['status'] == false) {
-    } else {
-    }
-    return [];
+   try{
+     var url = Uri.parse(ApiSettings.AwardsCanWin);
+     var response = await http.get(
+       url,
+       headers: {
+         HttpHeaders.authorizationHeader: UserPreferences().token,
+       },
+     );
+     if (jsonDecode(response.body)['status'] == true) {
+       var json = jsonDecode(response.body);
+       var jsonArray = json['awards'] as List;
+       List<Awards> awards = jsonArray.map((jsonObject) => Awards.fromJson(jsonObject)).toList();
+       return awards;
+     } else if (jsonDecode(response.body)['status'] == false) {
+     } else {
+     }
+     return [];
+   }on Exception{
+     return [];
+   }
   }
 
   Future<bool> AwardRequest(
@@ -571,65 +591,75 @@ class UserApiController with Helpers {
   }
 
   Future<List<MyFollowings>> Followers_User() async {
-    var url = Uri.parse(ApiSettings.MyFollower);
-    var response = await http.get(url, headers: {
-      HttpHeaders.authorizationHeader: UserPreferences().token,
-    });
-    if (jsonDecode(response.body)['status'] == true) {
-      var json = jsonDecode(response.body);
-      var jsonArray = json['myFollowings'] as List;
-      List<MyFollowings> folow = jsonArray
-          .map((jsonObject) => MyFollowings.fromJson(jsonObject))
-          .toList();
-      return folow;
-    } else if (jsonDecode(response.body)['status'] == false) {
+   try{
+     var url = Uri.parse(ApiSettings.MyFollower);
+     var response = await http.get(url, headers: {
+       HttpHeaders.authorizationHeader: UserPreferences().token,
+     });
+     if (jsonDecode(response.body)['status'] == true) {
+       var json = jsonDecode(response.body);
+       var jsonArray = json['myFollowings'] as List;
+       List<MyFollowings> folow = jsonArray
+           .map((jsonObject) => MyFollowings.fromJson(jsonObject))
+           .toList();
+       return folow;
+     } else if (jsonDecode(response.body)['status'] == false) {
 
-    } else {
+     } else {
 
-    }
-    return [];
+     }
+     return [];
+   }on Exception{
+     return [];
+   }
   }
 
   Future<List<MyFollowings>> CountFollowers_User() async {
-    var url = Uri.parse(ApiSettings.CountMyFollower);
-    var response = await http.get(url, headers: {
-      HttpHeaders.authorizationHeader: UserPreferences().token,
-    });
+ try{
+   var url = Uri.parse(ApiSettings.CountMyFollower);
+   var response = await http.get(url, headers: {
+     HttpHeaders.authorizationHeader: UserPreferences().token,
+   });
 
-    if (jsonDecode(response.body)['status'] == true) {
-      var json = jsonDecode(response.body);
-      var jsonArray = json['myFollowings'] as List;
-      List<MyFollowings> folow = jsonArray
-          .map((jsonObject) => MyFollowings.fromJson(jsonObject))
-          .toList();
-      return folow;
-    } else if (jsonDecode(response.body)['status'] == false) {
-    } else {
+   if (jsonDecode(response.body)['status'] == true) {
+     var json = jsonDecode(response.body);
+     var jsonArray = json['myFollowings'] as List;
+     List<MyFollowings> folow = jsonArray
+         .map((jsonObject) => MyFollowings.fromJson(jsonObject))
+         .toList();
+     return folow;
+   } else if (jsonDecode(response.body)['status'] == false) {
+   } else {
 
-      // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
-    }
-    return [];
+   }
+   return [];
+ }on Exception {
+   return [];
+ }
   }
 
   Future<List<MyFollowers>> Followers_Advertiser(int id) async {
-    var url = Uri.parse(ApiSettings.MyFollower_Advertiser(idAdmain: id));
-    var response = await http.get(url, headers: {
-      HttpHeaders.authorizationHeader: UserPreferences().token,
-    });
-    if (jsonDecode(response.body)['status'] == true) {
-      var json = jsonDecode(response.body);
-      var jsonArray = json['myFollowers'] as List;
+   try{
+     var url = Uri.parse(ApiSettings.MyFollower_Advertiser(idAdmain: id));
+     var response = await http.get(url, headers: {
+       HttpHeaders.authorizationHeader: UserPreferences().token,
+     });
+     if (jsonDecode(response.body)['status'] == true) {
+       var json = jsonDecode(response.body);
+       var jsonArray = json['myFollowers'] as List;
 
+       List<MyFollowers> folow = jsonArray
+           .map((jsonObject) => MyFollowers.fromJson(jsonObject))
+           .toList();
 
-      List<MyFollowers> folow = jsonArray
-          .map((jsonObject) => MyFollowers.fromJson(jsonObject))
-          .toList();
-
-      return folow;
-    } else if (jsonDecode(response.body)['status'] == false) {
-    } else {
-    }
-    return [];
+       return folow;
+     } else if (jsonDecode(response.body)['status'] == false) {
+     } else {
+     }
+     return [];
+   }on Exception{
+     return [];
+   }
   }
 
   Future<List<AdType>> Special_Type() async {
@@ -695,18 +725,23 @@ class UserApiController with Helpers {
   }
 
   Future<Advertiser> info_Admain({required int userid}) async {
-    var url = Uri.parse(ApiSettings.ADS_Advertiser(admid: userid));
-    var response = await http.get(url);
-    if (jsonDecode(response.body)['status'] == true) {
-      var json = jsonDecode(response.body);
-      var jsonArray = json['advertiser'];
-      Advertiser ads = Advertiser.fromJson(jsonArray);
-      return ads;
-    } else if (jsonDecode(response.body)['status'] == false) {
-    } else {
-    }
-    Advertiser ads = Advertiser();
-    return ads;
+   try{
+     var url = Uri.parse(ApiSettings.ADS_Advertiser(admid: userid));
+     var response = await http.get(url);
+     if (jsonDecode(response.body)['status'] == true) {
+       var json = jsonDecode(response.body);
+       var jsonArray = json['advertiser'];
+       Advertiser ads = Advertiser.fromJson(jsonArray);
+       return ads;
+     } else if (jsonDecode(response.body)['status'] == false) {
+     } else {
+     }
+     Advertiser ads = Advertiser();
+     return ads;
+   }on Exception{
+     Advertiser ads = Advertiser();
+     return ads;
+   }
   }
 
   Future<List<Ads>> ALLADS() async {
@@ -719,19 +754,15 @@ class UserApiController with Helpers {
       var json = jsonDecode(response.body);
       var jsonArray = json['ads'] as List;
 
-      print(2);
       List<Ads> detalies =
           jsonArray.map((jsonObject) => Ads.fromJson(jsonObject)).toList();
 
       return detalies;
     } else if (jsonDecode(response.body)['status'] == false) {
-      print(jsonDecode(response.body)['message']);
-      //showSnackBar(context, message: 'Something went wrong, please try again!', error: true);
-    } else {
-      print(jsonDecode(response.body)['message']);
-      print("Something went wrong, please try again!");
 
-      // showSnackBar(context, message: jsonDecode(response.body)['message'], error: true);
+    } else {
+
+
     }
 
     return [];
@@ -745,7 +776,6 @@ class UserApiController with Helpers {
       var jsonArray = json['ads'] as List;
       List<Ads> detalies =
           jsonArray.map((jsonObject) => Ads.fromJson(jsonObject)).toList();
-      print(detalies);
       return detalies;
     } else if (jsonDecode(response.body)['status'] == false) {
       print("Something went wrong, please try again!");
@@ -803,8 +833,7 @@ class UserApiController with Helpers {
     if (jsonDecode(response.body)['status'] == true) {
       var json = jsonDecode(response.body);
       var jsonArray = json['offers'] as List;
-      List<Offers> specialAds =
-          jsonArray.map((jsonObject) => Offers.fromJson(jsonObject)).toList();
+      List<Offers> specialAds = jsonArray.map((jsonObject) => Offers.fromJson(jsonObject)).toList();
       return specialAds;
     } else if (jsonDecode(response.body)['status'] == false) {
     } else {

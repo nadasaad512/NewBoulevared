@@ -15,12 +15,23 @@ import '../../models/detalies.dart';
 import '../../provider/app_provider.dart';
 import '../../story/OneStory.dart';
 
-class AdsScreen extends StatelessWidget{
+class AdsScreen extends StatefulWidget{
 
   @override
-  Widget build(BuildContext context) {
+  State<AdsScreen> createState() => _AdsScreenState();
+}
+
+class _AdsScreenState extends State<AdsScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     Provider.of<AppProvider>(context, listen: false).getAllcity();
     Provider.of<AppProvider>(context, listen: false).getAllAdd();
+  }
+  @override
+  Widget build(BuildContext context) {
+
 
 
   return
@@ -103,7 +114,7 @@ class AdsScreen extends StatelessWidget{
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              StoryPage(
+                              storyPageScreen(
                                 AdId:provider.detalies![index].id!,
                               )
                       ),
@@ -139,7 +150,7 @@ class AdsScreen extends StatelessWidget{
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        StoryPage(
+                                        storyPageScreen(
                                           AdId:provider.detalies![index].id!,
 
                                         )
@@ -173,7 +184,10 @@ class AdsScreen extends StatelessWidget{
                           child:Row(
 
                             children: [
-                              provider.detalies![index].advertiser!.imageProfile!=null?
+                              provider.detalies![index].advertiser!=null&&
+                              provider.detalies![index].advertiser!.imageProfile!=null
+
+                                  ?
                               CircleAvatar(radius: 14,
                                 backgroundImage: NetworkImage(provider.detalies![index].advertiser!.imageProfile.toString()),):
                               CircleAvatar(radius: 12.sp,
@@ -182,7 +196,8 @@ class AdsScreen extends StatelessWidget{
                                     size: 15.sp,)),
                               SizedBox(width: 10.w,),
                               Text(
-                                provider.detalies![index].advertiser!.name.toString(),style: TextStyle(
+                                  provider.detalies!=null&&provider.detalies![index].advertiser!=null?
+                                provider.detalies![index].advertiser!.name.toString():"",style: TextStyle(
                                   color:  Color(0xffFFFFFF),
                                   fontWeight: FontWeight.w900,
                                   fontSize: 10.sp
@@ -203,7 +218,7 @@ class AdsScreen extends StatelessWidget{
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              StoryPage(
+                              storyPageScreen(
                                 AdId:provider.detalies![index].id!,
                               )
                       ),
@@ -237,7 +252,7 @@ class AdsScreen extends StatelessWidget{
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            StoryPage(
+                                            storyPageScreen(
                                               AdId:provider.detalies![index].id!,
 
                                             )

@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../Shared_Preferences/User_Preferences.dart';
 import '../api/User_Controller.dart';
 import '../loed/loed.dart';
 import '../models/setting.dart';
@@ -59,6 +60,7 @@ class _Back_GroundState extends State<Back_Ground> {
   @override
   void initState() {
     super.initState();
+    Provider.of<AppProvider>(context, listen: false).getProfile();
     _pageController = PageController();
     NameTextController = TextEditingController();
     emailTextController = TextEditingController();
@@ -66,12 +68,11 @@ class _Back_GroundState extends State<Back_Ground> {
   }
 
 
-  final ScrollController _scrollController = ScrollController();
+  final ScrollController scrollController = ScrollController();
   bool progss = false;
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<AppProvider>(context, listen: false).getProfile();
     return  Consumer<AppProvider>(builder: (context, provider, _) {
      return  Scaffold(
          backgroundColor: Colors.white,
@@ -114,13 +115,7 @@ class _Back_GroundState extends State<Back_Ground> {
                            SizedBox(
                              height: 12.h,
                            ),
-                           Text(
-                             "  نقطة 0 ",
-                             style: TextStyle(
-                                 fontSize: 16.sp,
-                                 fontWeight: FontWeight.w600,
-                                 color: Colors.white),
-                           ),
+
                          ],
                        )),
                  ),
@@ -303,7 +298,7 @@ class _Back_GroundState extends State<Back_Ground> {
                  ),
                ),
                child:
-               widget. home==true?
+               widget.home==true?
                    SizedBox.shrink():
                Container(
                  margin: EdgeInsets.only(
@@ -560,6 +555,7 @@ class _Back_GroundState extends State<Back_Ground> {
                                                : Text(
                                              'تعديل الملف الشخصي',
                                              style: TextStyle(
+                                               color: Colors.white,
                                                  fontWeight:
                                                  FontWeight
                                                      .w700,
@@ -587,12 +583,12 @@ class _Back_GroundState extends State<Back_Ground> {
                ),
              ),
 
-            widget. home==true?
+            widget.home==true?
              provider.banners.isNotEmpty
                  ? SizedBox(
-                     height: 250.h,
+                     height: 300.h,
                      child: CasualImageSlider(
-                         scrollController: _scrollController,
+                         scrollController: scrollController,
                          imageUrls: provider.banners))
                  : SizedBox.shrink():
                    SizedBox.shrink(),
@@ -885,7 +881,7 @@ class _Back_GroundState extends State<Back_Ground> {
                  width: double.infinity,
                  height: double.infinity,
                  margin:
-                 widget. home==true? EdgeInsets.only(top: 250.h):
+                 widget.home==true? EdgeInsets.only(top: 300.h):
                 EdgeInsets.only(top: 90.h),
                  decoration: const BoxDecoration(
                    color: Colors.white,
@@ -1005,9 +1001,11 @@ class _Back_GroundState extends State<Back_Ground> {
 
   Future logout() async {
 
-    bool loggedOut =
-    await UserApiController().logout(context);
-    if (loggedOut) Navigator.pushReplacementNamed(context, '/logain_screen');
+    bool loggedOut = await UserApiController().logout(context);
+    if (loggedOut) {
+      Navigator.pushReplacementNamed(context, '/logain_screen');
+      await  UserPreferences().logout();
+    }
   }
 }
 

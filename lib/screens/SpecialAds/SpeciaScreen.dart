@@ -41,7 +41,7 @@ class SpeciaScreen extends StatelessWidget{
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  StoryPage(
+                                  storyPageScreen(
                                     AdId: _special_ads[index].id!,
                                   )
 

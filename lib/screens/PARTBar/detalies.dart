@@ -26,6 +26,7 @@ class _DetailesScreenState extends State<DetailesScreen> {
     Provider.of<AppProvider>(context, listen: false).getAllcity();
     Provider.of<AppProvider>(context, listen: false).getPartAds(idcat:widget.idcat );
     Provider.of<AppProvider>(context, listen: false).PartAdLoed=false;
+    print(widget.idcat);
     return Back_Ground(
       back: true,
       eror: true,
@@ -99,7 +100,7 @@ class _DetailesScreenState extends State<DetailesScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              StoryPage(
+                              storyPageScreen(
                                   AdId:provider.PartAd![index].id!
                               )
 
@@ -148,9 +149,6 @@ class _DetailesScreenState extends State<DetailesScreen> {
                                 null,),
                               SizedBox(width: 10.w,),
                               Text(
-
-
-
                                 provider.PartAd![index].advertiser!.name.toString(),style: TextStyle(
                                   color:  Color(0xffFFFFFF),
                                   fontWeight: FontWeight.w900,
@@ -171,7 +169,7 @@ class _DetailesScreenState extends State<DetailesScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              StoryPage(
+                              storyPageScreen(
                                   AdId:provider.PartAd![index].id!
                               )
 

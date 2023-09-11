@@ -75,12 +75,11 @@ class _EditAdmainScreenState extends State<EditAdmainScreen> {
         commercialActivities.text=user.commercialActivity!.name.toString();
         idActiv=user.commercialActivity!.id;
         idcity=user.city!.id;
-        face.text=user.facebook.toString();
-        insta.text=user.instagram.toString();
+        face.text=user.facebook.toString()=="null"?"":user.facebook.toString();
+        insta.text=user.instagram.toString()=="null"?"":user.instagram.toString();
         whatsup.text=user.whatsapp.toString();
-        twita.text=user.twitter.toString();
-        domain.text=user.website.toString();
-
+        twita.text=user.twitter.toString()=="null"?"":user.twitter.toString();
+        domain.text=user.website.toString()=="null"?"":user.website.toString();
         loed=false;
       });
     });
@@ -223,7 +222,9 @@ class _EditAdmainScreenState extends State<EditAdmainScreen> {
                   ),
                 ),
                 SizedBox(height: 16.h,),
-                FieldScreen(title: "الهاتف",controller: phoneTextController,),
+                Directionality(
+                  textDirection: TextDirection.ltr,
+                    child: FieldScreen(title: "الهاتف",controller: phoneTextController,type: TextInputType.phone)),
                 SizedBox(height: 16.h,),
                 FieldScreen(title: "الايميل",controller: emailTextController,),
                 SizedBox(height: 16.h,),
@@ -300,8 +301,6 @@ class _EditAdmainScreenState extends State<EditAdmainScreen> {
                 SizedBox(height: 16.h,),
                 FieldScreen(title: "الفيس بوك",controller: face,isicon: true,icon:"images/facebook.svg" ,),
                 SizedBox(height: 16.h,),
-                FieldScreen(title: "الواتس أب",controller: whatsup,isicon: true,icon:"images/whatsapp.svg"),
-                SizedBox(height: 16.h,),
                 FieldScreen(title: "الانستجرام",controller: insta,isicon: true,icon:"images/instegram.svg"),
                 SizedBox(height: 16.h,),
                 FieldScreen(title: "تويتر",controller: twita,isicon: true,icon:"images/twitter.svg"),
@@ -322,7 +321,8 @@ class _EditAdmainScreenState extends State<EditAdmainScreen> {
 
                   Text('تعديل الملف الشخصي',style: TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 18.sp
+                      fontSize: 18.sp,
+                    color: Colors.white
                   ),),
                   style: ElevatedButton.styleFrom(
                     primary: Color(0xff7B217E),
@@ -351,11 +351,7 @@ class _EditAdmainScreenState extends State<EditAdmainScreen> {
   }
 
   Future Edit_Admain() async {
-    print(idActive);
-    print(id);
-
  await UserApiController().EditAdmain(
-
         context,
         Name: NameTextController.text,
         mobile: phoneTextController.text,
@@ -369,24 +365,12 @@ class _EditAdmainScreenState extends State<EditAdmainScreen> {
         domain:domain.text,
        img:  _pickedFile!=null?
         _pickedFile!.path:
-        null,
-
-        uploadEvent: (status,massege){
+        null, uploadEvent: (status,massege){
           if(status){
-
-            setState(() {});
-            Navigator.pushReplacementNamed(context, '/MainScreen');
-
-            NameTextController.clear();
-            phoneTextController.clear();
-            emailTextController.clear();
             setState(() {
               progss=false;
             });
-
-
           }else{
-
             setState(() {
               progss=false;
             });
@@ -402,5 +386,15 @@ class _EditAdmainScreenState extends State<EditAdmainScreen> {
 
 
 
+  }
+
+  OutlineInputBorder get _border {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(5),
+      borderSide: BorderSide(
+        width: 0.6,
+        color: Colors.grey.shade500,
+      ),
+    );
   }
 }

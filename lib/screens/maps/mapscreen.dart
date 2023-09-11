@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart' as gps;
+
 
 class GoogleMapPage extends StatefulWidget {
   GoogleMapPage({this.latitude, this.longitude, this.onlyView,this.islocation=false,this.isArrow=false});

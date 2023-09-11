@@ -1,4 +1,5 @@
 
+import 'package:flutter/services.dart';
 import 'package:new_boulevard/provider/app_provider.dart';
 import 'package:new_boulevard/screens/BestTen/BestTenScreen.dart';
 import 'package:new_boulevard/screens/homescreen/Home_Screen.dart';
@@ -26,7 +27,15 @@ import 'Shared_Preferences/User_Preferences.dart';
 import 'screens/Splash/Splash.dart';
 import 'screens/infoclient/conditinScreen.dart';
 
+
+
+
 void main() async {
+  //HttpOverrides.global = new MyHttpOverrides();
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.transparent, // navigation bar color
+    statusBarColor: Colors.transparent, // status bar color
+  ));
   WidgetsFlutterBinding.ensureInitialized();
   await UserPreferences().initPreferences();
   runApp( ChangeNotifierProvider<AppProvider>(
@@ -45,6 +54,11 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) {
         return  MaterialApp(
+          // theme: ThemeData(
+          //   primaryColor: Colors.transparent, // Example primary color
+          //    // Example accent color
+          //   // Define other theme properties here
+          // ),
           localizationsDelegates: [
             GlobalCupertinoLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -100,4 +114,11 @@ class MyApp extends StatelessWidget {
 
   }
 }
+// class MyHttpOverrides extends HttpOverrides{
+//   @override
+//   HttpClient createHttpClient(SecurityContext? context){
+//     return super.createHttpClient(context)
+//       ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+//   }
+// }
 
