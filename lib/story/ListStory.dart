@@ -56,7 +56,7 @@ class _ListStoryScreenState extends State<ListStoryScreen>
   @override
   void initState() {
     super.initState();
-    Wakelock.enable();
+   // Wakelock.enable();
     PageCurrent = widget.initialindex;
     pageController = PageController(initialPage: widget.initialindex);
     StoryController = PageController();
@@ -107,7 +107,7 @@ if(test[widget.initialindex].lenght!=null) {
 
   @override
   void dispose() {
-    Wakelock.disable();
+  //  Wakelock.disable();
     for (var controller in controllers) {
       controller.dispose();
     }

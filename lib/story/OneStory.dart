@@ -43,7 +43,7 @@ class _storyPageScreenState extends State<storyPageScreen>
   void initState() {
     super.initState();
     _clearControllers();
-    Wakelock.enable();
+    //Wakelock.enable();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       pageController.addListener(_listener);
     });
@@ -66,7 +66,7 @@ class _storyPageScreenState extends State<storyPageScreen>
 
   @override
   void dispose() {
-    Wakelock.disable();
+   // Wakelock.disable();
     pageController.dispose();
     animController.dispose();
     pageController.removeListener(_listener);
