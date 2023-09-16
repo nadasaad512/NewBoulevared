@@ -10,7 +10,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import '../../api/Images_Controller.dart';
 import '../../api/User_Controller.dart';
 import '../../component/TextField.dart';
@@ -85,7 +85,8 @@ class _NewAdsScreenState extends State<NewAdsScreen> with Helpers {
   @override
   void initState() {
     super.initState();
-    Wakelock.enable();
+    WakelockPlus.enable();
+
     _pageController = PageController();
     controller = VideoPlayerController.network("");
     controller.initialize();

@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_boulevard/screens/Details/ad_story_screen.dart';
 import 'package:video_cached_player/video_cached_player.dart';
 import 'package:video_player/video_player.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import '../api/User_Controller.dart';
 import '../models/Follower_user.dart';
 import '../models/ads.dart';
@@ -56,7 +56,11 @@ class _ListStoryScreenState extends State<ListStoryScreen>
   @override
   void initState() {
     super.initState();
-   // Wakelock.enable();
+   //
+
+    WakelockPlus.enable();
+
+
     PageCurrent = widget.initialindex;
     pageController = PageController(initialPage: widget.initialindex);
     StoryController = PageController();
@@ -107,7 +111,7 @@ if(test[widget.initialindex].lenght!=null) {
 
   @override
   void dispose() {
-  //  Wakelock.disable();
+  WakelockPlus.disable();
     for (var controller in controllers) {
       controller.dispose();
     }
@@ -124,7 +128,6 @@ if(test[widget.initialindex].lenght!=null) {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         backgroundColor: Colors.black,
         body: GestureDetector(

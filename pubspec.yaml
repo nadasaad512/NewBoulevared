@@ -11,7 +11,8 @@ version: 1.0.0+3
 environment:
   sdk: '>=2.18.2 <3.0.0'
 
-
+##^2.4.5
+##^2.4.9+1
 dependencies:
   flutter:
     sdk: flutter
@@ -31,7 +32,7 @@ dependencies:
   geocoding: ^2.1.0
   #location:
   image_size_getter: ^2.1.2
-  wakelock: ^0.6.2
+  wakelock_plus: ^1.1.1
   geolocator: ^10.0.1
   flutter_swiper_view: ^1.1.8
   another_flushbar: ^1.12.30

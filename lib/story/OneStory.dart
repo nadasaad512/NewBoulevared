@@ -8,11 +8,13 @@ import 'package:new_boulevard/utils/helpers.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_cached_player/video_cached_player.dart';
-import 'package:wakelock/wakelock.dart';
 import '../models/ads.dart';
 import '../provider/app_provider.dart';
 import '../screens/Profile/widget/AdaminAsUserShow.dart';
 import '../screens/maps/mapscreen.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
+
+
 
 class storyPageScreen extends StatefulWidget {
   int AdId;
@@ -52,6 +54,7 @@ class _storyPageScreenState extends State<storyPageScreen>
     controller.initialize();
     animController = AnimationController(vsync: this);
     Provider.of<AppProvider>(context, listen: false).getAlldataForStory(id: widget.AdId);
+    WakelockPlus.enable();
     // final listVideo = Provider.of<AppProvider>(context, listen: false).listVideo;
     // if (listVideo != null && listVideo.isNotEmpty) {
     //   for (story1 url in listVideo) {
@@ -67,6 +70,7 @@ class _storyPageScreenState extends State<storyPageScreen>
   @override
   void dispose() {
    // Wakelock.disable();
+    WakelockPlus.disable();
     pageController.dispose();
     animController.dispose();
     pageController.removeListener(_listener);
