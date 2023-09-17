@@ -14,8 +14,6 @@ import '../screens/Profile/widget/AdaminAsUserShow.dart';
 import '../screens/maps/mapscreen.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-
-
 class storyPageScreen extends StatefulWidget {
   int AdId;
 
@@ -33,7 +31,6 @@ class _storyPageScreenState extends State<storyPageScreen>
   late AnimationController animController;
   late CachedVideoPlayerController controller;
   final _pageNotifier = ValueNotifier(0.0);
-  List<CachedVideoPlayerController> _controllers = [];
   bool start = false;
   bool end = false;
   var splitted;
@@ -53,12 +50,13 @@ class _storyPageScreenState extends State<storyPageScreen>
     controller = CachedVideoPlayerController.network("");
     controller.initialize();
     animController = AnimationController(vsync: this);
-    Provider.of<AppProvider>(context, listen: false).getAlldataForStory(id: widget.AdId);
+    Provider.of<AppProvider>(context, listen: false)
+        .getAlldataForStory(id: widget.AdId);
     WakelockPlus.enable();
     // final listVideo = Provider.of<AppProvider>(context, listen: false).listVideo;
     // if (listVideo != null && listVideo.isNotEmpty) {
     //   for (story1 url in listVideo) {
-    //     _controllers.add(CachedVideoPlayerController.network(url.file.toString())
+    //     Provider.of<AppProvider>(context, listen: false).controllers.add(CachedVideoPlayerController.network(url.file.toString())
     //       ..initialize().then((_) {
     //         setState(() {});
     //       }));
@@ -66,10 +64,9 @@ class _storyPageScreenState extends State<storyPageScreen>
     // }
   }
 
-
   @override
   void dispose() {
-   // Wakelock.disable();
+    // Wakelock.disable();
     WakelockPlus.disable();
     pageController.dispose();
     animController.dispose();
@@ -81,28 +78,20 @@ class _storyPageScreenState extends State<storyPageScreen>
     super.dispose();
   }
 
-
   void _listener() {
     _pageNotifier.value = pageController.page!;
   }
+
   void _clearControllers() {
-    for (var controller in _controllers) {
+    for (var controller
+        in Provider.of<AppProvider>(context, listen: false).controllers) {
       controller.dispose();
     }
-    _controllers.clear();
+    Provider.of<AppProvider>(context, listen: false).controllers.clear();
   }
 
   @override
   Widget build(BuildContext context) {
-    final listVideo = Provider.of<AppProvider>(context, listen: false).listVideo;
-    if (listVideo != null && listVideo.isNotEmpty) {
-      for (story1 url in listVideo) {
-        _controllers.add(CachedVideoPlayerController.network(url.file.toString())
-          ..initialize().then((_) {
-            setState(() {});
-          }));
-      }
-    }
     return Consumer<AppProvider>(builder: (context, provider, _) {
       return Scaffold(
         backgroundColor: Colors.black,
@@ -161,7 +150,8 @@ class _storyPageScreenState extends State<storyPageScreen>
                           },
                           itemBuilder: (BuildContext, te) {
                             return GestureDetector(
-                              onTapDown: (details) => _onTapDown2(details, provider, CurrentVideo),
+                              onTapDown: (details) =>
+                                  _onTapDown2(details, provider, CurrentVideo),
                               child: Container(
                                 height: double.infinity,
                                 width: double.infinity,
@@ -170,10 +160,16 @@ class _storyPageScreenState extends State<storyPageScreen>
                                   children: [
                                     Center(
                                         child: AspectRatio(
-                                      aspectRatio:
-                                          _controllers[te].value.aspectRatio,
-                                      child:
-                                          CachedVideoPlayer(_controllers[te]),
+                                      aspectRatio: Provider.of<AppProvider>(
+                                              context,
+                                              listen: false)
+                                          .controllers[te]
+                                          .value
+                                          .aspectRatio,
+                                      child: CachedVideoPlayer(
+                                          Provider.of<AppProvider>(context,
+                                                  listen: false)
+                                              .controllers[te]),
                                     )),
                                     Positioned(
                                         top: 45.0,
@@ -206,7 +202,7 @@ class _storyPageScreenState extends State<storyPageScreen>
                                         children: [
                                           InkWell(
                                             onTap: () {
-                                                _clearControllers();
+                                              _clearControllers();
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
@@ -260,7 +256,8 @@ class _storyPageScreenState extends State<storyPageScreen>
                                           InkWell(
                                             onTap: () {
                                               _clearControllers();
-                                              Navigator.pushReplacementNamed(context, '/MainScreen');
+                                              Navigator.pushReplacementNamed(
+                                                  context, '/MainScreen');
                                             },
                                             child: CircleAvatar(
                                               backgroundColor:
@@ -581,36 +578,65 @@ class _storyPageScreenState extends State<storyPageScreen>
   }
 
   Future forward5Seconds(int index) async {
-    await _controllers[index].pause(); // Pause the video player
+    await Provider.of<AppProvider>(context, listen: false)
+        .controllers[index]
+        .pause(); // Pause the video player
     await goToPosition(
         (currentPosition) => currentPosition + const Duration(seconds: 10),
         index);
-    await _controllers[index].play(); // Resume playback
+    await Provider.of<AppProvider>(context, listen: false)
+        .controllers[index]
+        .play(); // Resume playback
   }
 
   Future rewind5Seconds(int index) async {
-    await _controllers[index].pause(); // Pause the video player
+    await Provider.of<AppProvider>(context, listen: false)
+        .controllers[index]
+        .pause(); // Pause the video player
     await goToPosition(
         (currentPosition) => currentPosition - const Duration(seconds: 10),
         index);
-    await _controllers[index].play(); // Resume playback
+    await Provider.of<AppProvider>(context, listen: false)
+        .controllers[index]
+        .play(); // Resume playback
   }
 
   Future goToPosition(
       Duration Function(Duration currentPosition) builder, int index) async {
-    final currentPosition = await _controllers[index].position;
+    final currentPosition =
+        await Provider.of<AppProvider>(context, listen: false)
+            .controllers[index]
+            .position;
     final newPosition = builder(currentPosition!);
     newPosition <= const Duration(hours: 0, minutes: 0, seconds: 10)
         ? start = true
         : start = false;
-    newPosition >= _controllers[index].value.duration
+    newPosition >=
+            Provider.of<AppProvider>(context, listen: false)
+                .controllers[index]
+                .value
+                .duration
         ? end = true
         : end = false;
-    newPosition >= _controllers[index].value.duration
+    newPosition >=
+            Provider.of<AppProvider>(context, listen: false)
+                .controllers[index]
+                .value
+                .duration
         ? null
-        : await _controllers[index].seekTo(newPosition);
-    final int duration = _controllers[index].value.duration.inSeconds;
-    final int position = _controllers[index].value.position.inSeconds;
+        : await Provider.of<AppProvider>(context, listen: false)
+            .controllers[index]
+            .seekTo(newPosition);
+    final int duration = Provider.of<AppProvider>(context, listen: false)
+        .controllers[index]
+        .value
+        .duration
+        .inSeconds;
+    final int position = Provider.of<AppProvider>(context, listen: false)
+        .controllers[index]
+        .value
+        .position
+        .inSeconds;
     animController.stop();
     animController.reset();
     animController.value = position / duration;
@@ -619,11 +645,18 @@ class _storyPageScreenState extends State<storyPageScreen>
       if (CurrentVideo <
           Provider.of<AppProvider>(context, listen: false).listVideo!.length -
               1) {
+        Provider.of<AppProvider>(context, listen: false)
+            .controllers[index]
+            .dispose();
         _pageController.jumpToPage(CurrentVideo + 1);
         CurrentPage++;
-        _controllers[index].seekTo(Duration.zero);
+        // Provider.of<AppProvider>(context, listen: false)
+        //     .controllers[index]
+        //     .seekTo(Duration.zero);
       } else {
-        _controllers[index].dispose();
+        Provider.of<AppProvider>(context, listen: false)
+            .controllers[index]
+            .dispose();
         Navigator.pop(context);
       }
     });
@@ -637,19 +670,32 @@ class _storyPageScreenState extends State<storyPageScreen>
         if (CurrentVideo < provider.listVideo!.length - 1) {
           _pageController.jumpToPage(CurrentVideo + 1);
           CurrentPage++;
-          _controllers[index].seekTo(Duration.zero);
+          Provider.of<AppProvider>(context, listen: false)
+              .controllers[index]
+              .seekTo(Duration.zero);
         } else {
-          _controllers[index].dispose();
+          Provider.of<AppProvider>(context, listen: false)
+              .controllers[index]
+              .dispose();
           Navigator.pop(context);
         }
       } else {
-        _controllers[index].value.isInitialized
+        Provider.of<AppProvider>(context, listen: false)
+                .controllers[index]
+                .value
+                .isInitialized
             ? forward5Seconds(CurrentVideo)
             : null;
-        if (_controllers[index].value.isInitialized) {
+        if (Provider.of<AppProvider>(context, listen: false)
+            .controllers[index]
+            .value
+            .isInitialized) {
           int maxBuffering = 0;
           for (final DurationRange range
-              in _controllers[index].value.buffered) {
+              in Provider.of<AppProvider>(context, listen: false)
+                  .controllers[index]
+                  .value
+                  .buffered) {
             final int end = range.end.inSeconds;
             if (end > maxBuffering) {
               maxBuffering = end;
@@ -660,7 +706,9 @@ class _storyPageScreenState extends State<storyPageScreen>
     } else if (dx > 2 * screenWidth / 3) {
       if (start) {
         if (CurrentVideo == 0) {
-          _controllers[CurrentVideo].pause();
+          Provider.of<AppProvider>(context, listen: false)
+              .controllers[CurrentVideo]
+              .pause();
           pageController.jumpToPage(CurrentPage - 1);
         } else {
           _pageController.jumpToPage(CurrentVideo - 1);
@@ -668,14 +716,26 @@ class _storyPageScreenState extends State<storyPageScreen>
         }
       } else {
         rewind5Seconds(CurrentVideo);
-        if (_controllers[index].value.isInitialized) {
-          final int duration =
-              _controllers[index].value.duration.inMilliseconds;
-          final int position =
-              _controllers[index].value.position.inMilliseconds;
+        if (Provider.of<AppProvider>(context, listen: false)
+            .controllers[index]
+            .value
+            .isInitialized) {
+          final int duration = Provider.of<AppProvider>(context, listen: false)
+              .controllers[index]
+              .value
+              .duration
+              .inMilliseconds;
+          final int position = Provider.of<AppProvider>(context, listen: false)
+              .controllers[index]
+              .value
+              .position
+              .inMilliseconds;
           int maxBuffering = 0;
           for (final DurationRange range
-              in _controllers[index].value.buffered) {
+              in Provider.of<AppProvider>(context, listen: false)
+                  .controllers[index]
+                  .value
+                  .buffered) {
             final int end = range.end.inMilliseconds;
             if (end > maxBuffering) {
               maxBuffering = end;
@@ -690,23 +750,34 @@ class _storyPageScreenState extends State<storyPageScreen>
             _pageController.jumpToPage(CurrentVideo + 1);
             CurrentPage++;
           } else {
-            _controllers[index].dispose();
+            Provider.of<AppProvider>(context, listen: false)
+                .controllers[index]
+                .dispose();
             Navigator.pop(context);
           }
         });
       }
     } else {
-      if (_controllers[index].value.isPlaying) {
-        _controllers[index].pause();
+      if (Provider.of<AppProvider>(context, listen: false)
+          .controllers[index]
+          .value
+          .isPlaying) {
+        Provider.of<AppProvider>(context, listen: false)
+            .controllers[index]
+            .pause();
         animController.stop();
       } else {
-        _controllers[index].play();
+        Provider.of<AppProvider>(context, listen: false)
+            .controllers[index]
+            .play();
         animController.forward().whenComplete(() {
           if (CurrentVideo < provider.listVideo!.length - 1) {
             _pageController.jumpToPage(CurrentVideo + 1);
             CurrentPage++;
           } else {
-            _controllers[index].dispose();
+            Provider.of<AppProvider>(context, listen: false)
+                .controllers[index]
+                .dispose();
             Navigator.pop(context);
           }
         });
@@ -723,15 +794,20 @@ class _storyPageScreenState extends State<storyPageScreen>
     houres = int.parse(splitted[0]);
     mint = int.parse(splitted[1]);
     second = int.parse(splitted[2]);
-    animController.duration = Duration(hours: houres, minutes: mint, seconds: second);
+    animController.duration =
+        Duration(hours: houres, minutes: mint, seconds: second);
     animController.forward().whenComplete(() {
       setState(() {
         CurrentVideo < provider.listVideo!.length - 1
             ? _pageController.jumpToPage(CurrentVideo + 1)
             : Navigator.pop(context);
       });
+      // if (Provider.of<AppProvider>(context, listen: false).controllers[index].value.isInitialized) {
+      Provider.of<AppProvider>(context, listen: false)
+          .controllers[index]
+          .play();
+      // }
     });
-    _controllers[index].play();
   }
 
   Widget Detatlies({required String name, required String image}) {
