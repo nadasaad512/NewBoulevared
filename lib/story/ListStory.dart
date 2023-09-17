@@ -533,6 +533,7 @@ if(test[widget.initialindex].lenght!=null) {
           print("length is $length");
           print("videoindex is $videoindex");
           if (videoindex < length-1) {
+            controllers[CurrentVideo].pause();
               _pageController.jumpToPage(CurrentVideo++);
             CurrentStory++;
               videoindex++;
