@@ -139,6 +139,9 @@ class _storyPageScreenState extends State<storyPageScreen>
                                 : SizedBox.shrink());
                       } else {
                         loadVideo(provider, CurrentVideo);
+                       provider
+                            .controllers[CurrentVideo]
+                            .play();
                         return PageView.builder(
                           controller: _pageController,
                           itemCount: provider.listVideo!.length,
@@ -149,6 +152,7 @@ class _storyPageScreenState extends State<storyPageScreen>
                             });
                           },
                           itemBuilder: (BuildContext, te) {
+
                             return GestureDetector(
                               onTapDown: (details) => _onTapDown2(details, provider, CurrentVideo),
                               child: Container(
@@ -667,7 +671,7 @@ class _storyPageScreenState extends State<storyPageScreen>
     if (dx < screenWidth / 3) {
       if (end == true) {
         if (CurrentVideo < provider.listVideo!.length - 1) {
-          Provider.of<AppProvider>(context, listen: false).controllers[index].pause();
+        Provider.of<AppProvider>(context, listen: false).controllers[index].pause();
           _pageController.jumpToPage(CurrentVideo + 1);
           CurrentPage++;
           Provider.of<AppProvider>(context, listen: false)
@@ -711,6 +715,7 @@ class _storyPageScreenState extends State<storyPageScreen>
               .pause();
           pageController.jumpToPage(CurrentPage - 1);
         } else {
+
           _pageController.jumpToPage(CurrentVideo - 1);
           CurrentPage--;
         }
@@ -803,8 +808,9 @@ class _storyPageScreenState extends State<storyPageScreen>
       });
       // if (Provider.of<AppProvider>(context, listen: false).controllers[index].value.isInitialized) {
       Provider.of<AppProvider>(context, listen: false)
-          .controllers[index]
+          .controllers[CurrentVideo]
           .play();
+
       // }
     });
   }
