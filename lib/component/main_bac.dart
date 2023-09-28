@@ -20,6 +20,7 @@ class Back_Ground extends StatefulWidget {
   final Widget child;
   final String childTab;
   final bool back;
+  final bool ispart;
   final bool Bar;
   final bool edit;
   final bool eror;
@@ -33,6 +34,7 @@ class Back_Ground extends StatefulWidget {
       required this.child,
       required this.childTab,
       this.back = false,
+      this.ispart = false,
       this.Bar = false,
       this.eror = false,
       this.edit = false,
@@ -344,12 +346,12 @@ class _Back_GroundState extends State<Back_Ground> {
                      SizedBox.shrink(),
 
 
-
                      widget.back == true
                          ? IconButton(
                          onPressed: () {
-
-                           Navigator.pushNamed(context, '/MainScreen');
+                           widget.ispart?
+                          Navigator.pushNamed(context, '/PartScreen'):
+                          Navigator.pushNamed(context, '/MainScreen');
                          },
                          icon: const Icon(
                            Icons.arrow_forward_ios_rounded,

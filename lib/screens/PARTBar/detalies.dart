@@ -30,6 +30,7 @@ class _DetailesScreenState extends State<DetailesScreen> {
     return Back_Ground(
       back: true,
       eror: true,
+      ispart: true,
       backRout: '/PartScreen',
       childTab: ' ${widget.name}',
       child:  Consumer<AppProvider>(builder: (context, provider, _) {
