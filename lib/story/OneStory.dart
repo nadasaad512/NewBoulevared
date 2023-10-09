@@ -53,15 +53,7 @@ class _storyPageScreenState extends State<storyPageScreen>
     Provider.of<AppProvider>(context, listen: false)
         .getAlldataForStory(id: widget.AdId);
     WakelockPlus.enable();
-    // final listVideo = Provider.of<AppProvider>(context, listen: false).listVideo;
-    // if (listVideo != null && listVideo.isNotEmpty) {
-    //   for (story1 url in listVideo) {
-    //     Provider.of<AppProvider>(context, listen: false).controllers.add(CachedVideoPlayerController.network(url.file.toString())
-    //       ..initialize().then((_) {
-    //         setState(() {});
-    //       }));
-    //   }
-    // }
+
   }
 
   @override
@@ -137,11 +129,10 @@ class _storyPageScreenState extends State<storyPageScreen>
                                     ad: provider.alldata!,
                                   )
                                 : SizedBox.shrink());
-                      } else {
+                      }
+                      else {
                         loadVideo(provider, CurrentVideo);
-                       provider
-                            .controllers[CurrentVideo]
-                            .play();
+                       provider.controllers[CurrentVideo].play();
                         return PageView.builder(
                           controller: _pageController,
                           itemCount: provider.listVideo!.length,
@@ -604,8 +595,7 @@ class _storyPageScreenState extends State<storyPageScreen>
         .play(); // Resume playback
   }
 
-  Future goToPosition(
-      Duration Function(Duration currentPosition) builder, int index) async {
+  Future goToPosition(Duration Function(Duration currentPosition) builder, int index) async {
     final currentPosition =
         await Provider.of<AppProvider>(context, listen: false)
             .controllers[index]
@@ -645,9 +635,9 @@ class _storyPageScreenState extends State<storyPageScreen>
     animController.value = position / duration;
     animController.forward();
     animController.forward().whenComplete(() {
+      print("66666666s");
       if (CurrentVideo <
-          Provider.of<AppProvider>(context, listen: false).listVideo!.length -
-              1) {
+          Provider.of<AppProvider>(context, listen: false).listVideo!.length ) {
         Provider.of<AppProvider>(context, listen: false)
             .controllers[index]
             .dispose();
@@ -670,16 +660,15 @@ class _storyPageScreenState extends State<storyPageScreen>
     final double dx = details.globalPosition.dx;
     if (dx < screenWidth / 3) {
       if (end == true) {
-        if (CurrentVideo < provider.listVideo!.length - 1) {
+        if (CurrentVideo < provider.listVideo!.length-1) {
+          print("44444444444");
         Provider.of<AppProvider>(context, listen: false).controllers[index].pause();
-          _pageController.jumpToPage(CurrentVideo + 1);
-          CurrentPage++;
-          Provider.of<AppProvider>(context, listen: false)
-              .controllers[index]
-              .seekTo(Duration.zero);
+        CurrentVideo++;
+        CurrentPage++;
+          _pageController.jumpToPage(CurrentVideo );
+          Provider.of<AppProvider>(context, listen: false).controllers[index].seekTo(Duration.zero);
         } else {
-          Provider.of<AppProvider>(context, listen: false)
-              .controllers[index]
+          Provider.of<AppProvider>(context, listen: false).controllers[index]
               .dispose();
           Navigator.pop(context);
         }
@@ -751,7 +740,8 @@ class _storyPageScreenState extends State<storyPageScreen>
           animController.value = position / duration;
         }
         animController.forward().whenComplete(() {
-          if (CurrentVideo < provider.listVideo!.length - 1) {
+          print("here");
+          if (CurrentVideo < provider.listVideo!.length-1) {
             _pageController.jumpToPage(CurrentVideo + 1);
             CurrentPage++;
           } else {
@@ -776,7 +766,8 @@ class _storyPageScreenState extends State<storyPageScreen>
             .controllers[index]
             .play();
         animController.forward().whenComplete(() {
-          if (CurrentVideo < provider.listVideo!.length - 1) {
+          print("object");
+          if (CurrentVideo < provider.listVideo!.length-1) {
             _pageController.jumpToPage(CurrentVideo + 1);
             CurrentPage++;
           } else {
@@ -801,17 +792,19 @@ class _storyPageScreenState extends State<storyPageScreen>
     second = int.parse(splitted[2]);
     animController.duration = Duration(hours: houres, minutes: mint, seconds: second);
     animController.forward().whenComplete(() {
-      setState(() {
-        CurrentVideo < provider.listVideo!.length - 1
-            ? _pageController.jumpToPage(CurrentVideo + 1)
-            : Navigator.pop(context);
-      });
-      // if (Provider.of<AppProvider>(context, listen: false).controllers[index].value.isInitialized) {
-      Provider.of<AppProvider>(context, listen: false)
-          .controllers[CurrentVideo]
-          .play();
-
-      // }
+      print("here");
+      if (CurrentVideo < provider.listVideo!.length-1) {
+        _pageController.jumpToPage(CurrentVideo + 1);
+        CurrentPage++;
+        Provider.of<AppProvider>(context, listen: false)
+            .controllers[CurrentVideo]
+            .play();
+      } else {
+        Provider.of<AppProvider>(context, listen: false)
+            .controllers[index]
+            .dispose();
+        Navigator.pop(context);
+      }
     });
   }
 
