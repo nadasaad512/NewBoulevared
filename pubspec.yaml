@@ -6,7 +6,7 @@ description: A new Flutter project.
 publish_to: 'none' 
 
 
-version: 1.0.15+16
+version: 1.0.16+17
 
 environment:
   sdk: '>=2.18.2 <3.0.0'
@@ -65,7 +65,7 @@ flutter_icons:
   android: "launcher_icon"
   ios: true
   remove_alpha_ios: true
-  image_path: "images/v2.png"
+  image_path: "images/ic_new.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
 
 
